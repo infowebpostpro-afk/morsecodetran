@@ -1,105 +1,155 @@
-import React, { useState } from 'react';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Sun, Moon, Menu, X, ChevronDown, 
+  Languages, Type, FileText, Activity, Image, 
+  GraduationCap, Hash, Radio 
+} from 'lucide-react';
+
+const navigationConfig = [
+  {
+    label: 'Translator',
+    items: [
+      { label: 'Morse Code Translator', desc: 'Translate Morse Code and text in both directions.', tab: 'translator', href: '#translator', icon: Languages },
+      { label: 'English to Morse', desc: 'Convert English text into International Morse Code.', tab: 'english2morse', href: '#english-to-morse', icon: Type },
+      { label: 'Morse to English', desc: 'Convert Morse Code into readable English text.', tab: 'morse2english', href: '#morse-to-english', icon: FileText }
+    ]
+  },
+  {
+    label: 'Decode',
+    items: [
+      { label: 'Morse Code Decoder', desc: 'Decode dots and dashes into readable text.', tab: 'morsedecoder', href: '#morse-code-decoder', icon: Activity },
+      { label: 'Image & Audio Decoder', desc: 'Decode Morse Code from images or audio.', tab: 'decoder', href: '#decoder', icon: Image }
+    ]
+  },
+  {
+    label: 'Learn',
+    items: [
+      { label: 'Learn Morse Code', desc: 'Learn Morse Code step by step with practical practice methods.', tab: 'learn', href: '#learn', icon: GraduationCap }
+    ]
+  },
+  {
+    label: 'Reference',
+    items: [
+      { label: 'Morse Code Alphabet', desc: 'Explore A–Z Morse Code letters and patterns.', tab: 'alphabet', href: '#alphabet', icon: Type },
+      { label: 'Morse Code Numbers', desc: 'Learn and reference Morse Code numbers 0–9.', tab: 'numbers', href: '#numbers', icon: Hash }
+    ]
+  },
+  {
+    label: 'Tools',
+    items: [
+      { label: 'Telegraph Keyer', desc: 'Practice sending Morse Code with a telegraph key.', tab: 'keyer', href: '#keyer', icon: Radio }
+    ]
+  }
+];
 
 export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null);
+  const [mobileOpenSections, setMobileOpenSections] = useState({});
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    };
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEsc);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
+  const handleTabClick = (e, tab) => {
+    e.preventDefault();
+    setActiveTab(tab);
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+  };
+
+  const toggleMobileSection = (label) => {
+    setMobileOpenSections(prev => ({
+      ...prev,
+      [label]: !prev[label]
+    }));
+  };
+
+  // Helper to check if a category is active based on its children
+  const isCategoryActive = (category) => {
+    return category.items.some(item => item.tab === activeTab);
+  };
 
   return (
-    <header className="navbar">
+    <header className="navbar" ref={headerRef}>
       <div className="nav-container">
-        <a href="#translator" className="brand-logo" onClick={() => setActiveTab('translator')}>
+        <a href="#translator" className="brand-logo" onClick={(e) => handleTabClick(e, 'translator')}>
           <div className="brand-logo-icon">
             <span style={{ fontSize: '1.2rem', fontWeight: 900 }}>◉</span>
           </div>
           <span>MorsePro</span>
         </a>
 
-        {/* Desktop Links */}
-        <ul className="nav-links">
-          <li>
-            <a
-              href="#translator"
-              className={`nav-link ${activeTab === 'translator' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('translator'); }}
-            >
-              Translator
-            </a>
-          </li>
-          <li>
-            <a
-              href="#morse-code-decoder"
-              className={`nav-link ${activeTab === 'morsedecoder' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('morsedecoder'); }}
-            >
-              Morse Decoder
-            </a>
-          </li>
-          <li>
-            <a
-              href="#decoder"
-              className={`nav-link ${activeTab === 'decoder' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('decoder'); }}
-            >
-              Image/Audio Decoder
-            </a>
-          </li>
-          <li>
-            <a
-              href="#keyer"
-              className={`nav-link ${activeTab === 'keyer' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('keyer'); }}
-            >
-              Keyer
-            </a>
-          </li>
-          <li>
-            <a
-              href="#alphabet"
-              className={`nav-link ${activeTab === 'alphabet' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('alphabet'); }}
-            >
-              Alphabet
-            </a>
-          </li>
-          <li>
-            <a
-              href="#numbers"
-              className={`nav-link ${activeTab === 'numbers' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('numbers'); }}
-            >
-              Numbers
-            </a>
-          </li>
-          <li>
-            <a
-              href="#morse-to-english"
-              className={`nav-link ${activeTab === 'morse2english' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('morse2english'); }}
-            >
-              Morse to English
-            </a>
-          </li>
-          <li>
-            <a
-              href="#english-to-morse"
-              className={`nav-link ${activeTab === 'english2morse' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('english2morse'); }}
-            >
-              English to Morse
-            </a>
-          </li>
-          <li>
-            <a
-              href="#learn"
-              className={`nav-link ${activeTab === 'learn' ? 'active' : ''}`}
-              onClick={(e) => { e.preventDefault(); setActiveTab('learn'); }}
-            >
-              Learn
-            </a>
-          </li>
-        </ul>
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav" aria-label="Main Navigation">
+          <ul className="desktop-nav-list">
+            {navigationConfig.map((category) => {
+              const isActive = isCategoryActive(category);
+              const isOpen = openDropdown === category.label;
+              return (
+                <li key={category.label} className="nav-item">
+                  <button
+                    className={`nav-button ${isActive ? 'active' : ''} ${isOpen ? 'open' : ''}`}
+                    onClick={() => setOpenDropdown(isOpen ? null : category.label)}
+                    aria-expanded={isOpen}
+                    aria-haspopup="true"
+                  >
+                    {category.label}
+                    <ChevronDown size={14} className="dropdown-icon" />
+                  </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  {isOpen && (
+                    <div className="dropdown-menu">
+                      <ul>
+                        {category.items.map((item) => {
+                          const isItemActive = activeTab === item.tab;
+                          const Icon = item.icon;
+                          return (
+                            <li key={item.tab}>
+                              <a
+                                href={item.href}
+                                className={`dropdown-item ${isItemActive ? 'active' : ''}`}
+                                onClick={(e) => handleTabClick(e, item.tab)}
+                                aria-current={isItemActive ? 'page' : undefined}
+                              >
+                                <div className="dropdown-item-icon">
+                                  <Icon size={18} />
+                                </div>
+                                <div className="dropdown-item-content">
+                                  <span className="dropdown-item-title">{item.label}</span>
+                                  <span className="dropdown-item-desc">{item.desc}</span>
+                                </div>
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Action Controls */}
+        <div className="header-actions">
           <button
             className="btn-icon"
             onClick={toggleTheme}
@@ -110,15 +160,61 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
           </button>
 
           <button
-            className="btn-icon"
+            className="btn-icon mobile-menu-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{ display: 'none' }} // hidden on desktop via CSS or media query
             aria-label="Toggle Mobile Menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Dropdown */}
+      {mobileMenuOpen && (
+        <div className="mobile-menu-overlay">
+          <nav className="mobile-nav" aria-label="Mobile Navigation">
+            <ul className="mobile-nav-list">
+              {navigationConfig.map((category) => {
+                const isActive = isCategoryActive(category);
+                const isOpen = mobileOpenSections[category.label];
+                return (
+                  <li key={category.label} className="mobile-nav-item">
+                    <button
+                      className={`mobile-nav-button ${isActive ? 'active' : ''} ${isOpen ? 'open' : ''}`}
+                      onClick={() => toggleMobileSection(category.label)}
+                      aria-expanded={isOpen}
+                    >
+                      <span>{category.label}</span>
+                      <ChevronDown size={16} className={`mobile-dropdown-icon ${isOpen ? 'open' : ''}`} />
+                    </button>
+                    
+                    {isOpen && (
+                      <ul className="mobile-dropdown-list">
+                        {category.items.map((item) => {
+                          const isItemActive = activeTab === item.tab;
+                          return (
+                            <li key={item.tab}>
+                              <a
+                                href={item.href}
+                                className={`mobile-dropdown-item ${isItemActive ? 'active' : ''}`}
+                                onClick={(e) => handleTabClick(e, item.tab)}
+                                aria-current={isItemActive ? 'page' : undefined}
+                              >
+                                {item.label}
+                              </a>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
