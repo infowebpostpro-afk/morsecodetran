@@ -8,13 +8,13 @@
     <meta name="keywords" content="Morse Code Translator, online Morse Code Translator, Morse Translator, Morse Code Converter, translate Morse code, convert Morse code, text to Morse code, Morse code to text, Morse code audio" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="theme-color" content="#0c0a1d" />
-    <link rel="canonical" href="https://morsecode.org/" />
+    <link rel="canonical" href="https://morsecodetranslatr.io/" />
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content="Morse Code Translator – Translate Morse to Text &amp; More" />
     <meta property="og:description" content="Use our free Morse Code Translator to convert text to Morse or Morse to text instantly. Decode messages, play Morse audio, copy results, and learn Morse code." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://morsecode.org/" />
+    <meta property="og:url" content="https://morsecodetranslatr.io/" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Google Fonts -->
@@ -22,192 +22,110 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Structured Data (JSON-LD) -->
+    <!-- Structured Data (JSON-LD @graph) -->
     <script id="json-ld-schema" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {
           "@type": "WebSite",
-          "@id": "https://morsecode.org/#website",
-          "url": "https://morsecode.org/",
-          "name": "Morse Code Translator",
-          "description": "Online International Morse Code Translator, Converter, and Learning Tool."
+          "@id": "https://morsecodetranslatr.io/#website",
+          "url": "https://morsecodetranslatr.io/",
+          "name": "MorseCodeTranslatr",
+          "alternateName": "Morse Code Translator",
+          "description": "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code.",
+          "publisher": {
+            "@id": "https://morsecodetranslatr.io/#organization"
+          },
+          "inLanguage": "en-US"
         },
         {
-          "@type": "WebPage",
-          "@id": "https://morsecode.org/#webpage",
-          "url": "https://morsecode.org/",
-          "name": "Morse Code Translator – Translate Morse to Text & More",
-          "description": "Use our free Morse Code Translator to convert text to Morse or Morse to text instantly. Decode messages, play Morse audio, copy results, and learn Morse code.",
-          "isPartOf": {
-            "@id": "https://morsecode.org/#website"
+          "@type": "Organization",
+          "@id": "https://morsecodetranslatr.io/#organization",
+          "name": "MorseCodeTranslatr",
+          "url": "https://morsecodetranslatr.io/",
+          "logo": {
+            "@type": "ImageObject",
+            "@id": "https://morsecodetranslatr.io/#logo",
+            "url": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
+            "contentUrl": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
+            "width": 512,
+            "height": 512
           }
         },
         {
+          "@type": "WebPage",
+          "@id": "https://morsecodetranslatr.io/#webpage",
+          "url": "https://morsecodetranslatr.io/",
+          "name": "Morse Code Translator – Translate Morse to Text & More",
+          "headline": "Morse Code Translator",
+          "description": "Translate Morse Code to text and text to Morse Code instantly. Decode messages, play Morse audio, and learn International Morse Code online.",
+          "isPartOf": {
+            "@id": "https://morsecodetranslatr.io/#website"
+          },
+          "about": {
+            "@id": "https://morsecodetranslatr.io/#application"
+          },
+          "mainEntity": {
+            "@id": "https://morsecodetranslatr.io/#application"
+          },
+          "publisher": {
+            "@id": "https://morsecodetranslatr.io/#organization"
+          },
+          "inLanguage": "en-US"
+        },
+        {
           "@type": "WebApplication",
-          "@id": "https://morsecode.org/#application",
+          "@id": "https://morsecodetranslatr.io/#application",
           "name": "Morse Code Translator",
-          "url": "https://morsecode.org/",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5 AudioContext.",
-          "description": "Fast, accurate International Morse Code translator adhering to ITU-R M.1677-1 with Farnsworth audio timing, character breakdown visualizer, optical image decoder, audio signal decoder, and telegraph keyer.",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+          "alternateName": "MorseCodeTranslatr",
+          "url": "https://morsecodetranslatr.io/",
+          "description": "A free online Morse Code Translator that converts text to Morse Code and Morse Code to text, with audio playback, character breakdowns, and learning tools.",
+          "applicationCategory": "EducationalApplication",
+          "applicationSubCategory": "Morse Code Translator",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+          "availableOnDevice": [
+            "Desktop",
+            "Mobile",
+            "Tablet"
+          ],
+          "countriesSupported": "Worldwide",
+          "inLanguage": "en-US",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Morse Code to text conversion",
+            "Text to Morse Code conversion",
+            "Automatic direction detection",
+            "Morse Code audio playback",
+            "WPM speed control",
+            "Farnsworth timing",
+            "Character breakdown",
+            "Copy and share results",
+            "Morse Code learning resources",
+            "Morse Code alphabet reference",
+            "Morse Code numbers reference"
+          ],
+          "softwareHelp": {
+            "@type": "WebPage",
+            "url": "https://morsecodetranslatr.io/learn-morse-code/"
+          },
+          "publisher": {
+            "@id": "https://morsecodetranslatr.io/#organization"
+          },
+          "mainEntityOfPage": {
+            "@id": "https://morsecodetranslatr.io/#webpage"
           }
         },
         {
           "@type": "BreadcrumbList",
-          "@id": "https://morsecode.org/#breadcrumb",
+          "@id": "https://morsecodetranslatr.io/#breadcrumb",
           "itemListElement": [
             {
               "@type": "ListItem",
               "position": 1,
               "name": "Home",
-              "item": "https://morsecode.org/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Morse Code Alphabet",
-              "item": "https://morsecode.org/morse-code-alphabet/"
-            }
-          ]
-        },
-        {
-          "@type": "FAQPage",
-          "@id": "https://morsecode.org/#faq",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How do you translate Morse code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Enter a Morse sequence into the translator. The tool matches supported Morse patterns with their corresponding characters and returns readable text. You can also enter normal text to generate Morse code."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can you translate Morse code to English?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Supported International Morse sequences can be converted into readable letters, numbers, and supported punctuation."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is SOS in Morse code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "SOS is ... --- ... consisting of three short signals, three long signals, and three short signals. It is a distinctive Morse distress signal."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is the difference between a dot and a dash?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A dot is a short Morse signal lasting 1 unit. A dash is a longer Morse signal lasting 3 units. Their combinations create different characters."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is Morse code still used today?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Morse remains active in amateur radio (CW) and is also used for education, practice, puzzles, and signaling applications."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How do you read Morse code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Learn character patterns and practice recognizing them by sound. Also learn the spacing between signals, characters, and words."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How do you write Morse code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Convert each character into its International Morse pattern and separate characters and words correctly. A translator automates this process."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is Morse code hard to learn?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The basics are manageable with regular practice. Start with a small group of characters, practice listening, and gradually increase speed."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is International Morse Code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "International Morse Code is a standardized Morse system maintained by the ITU under Recommendation M.1677-1."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What does WPM mean in Morse code?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "WPM means words per minute. It describes the transmission speed of Morse code."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is Farnsworth timing?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Farnsworth timing sends individual characters at a faster character speed while adding extra space between characters and words."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can I learn Morse code with a translator?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Use the translator to check answers, listen to characters, and study patterns. For stronger recognition, practice receiving by sound."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why does my Morse code translation look wrong?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Check spacing, dots/dashes, unsupported characters, Unicode look-alike symbols, the Morse standard, or signal/image quality."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can Morse code be sent as sound?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Morse can be represented using short and long audio audio tones."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can Morse code be sent with light?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Morse signals can be represented using short and long flashes of light."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can Morse code be sent through vibration?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Dots and dashes can be represented using different haptic vibration durations."
-              }
+              "item": "https://morsecodetranslatr.io/"
             }
           ]
         }

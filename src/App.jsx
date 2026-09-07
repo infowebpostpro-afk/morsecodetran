@@ -133,40 +133,44 @@ export function App() {
   useEffect(() => {
     let title = "Morse Code Translator – Translate Morse to Text & More";
     let desc = "Use our free Morse Code Translator to convert text to Morse or Morse to text instantly. Decode messages, play Morse audio, copy results, and learn Morse code.";
-    let canonical = "https://morsecode.org/";
+    let canonical = "https://morsecodetranslatr.io/";
+    let isArticlePage = false;
 
     if (activeTab === 'alphabet') {
       title = "Morse Code Alphabet: A–Z Letters, Numbers & Symbols";
       desc = "Explore the Morse Code Alphabet from A–Z, plus numbers and symbols. Hear each signal, learn timing rules, spot useful patterns, and master Morse code faster.";
-      canonical = "https://morsecode.org/morse-code-alphabet/";
+      canonical = "https://morsecodetranslatr.io/morse-code-alphabet/";
+      isArticlePage = true;
     } else if (activeTab === 'numbers') {
       title = "Morse Code Numbers: 0–9 Converter, Sound & Decoding Chart";
       desc = "Convert numbers 0–9 to Morse code, hear each signal, and decode Morse numbers instantly.";
-      canonical = "https://morsecode.org/morse-code-numbers/";
+      canonical = "https://morsecodetranslatr.io/morse-code-numbers/";
+      isArticlePage = true;
     } else if (activeTab === 'morse2english') {
       title = "Morse Code to English Converter - Instant Morse Decoder";
       desc = "Convert Morse code to English text instantly. Accurate client-side decoding, audio playback, character breakdown, and real-time reverse translation.";
-      canonical = "https://morsecode.org/morse-code-to-english/";
+      canonical = "https://morsecodetranslatr.io/morse-code-to-english/";
     } else if (activeTab === 'english2morse') {
       title = "English to Morse Code Translator - Instant Morse Generator";
       desc = "Convert English text to International Morse Code instantly. Real-time encoding, audio playback, character breakdown, and custom speed controls.";
-      canonical = "https://morsecode.org/english-to-morse-code/";
+      canonical = "https://morsecodetranslatr.io/english-to-morse-code/";
     } else if (activeTab === 'morsedecoder') {
       title = "Morse Code Decoder - Decode Morse to Text Online";
       desc = "Decode Morse code into readable text instantly. Paste dots and dashes, verify character mappings, check spacing, and listen to Morse signals.";
-      canonical = "https://morsecode.org/morse-code-decoder/";
+      canonical = "https://morsecodetranslatr.io/morse-code-decoder/";
     } else if (activeTab === 'decoder') {
       title = "Morse Code Decoder – Audio & Optical Image Decoder";
       desc = "Decode Morse code from live audio signals or uploaded images. Instant spectrum audio tone analyzer and OCR visual dot-dash reader.";
-      canonical = "https://morsecode.org/morse-code-decoder/";
+      canonical = "https://morsecodetranslatr.io/morse-code-decoder/";
     } else if (activeTab === 'keyer') {
       title = "Morse Code Keyer – Practice Telegraph Key Online";
       desc = "Interactive Morse telegraph keyer. Practice keying dits and dahs with mouse, touch, or keyboard to test your speed and timing.";
-      canonical = "https://morsecode.org/morse-code-keyer/";
+      canonical = "https://morsecodetranslatr.io/morse-code-keyer/";
     } else if (activeTab === 'learn') {
       title = "How to Learn Morse Code: Beginner's Guide";
       desc = "Learn Morse code step by step with sound-based training, Koch and Farnsworth methods, daily practice, common mistakes, and useful tools.";
-      canonical = "https://morsecode.org/learn-morse-code/";
+      canonical = "https://morsecodetranslatr.io/learn-morse-code/";
+      isArticlePage = true;
     }
 
     document.title = title;
@@ -196,44 +200,110 @@ export function App() {
     const jsonLdElement = document.getElementById('json-ld-schema');
     if (jsonLdElement) {
       const pageName = title.split('–')[0].split('-')[0].trim();
+      const mainEntityId = isArticlePage ? `${canonical}#article` : `${canonical}#application`;
+
+      const graphNodes = [
+        {
+          "@type": "WebSite",
+          "@id": "https://morsecodetranslatr.io/#website",
+          "url": "https://morsecodetranslatr.io/",
+          "name": "MorseCodeTranslatr",
+          "alternateName": "Morse Code Translator",
+          "description": "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code.",
+          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://morsecodetranslatr.io/#organization",
+          "name": "MorseCodeTranslatr",
+          "url": "https://morsecodetranslatr.io/",
+          "logo": {
+            "@type": "ImageObject",
+            "@id": "https://morsecodetranslatr.io/#logo",
+            "url": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
+            "contentUrl": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
+            "width": 512,
+            "height": 512
+          }
+        },
+        {
+          "@type": "WebPage",
+          "@id": `${canonical}#webpage`,
+          "url": canonical,
+          "name": title,
+          "headline": pageName,
+          "description": desc,
+          "isPartOf": { "@id": "https://morsecodetranslatr.io/#website" },
+          "about": { "@id": mainEntityId },
+          "mainEntity": { "@id": mainEntityId },
+          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
+          "inLanguage": "en-US"
+        }
+      ];
+
+      if (isArticlePage) {
+        graphNodes.push({
+          "@type": "Article",
+          "@id": `${canonical}#article`,
+          "url": canonical,
+          "headline": title,
+          "description": desc,
+          "inLanguage": "en-US",
+          "isPartOf": { "@id": `${canonical}#webpage` },
+          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
+          "mainEntityOfPage": { "@id": `${canonical}#webpage` }
+        });
+      } else {
+        graphNodes.push({
+          "@type": "WebApplication",
+          "@id": `${canonical}#application`,
+          "name": pageName,
+          "alternateName": "MorseCodeTranslatr",
+          "url": canonical,
+          "description": desc,
+          "applicationCategory": "EducationalApplication",
+          "applicationSubCategory": "Morse Code Translator",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
+          "availableOnDevice": ["Desktop", "Mobile", "Tablet"],
+          "countriesSupported": "Worldwide",
+          "inLanguage": "en-US",
+          "isAccessibleForFree": true,
+          "featureList": [
+            "Morse Code to text conversion",
+            "Text to Morse Code conversion",
+            "Automatic direction detection",
+            "Morse Code audio playback",
+            "WPM speed control",
+            "Farnsworth timing",
+            "Character breakdown",
+            "Copy and share results",
+            "Morse Code learning resources",
+            "Morse Code alphabet reference",
+            "Morse Code numbers reference"
+          ],
+          "softwareHelp": {
+            "@type": "WebPage",
+            "url": "https://morsecodetranslatr.io/learn-morse-code/"
+          },
+          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
+          "mainEntityOfPage": { "@id": `${canonical}#webpage` }
+        });
+      }
+
+      graphNodes.push({
+        "@type": "BreadcrumbList",
+        "@id": `${canonical}#breadcrumb`,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://morsecodetranslatr.io/" },
+          ...(canonical !== "https://morsecodetranslatr.io/" ? [{ "@type": "ListItem", "position": 2, "name": pageName, "item": canonical }] : [])
+        ]
+      });
+
       const schemaData = {
         "@context": "https://schema.org",
-        "@graph": [
-          {
-            "@type": "WebSite",
-            "@id": "https://morsecode.org/#website",
-            "url": "https://morsecode.org/",
-            "name": "Morse Code Translator",
-            "description": "Online International Morse Code Translator, Converter, and Learning Tool."
-          },
-          {
-            "@type": "WebPage",
-            "@id": `${canonical}#webpage`,
-            "url": canonical,
-            "name": title,
-            "description": desc,
-            "isPartOf": { "@id": "https://morsecode.org/#website" }
-          },
-          {
-            "@type": "WebApplication",
-            "@id": `${canonical}#application`,
-            "name": pageName,
-            "url": canonical,
-            "applicationCategory": "UtilityApplication",
-            "operatingSystem": "All",
-            "browserRequirements": "Requires JavaScript. Requires HTML5 AudioContext.",
-            "description": desc,
-            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-          },
-          {
-            "@type": "BreadcrumbList",
-            "@id": `${canonical}#breadcrumb`,
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://morsecode.org/" },
-              ...(canonical !== "https://morsecode.org/" ? [{ "@type": "ListItem", "position": 2, "name": pageName, "item": canonical }] : [])
-            ]
-          }
-        ]
+        "@graph": graphNodes
       };
       jsonLdElement.textContent = JSON.stringify(schemaData, null, 2);
     }
