@@ -17,6 +17,13 @@ import { MorseCodeDecoderPage } from './components/MorseCodeDecoderPage.jsx';
 import { LearnMorseCodePage } from './components/LearnMorseCodePage.jsx';
 import { HowToReadMorseCodePage } from './components/HowToReadMorseCodePage.jsx';
 import { MorseSymbolsPage } from './components/MorseSymbolsPage.jsx';
+import { MorseAmateurRadioPage } from './components/MorseAmateurRadioPage.jsx';
+import { MorseAudioTranslatorPage } from './components/MorseAudioTranslatorPage.jsx';
+import { MorsePhrasesPage } from './components/MorsePhrasesPage.jsx';
+import { SosMorseCodePage } from './components/SosMorseCodePage.jsx';
+import { ILoveYouMorseCodePage } from './components/ILoveYouMorseCodePage.jsx';
+import { WhatIsMorseCodePage } from './components/WhatIsMorseCodePage.jsx';
+import { HistoryOfMorseCodePage } from './components/HistoryOfMorseCodePage.jsx';
 import { FaqSection } from './components/FaqSection.jsx';
 import { ArticleContent } from './components/ArticleContent.jsx';
 import { Footer } from './components/Footer.jsx';
@@ -89,12 +96,26 @@ export function App() {
       setActiveTab('english2morse');
     } else if (path.includes('morse-code-decoder') || window.location.hash === '#morse-code-decoder' || window.location.hash === '#morsedecoder') {
       setActiveTab('morsedecoder');
+    } else if (path.includes('morse-code-audio-translator') || window.location.hash === '#audio-translator') {
+      setActiveTab('audiotranslator');
     } else if (path.includes('how-to-read-morse-code') || window.location.hash === '#how-to-read') {
       setActiveTab('howtoread');
     } else if (path.includes('learn-morse-code') || window.location.hash === '#learn') {
       setActiveTab('learn');
     } else if (path.includes('morse-code-keyer') || window.location.hash === '#keyer') {
       setActiveTab('keyer');
+    } else if (path.includes('morse-code-phrases') || window.location.hash === '#phrases') {
+      setActiveTab('phrases');
+    } else if (path.includes('sos-in-morse-code') || window.location.hash === '#sos') {
+      setActiveTab('sos');
+    } else if (path.includes('i-love-you-in-morse-code') || window.location.hash === '#iloveyou') {
+      setActiveTab('iloveyou');
+    } else if (path.includes('what-is-morse-code') || window.location.hash === '#whatismorse') {
+      setActiveTab('whatismorse');
+    } else if (path.includes('history-of-morse-code') || window.location.hash === '#history') {
+      setActiveTab('history');
+    } else if (path.includes('morse-code-amateur-radio') || window.location.hash === '#amateur-radio') {
+      setActiveTab('amateurradio');
     } else if (window.location.hash) {
       const hash = window.location.hash.substring(1);
       if (hash.startsWith('msg=')) {
@@ -115,9 +136,16 @@ export function App() {
     else if (activeTab === 'morse2english') targetPath = '/morse-code-to-english/';
     else if (activeTab === 'english2morse') targetPath = '/english-to-morse-code/';
     else if (activeTab === 'morsedecoder') targetPath = '/morse-code-decoder/';
+    else if (activeTab === 'audiotranslator') targetPath = '/morse-code-audio-translator/';
     else if (activeTab === 'keyer') targetPath = '/morse-code-keyer/';
     else if (activeTab === 'learn') targetPath = '/learn-morse-code/';
     else if (activeTab === 'howtoread') targetPath = '/how-to-read-morse-code/';
+    else if (activeTab === 'phrases') targetPath = '/morse-code-phrases/';
+    else if (activeTab === 'sos') targetPath = '/sos-in-morse-code/';
+    else if (activeTab === 'iloveyou') targetPath = '/i-love-you-in-morse-code/';
+    else if (activeTab === 'whatismorse') targetPath = '/what-is-morse-code/';
+    else if (activeTab === 'history') targetPath = '/history-of-morse-code/';
+    else if (activeTab === 'amateurradio') targetPath = '/morse-code-amateur-radio/';
 
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ tab: activeTab }, '', targetPath);
@@ -134,9 +162,16 @@ export function App() {
       else if (path.includes('morse-code-to-english')) setActiveTab('morse2english');
       else if (path.includes('english-to-morse-code')) setActiveTab('english2morse');
       else if (path.includes('morse-code-decoder')) setActiveTab('morsedecoder');
+      else if (path.includes('morse-code-audio-translator')) setActiveTab('audiotranslator');
       else if (path.includes('keyer')) setActiveTab('keyer');
       else if (path.includes('learn')) setActiveTab('learn');
       else if (path.includes('how-to-read-morse-code')) setActiveTab('howtoread');
+      else if (path.includes('morse-code-phrases')) setActiveTab('phrases');
+      else if (path.includes('sos-in-morse-code')) setActiveTab('sos');
+      else if (path.includes('i-love-you-in-morse-code')) setActiveTab('iloveyou');
+      else if (path.includes('what-is-morse-code')) setActiveTab('whatismorse');
+      else if (path.includes('history-of-morse-code')) setActiveTab('history');
+      else if (path.includes('morse-code-amateur-radio')) setActiveTab('amateurradio');
       else setActiveTab('translator');
     };
 
@@ -178,6 +213,10 @@ export function App() {
       title = "Morse Code Decoder - Decode Morse to Text Online";
       desc = "Decode Morse code into readable text instantly. Paste dots and dashes, verify character mappings, check spacing, and listen to Morse signals.";
       canonical = "https://morsecodetranslatr.io/morse-code-decoder/";
+    } else if (activeTab === 'audiotranslator') {
+      title = "Morse Code Audio Translator - Sound Generator & Audio Player";
+      desc = "Convert text and Morse code into audio playback with customizable pitch and WPM speed. Download WAV sound files or decode audio signals.";
+      canonical = "https://morsecodetranslatr.io/morse-code-audio-translator/";
     } else if (activeTab === 'decoder') {
       title = "Morse Code Decoder – Audio & Optical Image Decoder";
       desc = "Decode Morse code from live audio signals or uploaded images. Instant spectrum audio tone analyzer and OCR visual dot-dash reader.";
@@ -195,6 +234,36 @@ export function App() {
       title = "How to Read Morse Code: A Beginner's Guide";
       desc = "Learn how to read Morse code by sight and sound. Understand dots, dashes, spacing, timing, examples, common mistakes, and practice methods.";
       canonical = "https://morsecodetranslatr.io/how-to-read-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'phrases') {
+      title = "Morse Code Phrases: Common Expressions, Greetings & Sound";
+      desc = "Discover essential Morse code phrases for daily greetings, romantic messages, emergency calls, and ham radio expressions with audio.";
+      canonical = "https://morsecodetranslatr.io/morse-code-phrases/";
+      isArticlePage = true;
+    } else if (activeTab === 'sos') {
+      title = "SOS in Morse Code: Distress Signal Meaning, Pattern & Sound";
+      desc = "Learn the SOS Morse code distress signal (... --- ...), its history, continuous prosign timing, flashlight transmission, and myths.";
+      canonical = "https://morsecodetranslatr.io/sos-in-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'iloveyou') {
+      title = "I Love You in Morse Code: Sound, Breakdown & Copy";
+      desc = "Learn how to write and speak I Love You in Morse code. Listen to sound playback, copy the pattern for gifts, jewelry, or hidden messages.";
+      canonical = "https://morsecodetranslatr.io/i-love-you-in-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'whatismorse') {
+      title = "What is Morse Code? How It Works, Definition & Rules";
+      desc = "Explore the definition, technical mechanics, standard timing ratios (1:3), and modern applications of International Morse Code.";
+      canonical = "https://morsecodetranslatr.io/what-is-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'history') {
+      title = "History of Morse Code: Samuel Morse, Alfred Vail & Evolution";
+      desc = "Discover the complete historical evolution of Morse code from 1837 electrical telegraphy to modern maritime safety and radio communications.";
+      canonical = "https://morsecodetranslatr.io/history-of-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'amateurradio') {
+      title = "Morse Code in Amateur Radio: CW Guide & Prosigns Reference";
+      desc = "Learn continuous wave (CW) ham radio operations, standard Morse prosigns, Q-codes, common abbreviations, and standard QSO contact procedures.";
+      canonical = "https://morsecodetranslatr.io/morse-code-amateur-radio/";
       isArticlePage = true;
     }
 
@@ -689,6 +758,72 @@ export function App() {
             frequency={frequency}
             volume={volume}
             showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'amateurradio' && (
+          <MorseAmateurRadioPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'audiotranslator' && (
+          <MorseAudioTranslatorPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            setFrequency={setFrequency}
+            volume={volume}
+            setVolume={setVolume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'phrases' && (
+          <MorsePhrasesPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'sos' && (
+          <SosMorseCodePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'iloveyou' && (
+          <ILoveYouMorseCodePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'whatismorse' && (
+          <WhatIsMorseCodePage
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'history' && (
+          <HistoryOfMorseCodePage
             setActiveTab={setActiveTab}
           />
         )}

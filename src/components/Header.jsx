@@ -11,7 +11,8 @@ const navigationConfig = [
     items: [
       { label: 'Morse Code Translator', desc: 'Translate Morse Code and text in both directions.', tab: 'translator', href: '#translator', icon: Languages },
       { label: 'English to Morse', desc: 'Convert English text into International Morse Code.', tab: 'english2morse', href: '#english-to-morse', icon: Type },
-      { label: 'Morse to English', desc: 'Convert Morse Code into readable English text.', tab: 'morse2english', href: '#morse-to-english', icon: FileText }
+      { label: 'Morse to English', desc: 'Convert Morse Code into readable English text.', tab: 'morse2english', href: '#morse-to-english', icon: FileText },
+      { label: 'Morse Audio Translator', desc: 'Audio sound generator, WPM controls & audio decoder.', tab: 'audiotranslator', href: '#audio-translator', icon: Volume2 }
     ]
   },
   {
@@ -25,7 +26,9 @@ const navigationConfig = [
     label: 'Learn',
     items: [
       { label: 'Learn Morse Code', desc: 'Learn Morse Code step by step with practical practice methods.', tab: 'learn', href: '#learn', icon: GraduationCap },
-      { label: 'How to Read Morse Code', desc: 'Learn how to decode Morse code by sight and sound.', tab: 'howtoread', href: '#how-to-read', icon: BookOpen }
+      { label: 'How to Read Morse Code', desc: 'Learn how to decode Morse code by sight and sound.', tab: 'howtoread', href: '#how-to-read', icon: BookOpen },
+      { label: 'What is Morse Code', desc: 'Definition, technical specs, timing ratios & applications.', tab: 'whatismorse', href: '#what-is-morse', icon: BookOpen },
+      { label: 'History of Morse Code', desc: 'Timeline from Samuel Morse to modern telecommunications.', tab: 'history', href: '#history', icon: BookOpen }
     ]
   },
   {
@@ -33,7 +36,11 @@ const navigationConfig = [
     items: [
       { label: 'Morse Code Alphabet', desc: 'Explore A–Z Morse Code letters and patterns.', tab: 'alphabet', href: '#alphabet', icon: Type },
       { label: 'Morse Code Numbers', desc: 'Learn and reference Morse Code numbers 0–9.', tab: 'numbers', href: '#numbers', icon: Hash },
-      { label: 'Morse Code Symbols', desc: 'Reference Morse Code punctuation, special signs & ITU symbols.', tab: 'symbols', href: '#symbols', icon: Bookmark }
+      { label: 'Morse Code Symbols', desc: 'Reference Morse Code punctuation, special signs & ITU symbols.', tab: 'symbols', href: '#symbols', icon: Bookmark },
+      { label: 'Morse Code Phrases', desc: 'Popular expressions, greetings, romantic & radio calls.', tab: 'phrases', href: '#phrases', icon: FileText },
+      { label: 'SOS in Morse Code', desc: 'Distress signal pattern, history, flashlight transmission.', tab: 'sos', href: '#sos', icon: Bookmark },
+      { label: 'I Love You in Morse', desc: 'Sound, letter breakdown & copyable pattern.', tab: 'iloveyou', href: '#iloveyou', icon: Bookmark },
+      { label: 'Amateur Radio CW', desc: 'Continuous Wave ham radio guide, prosigns & Q-codes.', tab: 'amateurradio', href: '#amateur-radio', icon: Radio }
     ]
   },
   {

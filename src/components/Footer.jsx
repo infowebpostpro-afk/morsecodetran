@@ -13,6 +13,7 @@ export function Footer({ setActiveTab }) {
         <ul className="footer-links">
           <li><a href="#translator" onClick={() => setActiveTab('translator')}>Translator</a></li>
           <li><a href="#morse-code-decoder" onClick={() => setActiveTab('morsedecoder')}>Morse Decoder</a></li>
+          <li><a href="#audio-translator" onClick={() => setActiveTab('audiotranslator')}>Audio Translator</a></li>
           <li><a href="#decoder" onClick={() => setActiveTab('decoder')}>Image & Audio Decoder</a></li>
           <li><a href="#keyer" onClick={() => setActiveTab('keyer')}>Telegraph Keyer</a></li>
           <li><a href="#alphabet" onClick={() => setActiveTab('alphabet')}>Morse Alphabet</a></li>
@@ -22,6 +23,12 @@ export function Footer({ setActiveTab }) {
           <li><a href="#english-to-morse" onClick={() => setActiveTab('english2morse')}>English to Morse</a></li>
           <li><a href="#learn" onClick={() => setActiveTab('learn')}>Learn Morse</a></li>
           <li><a href="#how-to-read" onClick={() => setActiveTab('howtoread')}>How to Read Morse</a></li>
+          <li><a href="#phrases" onClick={() => setActiveTab('phrases')}>Morse Phrases</a></li>
+          <li><a href="#sos" onClick={() => setActiveTab('sos')}>SOS in Morse</a></li>
+          <li><a href="#iloveyou" onClick={() => setActiveTab('iloveyou')}>I Love You in Morse</a></li>
+          <li><a href="#what-is-morse" onClick={() => setActiveTab('whatismorse')}>What is Morse Code</a></li>
+          <li><a href="#history" onClick={() => setActiveTab('history')}>History of Morse</a></li>
+          <li><a href="#amateur-radio" onClick={() => setActiveTab('amateurradio')}>Amateur Radio CW</a></li>
         </ul>
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--accent-success)', background: 'rgba(16, 185, 129, 0.1)', padding: '0.35rem 0.85rem', borderRadius: '999px', margin: '0.5rem 0 1rem' }}>
