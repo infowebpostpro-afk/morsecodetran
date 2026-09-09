@@ -15,6 +15,8 @@ import { MorseToEnglishPage } from './components/MorseToEnglishPage.jsx';
 import { EnglishToMorsePage } from './components/EnglishToMorsePage.jsx';
 import { MorseCodeDecoderPage } from './components/MorseCodeDecoderPage.jsx';
 import { LearnMorseCodePage } from './components/LearnMorseCodePage.jsx';
+import { HowToReadMorseCodePage } from './components/HowToReadMorseCodePage.jsx';
+import { MorseSymbolsPage } from './components/MorseSymbolsPage.jsx';
 import { FaqSection } from './components/FaqSection.jsx';
 import { ArticleContent } from './components/ArticleContent.jsx';
 import { Footer } from './components/Footer.jsx';
@@ -74,16 +76,25 @@ export function App() {
 
   // Parse URL Hash & Pathname on load (for client-side routing and share links)
   useEffect(() => {
-    if (window.location.pathname.includes('morse-code-alphabet') || window.location.hash === '#alphabet') {
+    const path = window.location.pathname;
+    if (path.includes('morse-code-alphabet') || window.location.hash === '#alphabet') {
       setActiveTab('alphabet');
-    } else if (window.location.pathname.includes('morse-code-numbers') || window.location.hash === '#numbers') {
+    } else if (path.includes('morse-code-numbers') || window.location.hash === '#numbers') {
       setActiveTab('numbers');
-    } else if (window.location.pathname.includes('morse-code-to-english') || window.location.hash === '#morse-to-english') {
+    } else if (path.includes('morse-code-symbols') || window.location.hash === '#symbols') {
+      setActiveTab('symbols');
+    } else if (path.includes('morse-code-to-english') || window.location.hash === '#morse-to-english') {
       setActiveTab('morse2english');
-    } else if (window.location.pathname.includes('english-to-morse-code') || window.location.hash === '#english-to-morse') {
+    } else if (path.includes('english-to-morse-code') || window.location.hash === '#english-to-morse') {
       setActiveTab('english2morse');
-    } else if (window.location.pathname.includes('morse-code-decoder') || window.location.hash === '#morse-code-decoder' || window.location.hash === '#morsedecoder') {
+    } else if (path.includes('morse-code-decoder') || window.location.hash === '#morse-code-decoder' || window.location.hash === '#morsedecoder') {
       setActiveTab('morsedecoder');
+    } else if (path.includes('how-to-read-morse-code') || window.location.hash === '#how-to-read') {
+      setActiveTab('howtoread');
+    } else if (path.includes('learn-morse-code') || window.location.hash === '#learn') {
+      setActiveTab('learn');
+    } else if (path.includes('morse-code-keyer') || window.location.hash === '#keyer') {
+      setActiveTab('keyer');
     } else if (window.location.hash) {
       const hash = window.location.hash.substring(1);
       if (hash.startsWith('msg=')) {
@@ -100,11 +111,13 @@ export function App() {
     let targetPath = '/';
     if (activeTab === 'alphabet') targetPath = '/morse-code-alphabet/';
     else if (activeTab === 'numbers') targetPath = '/morse-code-numbers/';
+    else if (activeTab === 'symbols') targetPath = '/morse-code-symbols/';
     else if (activeTab === 'morse2english') targetPath = '/morse-code-to-english/';
     else if (activeTab === 'english2morse') targetPath = '/english-to-morse-code/';
     else if (activeTab === 'morsedecoder') targetPath = '/morse-code-decoder/';
     else if (activeTab === 'keyer') targetPath = '/morse-code-keyer/';
     else if (activeTab === 'learn') targetPath = '/learn-morse-code/';
+    else if (activeTab === 'howtoread') targetPath = '/how-to-read-morse-code/';
 
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ tab: activeTab }, '', targetPath);
@@ -117,11 +130,13 @@ export function App() {
       const path = window.location.pathname;
       if (path.includes('morse-code-alphabet')) setActiveTab('alphabet');
       else if (path.includes('morse-code-numbers')) setActiveTab('numbers');
+      else if (path.includes('morse-code-symbols')) setActiveTab('symbols');
       else if (path.includes('morse-code-to-english')) setActiveTab('morse2english');
       else if (path.includes('english-to-morse-code')) setActiveTab('english2morse');
       else if (path.includes('morse-code-decoder')) setActiveTab('morsedecoder');
       else if (path.includes('keyer')) setActiveTab('keyer');
       else if (path.includes('learn')) setActiveTab('learn');
+      else if (path.includes('how-to-read-morse-code')) setActiveTab('howtoread');
       else setActiveTab('translator');
     };
 
@@ -145,6 +160,11 @@ export function App() {
       title = "Morse Code Numbers: 0–9 Converter, Sound & Decoding Chart";
       desc = "Convert numbers 0–9 to Morse code, hear each signal, and decode Morse numbers instantly.";
       canonical = "https://morsecodetranslatr.io/morse-code-numbers/";
+      isArticlePage = true;
+    } else if (activeTab === 'symbols') {
+      title = "Morse Code Symbols: Complete Chart & Meanings";
+      desc = "Explore Morse code symbols with a complete chart of punctuation, special signs, meanings, and official International Morse references.";
+      canonical = "https://morsecodetranslatr.io/morse-code-symbols/";
       isArticlePage = true;
     } else if (activeTab === 'morse2english') {
       title = "Morse Code to English Converter - Instant Morse Decoder";
@@ -170,6 +190,11 @@ export function App() {
       title = "How to Learn Morse Code: Beginner's Guide";
       desc = "Learn Morse code step by step with sound-based training, Koch and Farnsworth methods, daily practice, common mistakes, and useful tools.";
       canonical = "https://morsecodetranslatr.io/learn-morse-code/";
+      isArticlePage = true;
+    } else if (activeTab === 'howtoread') {
+      title = "How to Read Morse Code: A Beginner's Guide";
+      desc = "Learn how to read Morse code by sight and sound. Understand dots, dashes, spacing, timing, examples, common mistakes, and practice methods.";
+      canonical = "https://morsecodetranslatr.io/how-to-read-morse-code/";
       isArticlePage = true;
     }
 
@@ -554,7 +579,7 @@ export function App() {
               stats={stats}
             />
 
-            <ArticleContent />
+            <ArticleContent setActiveTab={setActiveTab} />
             <FaqSection />
           </>
         )}
@@ -567,7 +592,16 @@ export function App() {
         )}
 
         {activeTab === 'keyer' && (
-          <MorseKeyerModule showToast={showToast} />
+          <MorseKeyerModule
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            setFrequency={setFrequency}
+            volume={volume}
+            setVolume={setVolume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
         )}
 
         {activeTab === 'alphabet' && (
@@ -589,6 +623,16 @@ export function App() {
             frequency={frequency}
             volume={volume}
             onTranslateCharacter={handleTranslateCharacter}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'symbols' && (
+          <MorseSymbolsPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
             showToast={showToast}
             setActiveTab={setActiveTab}
           />
@@ -629,6 +673,17 @@ export function App() {
 
         {activeTab === 'learn' && (
           <LearnMorseCodePage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'howtoread' && (
+          <HowToReadMorseCodePage
             wpm={wpm}
             setWpm={setWpm}
             frequency={frequency}

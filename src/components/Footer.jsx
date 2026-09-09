@@ -17,9 +17,11 @@ export function Footer({ setActiveTab }) {
           <li><a href="#keyer" onClick={() => setActiveTab('keyer')}>Telegraph Keyer</a></li>
           <li><a href="#alphabet" onClick={() => setActiveTab('alphabet')}>Morse Alphabet</a></li>
           <li><a href="#numbers" onClick={() => setActiveTab('numbers')}>Morse Numbers</a></li>
+          <li><a href="#symbols" onClick={() => setActiveTab('symbols')}>Morse Symbols</a></li>
           <li><a href="#morse-to-english" onClick={() => setActiveTab('morse2english')}>Morse to English</a></li>
           <li><a href="#english-to-morse" onClick={() => setActiveTab('english2morse')}>English to Morse</a></li>
           <li><a href="#learn" onClick={() => setActiveTab('learn')}>Learn Morse</a></li>
+          <li><a href="#how-to-read" onClick={() => setActiveTab('howtoread')}>How to Read Morse</a></li>
         </ul>
 
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: 'var(--accent-success)', background: 'rgba(16, 185, 129, 0.1)', padding: '0.35rem 0.85rem', borderRadius: '999px', margin: '0.5rem 0 1rem' }}>

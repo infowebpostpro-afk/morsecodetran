@@ -64,13 +64,17 @@ export const MORSE_CODE_MAP = {
   '_': { morse: '..--.-', name: 'Underscore (_)', type: 'punctuation', ditDah: 'di-di-dah-dah-di-dah' },
   '$': { morse: '...-..-', name: 'Dollar ($)', type: 'punctuation', ditDah: 'di-di-di-dah-di-di-dah' },
 
-  // Special Prosigns
+  // Special Prosigns & Operational Signals
   '<AR>': { morse: '.-.-.', name: 'AR (End of Message)', type: 'prosign', ditDah: 'di-dah-di-dah-dit' },
   '<BT>': { morse: '-...-', name: 'BT (New Paragraph)', type: 'prosign', ditDah: 'dah-di-di-di-dah' },
   '<SK>': { morse: '...-.-', name: 'SK (End of Work)', type: 'prosign', ditDah: 'di-di-di-dah-di-dah' },
   '<KN>': { morse: '-.--.', name: 'KN (Go Ahead Named)', type: 'prosign', ditDah: 'dah-di-dah-dah-dit' },
   '<AS>': { morse: '.-...', name: 'AS (Wait)', type: 'prosign', ditDah: 'di-dah-di-di-dit' },
   '<SOS>': { morse: '...---...', name: 'SOS (Distress Call)', type: 'prosign', ditDah: 'di-di-di-dah-dah-dah-di-di-dit' },
+  '<UNDERSTOOD>': { morse: '...-.', name: 'Understood Signal', type: 'prosign', ditDah: 'di-di-di-dah-dit' },
+  '<ERROR>': { morse: '........', name: 'Error Signal (8 dots)', type: 'prosign', ditDah: 'di-di-di-di-di-di-di-dit' },
+  '<INVITATION>': { morse: '-.-', name: 'Invitation to Transmit (K)', type: 'prosign', ditDah: 'dah-di-dah' },
+  '<STARTING>': { morse: '-.-.-', name: 'Starting Signal (CT)', type: 'prosign', ditDah: 'dah-di-dah-di-dah' },
 };
 
 // Reverse map: morse -> character info

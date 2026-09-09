@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sun, Moon, Menu, X, ChevronDown, 
   Languages, Type, FileText, Activity, Image, 
-  GraduationCap, Hash, Radio 
+  GraduationCap, BookOpen, Hash, Radio, Bookmark
 } from 'lucide-react';
 
 const navigationConfig = [
@@ -24,14 +24,16 @@ const navigationConfig = [
   {
     label: 'Learn',
     items: [
-      { label: 'Learn Morse Code', desc: 'Learn Morse Code step by step with practical practice methods.', tab: 'learn', href: '#learn', icon: GraduationCap }
+      { label: 'Learn Morse Code', desc: 'Learn Morse Code step by step with practical practice methods.', tab: 'learn', href: '#learn', icon: GraduationCap },
+      { label: 'How to Read Morse Code', desc: 'Learn how to decode Morse code by sight and sound.', tab: 'howtoread', href: '#how-to-read', icon: BookOpen }
     ]
   },
   {
     label: 'Reference',
     items: [
       { label: 'Morse Code Alphabet', desc: 'Explore A–Z Morse Code letters and patterns.', tab: 'alphabet', href: '#alphabet', icon: Type },
-      { label: 'Morse Code Numbers', desc: 'Learn and reference Morse Code numbers 0–9.', tab: 'numbers', href: '#numbers', icon: Hash }
+      { label: 'Morse Code Numbers', desc: 'Learn and reference Morse Code numbers 0–9.', tab: 'numbers', href: '#numbers', icon: Hash },
+      { label: 'Morse Code Symbols', desc: 'Reference Morse Code punctuation, special signs & ITU symbols.', tab: 'symbols', href: '#symbols', icon: Bookmark }
     ]
   },
   {

@@ -3,7 +3,7 @@ import {
   ExternalLink, ShieldCheck
 } from 'lucide-react';
 
-export function ArticleContent() {
+export function ArticleContent({ setActiveTab }) {
   return (
     <article className="seo-article-container">
       {/* 12. INTRODUCTION (PAS-style 2 short paragraphs) */}
@@ -239,7 +239,7 @@ export function ArticleContent() {
             Reading Morse means turning signal patterns into characters.
           </p>
           <p>
-            Writing Morse means turning characters into signal patterns. For detailed educational breakdowns, read our complete guide on <a href="/how-to-read-morse-code/">how to read Morse code</a>.
+            Writing Morse means turning characters into signal patterns. For detailed educational breakdowns, read our complete guide on <a href="/how-to-read-morse-code/" onClick={(e) => { if (setActiveTab) { e.preventDefault(); setActiveTab('howtoread'); } }}>how to read Morse code</a>.
           </p>
 
           <h3>The Decoding Process: Reading Morse Code</h3>
