@@ -1286,7 +1286,7 @@ export function MorseNumbersPage({ wpm, setWpm, frequency, volume, onTranslateCh
 
       {/* PRINT-ONLY STYLED CONTAINER */}
       <div className="print-only-chart" style={{ display: 'none' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>INTERNATIONAL MORSE CODE NUMBERS CHART</h1>
+        <h2 style={{ textAlign: 'center', marginBottom: '0.5rem', fontSize: '1.5rem', fontWeight: 800 }}>INTERNATIONAL MORSE CODE NUMBERS CHART</h2>
         <p style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Standard ITU-R M.1677-1 Reference — morsecodetranslatr.io</p>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
