@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   Sun, Moon, Menu, X, ChevronDown, 
   Languages, Type, FileText, Activity, Image, 
-  GraduationCap, BookOpen, Hash, Radio, Bookmark
+  GraduationCap, BookOpen, Hash, Radio, Bookmark, Volume2
 } from 'lucide-react';
 
 const navigationConfig = [
