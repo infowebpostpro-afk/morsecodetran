@@ -18,6 +18,8 @@ import { LearnMorseCodePage } from './components/LearnMorseCodePage.jsx';
 import { HowToReadMorseCodePage } from './components/HowToReadMorseCodePage.jsx';
 import { MorseSymbolsPage } from './components/MorseSymbolsPage.jsx';
 import { MorseAmateurRadioPage } from './components/MorseAmateurRadioPage.jsx';
+import { MorseImageDecoderPage } from './components/MorseImageDecoderPage.jsx';
+import { MorseCodePracticePage } from './components/MorseCodePracticePage.jsx';
 import { MorseAudioTranslatorPage } from './components/MorseAudioTranslatorPage.jsx';
 import { MorsePhrasesPage } from './components/MorsePhrasesPage.jsx';
 import { SosMorseCodePage } from './components/SosMorseCodePage.jsx';
@@ -116,6 +118,10 @@ export function App() {
       setActiveTab('history');
     } else if (path.includes('morse-code-amateur-radio') || window.location.hash === '#amateur-radio') {
       setActiveTab('amateurradio');
+    } else if (path.includes('morse-code-image-decoder') || window.location.hash === '#image-decoder' || window.location.hash === '#imagedecoder') {
+      setActiveTab('imagedecoder');
+    } else if (path.includes('morse-code-practice') || window.location.hash === '#practice' || window.location.hash === '#morse-code-practice') {
+      setActiveTab('practice');
     } else if (window.location.hash) {
       const hash = window.location.hash.substring(1);
       if (hash.startsWith('msg=')) {
@@ -146,6 +152,8 @@ export function App() {
     else if (activeTab === 'whatismorse') targetPath = '/what-is-morse-code/';
     else if (activeTab === 'history') targetPath = '/history-of-morse-code/';
     else if (activeTab === 'amateurradio') targetPath = '/morse-code-amateur-radio/';
+    else if (activeTab === 'imagedecoder') targetPath = '/morse-code-image-decoder/';
+    else if (activeTab === 'practice') targetPath = '/morse-code-practice/';
 
     if (window.location.pathname !== targetPath) {
       window.history.pushState({ tab: activeTab }, '', targetPath);
@@ -172,6 +180,8 @@ export function App() {
       else if (path.includes('what-is-morse-code')) setActiveTab('whatismorse');
       else if (path.includes('history-of-morse-code')) setActiveTab('history');
       else if (path.includes('morse-code-amateur-radio')) setActiveTab('amateurradio');
+      else if (path.includes('morse-code-image-decoder')) setActiveTab('imagedecoder');
+      else if (path.includes('morse-code-practice')) setActiveTab('practice');
       else setActiveTab('translator');
     };
 
@@ -251,19 +261,29 @@ export function App() {
       canonical = "https://morsecodetranslatr.io/i-love-you-in-morse-code/";
       isArticlePage = true;
     } else if (activeTab === 'whatismorse') {
-      title = "What is Morse Code? How It Works, Definition & Rules";
-      desc = "Explore the definition, technical mechanics, standard timing ratios (1:3), and modern applications of International Morse Code.";
+      title = "What Is Morse Code? How It Works & Why It Matters";
+      desc = "What is Morse code? Learn how dots, dashes, timing, and spacing work, where Morse came from, and how it is still used today.";
       canonical = "https://morsecodetranslatr.io/what-is-morse-code/";
       isArticlePage = true;
     } else if (activeTab === 'history') {
-      title = "History of Morse Code: Samuel Morse, Alfred Vail & Evolution";
-      desc = "Discover the complete historical evolution of Morse code from 1837 electrical telegraphy to modern maritime safety and radio communications.";
+      title = "History of Morse Code: From Telegraph to Modern Radio";
+      desc = "Discover the history of Morse code: how Samuel Morse and Alfred Vail developed the electric telegraph, how International Morse evolved, SOS, and modern uses.";
       canonical = "https://morsecodetranslatr.io/history-of-morse-code/";
       isArticlePage = true;
     } else if (activeTab === 'amateurradio') {
-      title = "Morse Code in Amateur Radio: CW Guide & Prosigns Reference";
-      desc = "Learn continuous wave (CW) ham radio operations, standard Morse prosigns, Q-codes, common abbreviations, and standard QSO contact procedures.";
+      title = "Morse Code Amateur Radio: CW, QSO & Getting Started";
+      desc = "Learn how Morse code works in amateur radio, what CW means, which equipment you need, common Q-codes, and how to make your first QSO.";
       canonical = "https://morsecodetranslatr.io/morse-code-amateur-radio/";
+      isArticlePage = true;
+    } else if (activeTab === 'imagedecoder') {
+      title = "Morse Code Image Decoder: Decode Pictures to Text";
+      desc = "Decode Morse code from images, photos, and screenshots. Upload an image, inspect detected dots and dashes, convert to text, and troubleshoot.";
+      canonical = "https://morsecodetranslatr.io/morse-code-image-decoder/";
+      isArticlePage = true;
+    } else if (activeTab === 'practice') {
+      title = "Morse Code Practice: Free Online Trainer & Drills";
+      desc = "Practice Morse code online with listening drills, WPM controls, feedback, and focused exercises for letters, words, and real CW skills.";
+      canonical = "https://morsecodetranslatr.io/morse-code-practice/";
       isArticlePage = true;
     }
 
@@ -273,19 +293,51 @@ export function App() {
     if (metaDesc) metaDesc.setAttribute('content', desc);
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute('content', title);
+    if (ogTitle) {
+      let ogT = title;
+      if (activeTab === 'whatismorse') ogT = "What Is Morse Code? How It Works & Why It Matters";
+      else if (activeTab === 'history') ogT = "History of Morse Code: From Telegraph to Modern Radio";
+      else if (activeTab === 'amateurradio') ogT = "Morse Code in Amateur Radio: CW, QSO & Getting Started";
+      else if (activeTab === 'imagedecoder') ogT = "Morse Code Image Decoder: Decode Pictures to Text";
+      else if (activeTab === 'practice') ogT = "Morse Code Practice: Free Online Trainer & Drills";
+      ogTitle.setAttribute('content', ogT);
+    }
 
     const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) ogDesc.setAttribute('content', desc);
+    if (ogDesc) {
+      let ogD = desc;
+      if (activeTab === 'whatismorse') ogD = "Learn what Morse code is, how dots and dashes work, why timing matters, where it came from, and where it is still used today.";
+      else if (activeTab === 'history') ogD = "Discover the history of Morse code: Samuel Morse, Alfred Vail, the 1844 message, International Morse standardization, SOS, Titanic, and modern ham radio.";
+      else if (activeTab === 'amateurradio') ogD = "Learn how ham-radio operators use Morse code, what CW means, what equipment you need, how QSO contacts work, and how to start learning.";
+      else if (activeTab === 'imagedecoder') ogD = "Upload a picture, photo, or screenshot containing Morse code. Detect dots and dashes, inspect extracted Morse, and convert to text.";
+      else if (activeTab === 'practice') ogD = "Listen to Morse, type what you hear, check your answer, and build recognition with adjustable speed, focused drills, and progressive practice.";
+      ogDesc.setAttribute('content', ogD);
+    }
 
     const ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.setAttribute('content', canonical);
 
     const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-    if (twitterTitle) twitterTitle.setAttribute('content', title);
+    if (twitterTitle) {
+      let twT = title;
+      if (activeTab === 'whatismorse') twT = "What Is Morse Code? A Simple Guide to Dots & Dashes";
+      else if (activeTab === 'history') twT = "History of Morse Code: From Telegraph to Modern Radio";
+      else if (activeTab === 'amateurradio') twT = "Morse Code in Amateur Radio: A Beginner's CW Guide";
+      else if (activeTab === 'imagedecoder') twT = "Morse Code Image Decoder: Pictures to Text";
+      else if (activeTab === 'practice') twT = "Morse Code Practice — Listen, Type & Improve";
+      twitterTitle.setAttribute('content', twT);
+    }
 
     const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-    if (twitterDesc) twitterDesc.setAttribute('content', desc);
+    if (twitterDesc) {
+      let twD = desc;
+      if (activeTab === 'whatismorse') twD = "Discover how Morse code works, why timing matters, who helped develop it, what SOS means, and how Morse is still used today.";
+      else if (activeTab === 'history') twD = "Learn how Morse code was invented, how it evolved from American to International Morse, why SOS was chosen, and how it survives today.";
+      else if (activeTab === 'amateurradio') twD = "Understand CW, Morse keys, Q-codes, QSO procedure, licensing, equipment, and the practical path to your first amateur-radio contact.";
+      else if (activeTab === 'imagedecoder') twD = "Decode Morse code from photos and screenshots. Upload an image, check detected dots/dashes, and convert to text.";
+      else if (activeTab === 'practice') twD = "Build Morse skills with listening drills, adjustable WPM, Farnsworth timing, accuracy feedback, and progressive character-to-word practice.";
+      twitterDesc.setAttribute('content', twD);
+    }
 
     const linkCanonical = document.querySelector('link[rel="canonical"]');
     if (linkCanonical) linkCanonical.setAttribute('href', canonical);
@@ -293,7 +345,7 @@ export function App() {
     // Dynamic JSON-LD Structured Data Schema update
     const jsonLdElement = document.getElementById('json-ld-schema');
     if (jsonLdElement) {
-      const pageName = title.split('–')[0].split('-')[0].trim();
+      const pageName = title.split('–')[0].split('-')[0].split(':')[0].trim();
       const mainEntityId = isArticlePage ? `${canonical}#article` : `${canonical}#application`;
 
       const graphNodes = [
@@ -348,6 +400,212 @@ export function App() {
           "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
           "mainEntityOfPage": { "@id": `${canonical}#webpage` }
         });
+
+        if (activeTab === 'amateurradio') {
+          graphNodes.push({
+            "@type": "FAQPage",
+            "@id": `${canonical}#faq`,
+            "isPartOf": { "@id": `${canonical}#webpage` },
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is Morse code still used in amateur radio?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Morse code remains an active amateur-radio operating mode, commonly called CW. ARRL continues to provide CW resources, and amateur operators continue making CW contacts, including during organized events such as Straight Key Night."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is Morse code required for a U.S. ham-radio license?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. The FCC eliminated the Morse-code examination requirement in 2007 (Report & Order 06-178). You can become a U.S. amateur-radio operator without passing a Morse test."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What does CW mean in ham radio?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "CW means continuous wave. In amateur radio, the term is commonly used for Morse-code telegraphy transmitted by keying a radio carrier."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is a QSO?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A QSO is a two-way amateur-radio contact between stations. It can be a short exchange or a longer conversation."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is CQ in Morse code?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "CQ is a general call used by an operator who is seeking another station to contact. A typical call may include CQ, the operator's callsign, and a signal inviting another station to respond."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What does QTH mean?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "QTH refers to a station's location. An operator can ask for another station's QTH or give their own location."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need a straight key to use CW?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. You can use a straight key, paddle with an electronic keyer, or other compatible keying equipment. The choice depends on your goals and operating style."
+                }
+              }
+            ]
+          });
+        }
+
+        if (activeTab === 'imagedecoder') {
+          graphNodes.push({
+            "@type": "FAQPage",
+            "@id": `${canonical}#faq`,
+            "isPartOf": { "@id": `${canonical}#webpage` },
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Can I decode Morse code from an image?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. A Morse code image decoder analyzes a picture, photo, screenshot, scan, or graphic containing visible dots and dashes. It threshold-binarizes the pixels, segments marks and gaps, builds a Morse sequence, and translates it to readable text."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I decode Morse code from a screenshot?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Clear screenshots (especially PNG format) are often among the best input sources because they feature sharp edges, high contrast, and consistent pixel dimensions without severe compression artifacts or shadows."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can a Morse code image decoder read handwriting?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Handwritten Morse can be decoded if the dots and dashes are drawn clearly with consistent width and spacing. However, irregular stroke weights, merged symbols, or slanted lines may cause detection errors. Manual editing of detected Morse is recommended for handwritten sources."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I decode a Morse code tattoo from a photo?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, provided the photo is shot straight-on under good lighting with minimal glare. Skin curvature and perspective angle can distort dot/dash width ratios, so reviewing the intermediate detected Morse sequence is essential before relying on the final text."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why did the image decoder give me the wrong text?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Common causes include low image contrast, dark shadows, incorrect binarization threshold, merged dot/dash marks, background noise, or missing spaces between characters. Adjusting the threshold slider, toggling color inversion, or manually correcting detected dots/dashes will fix errors."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is better: an image decoder or a Morse code translator?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Use an image decoder when Morse code exists inside a graphic or photo. Use the text Morse Code Translator when you already have typed dots and dashes or plain text. Use the Audio Translator when Morse code exists as sound."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is a Morse code image decoder the same as OCR?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Not entirely. Standard Optical Character Recognition (OCR) engines like Tesseract.js are trained to recognize typographic characters (A–Z, 0–9). A dedicated visual Morse detector analyzes pixel shapes, aspect ratios, and horizontal gap spacing to extract dot/dash sequences directly from graphical shapes."
+                }
+              }
+            ]
+          });
+        }
+
+        if (activeTab === 'practice') {
+          graphNodes.push({
+            "@type": "FAQPage",
+            "@id": `${canonical}#faq`,
+            "isPartOf": { "@id": `${canonical}#webpage` },
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is the best way to practice Morse code?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Practice by listening to Morse signals, answering without looking at a visual dot-and-dash chart, checking your answer, and repeating weak characters. Start with a small character set (like Starter 8) and gradually move to words, callsigns, and full sentences."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many minutes a day should I practice Morse code?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A short, repeatable daily session of 10 to 15 minutes is much more effective than a single long session once a week. Short daily sessions prevent mental fatigue and build reliable auditory sound-recognition memory."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What WPM should a beginner use for Morse code practice?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Modern Morse training recommends using a relatively brisk character speed (18–20 WPM) combined with slower Farnsworth spacing (8–12 WPM). This ensures you learn each character as a single rhythmic sound unit rather than an artificially slow series of counted dots and dashes."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I learn Morse code by sound or by looking at dots and dashes?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For receiving practice, prioritize sound. Visual charts are helpful reference tools, but relying on visual dot/dash counting creates a mental bottleneck that prevents copying at higher speeds. ARRL specifically recommends sound-first learning for amateur radio CW."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is the Koch method for Morse code?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The Koch method, developed by German psychologist Ludwig Koch, introduces characters one by one at full target speed (e.g., 20 WPM). You practice a 2-character set until reaching 90% accuracy, then add a 3rd character, gradually building the full alphabet at target speed."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is Farnsworth timing?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Farnsworth timing preserves the fast internal dot-and-dash timing of individual characters while inserting extra spacing between characters and words. It gives beginners extra thinking time without forcing them to learn slow, distorted character rhythms."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why can I recognize letters but not Morse words?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Word copying requires you to hold recognized letters in memory while simultaneously receiving the next incoming sound. Practice transitioning from single letters to 2-letter groups, then short 3-letter words (THE, AND, FOR), and finally full phrases."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Should I practice sending Morse code too?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, if your goal includes transmitting Morse code on amateur radio. However, receiving and sending build different auditory and motor skills. Most instructors recommend building solid receiving recognition before spending heavy time on keyer sending practice."
+                }
+              }
+            ]
+          });
+        }
       } else {
         graphNodes.push({
           "@type": "WebApplication",
@@ -818,12 +1076,40 @@ export function App() {
 
         {activeTab === 'whatismorse' && (
           <WhatIsMorseCodePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
             setActiveTab={setActiveTab}
           />
         )}
 
         {activeTab === 'history' && (
           <HistoryOfMorseCodePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'imagedecoder' && (
+          <MorseImageDecoderPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'practice' && (
+          <MorseCodePracticePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
             setActiveTab={setActiveTab}
           />
         )}

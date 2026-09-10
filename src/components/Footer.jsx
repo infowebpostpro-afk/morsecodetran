@@ -13,6 +13,7 @@ export function Footer({ setActiveTab }) {
         <ul className="footer-links">
           <li><a href="#translator" onClick={() => setActiveTab('translator')}>Translator</a></li>
           <li><a href="#morse-code-decoder" onClick={() => setActiveTab('morsedecoder')}>Morse Decoder</a></li>
+          <li><a href="#morse-code-image-decoder" onClick={() => setActiveTab('imagedecoder')}>Image Decoder</a></li>
           <li><a href="#audio-translator" onClick={() => setActiveTab('audiotranslator')}>Audio Translator</a></li>
           <li><a href="#decoder" onClick={() => setActiveTab('decoder')}>Image & Audio Decoder</a></li>
           <li><a href="#keyer" onClick={() => setActiveTab('keyer')}>Telegraph Keyer</a></li>
@@ -22,6 +23,7 @@ export function Footer({ setActiveTab }) {
           <li><a href="#morse-to-english" onClick={() => setActiveTab('morse2english')}>Morse to English</a></li>
           <li><a href="#english-to-morse" onClick={() => setActiveTab('english2morse')}>English to Morse</a></li>
           <li><a href="#learn" onClick={() => setActiveTab('learn')}>Learn Morse</a></li>
+          <li><a href="#morse-code-practice" onClick={() => setActiveTab('practice')}>Morse Practice</a></li>
           <li><a href="#how-to-read" onClick={() => setActiveTab('howtoread')}>How to Read Morse</a></li>
           <li><a href="#phrases" onClick={() => setActiveTab('phrases')}>Morse Phrases</a></li>
           <li><a href="#sos" onClick={() => setActiveTab('sos')}>SOS in Morse</a></li>

@@ -19,6 +19,7 @@ const navigationConfig = [
     label: 'Decode',
     items: [
       { label: 'Morse Code Decoder', desc: 'Decode dots and dashes into readable text.', tab: 'morsedecoder', href: '#morse-code-decoder', icon: Activity },
+      { label: 'Morse Code Image Decoder', desc: 'Decode Morse code from photos, screenshots & pictures.', tab: 'imagedecoder', href: '#morse-code-image-decoder', icon: Image },
       { label: 'Image & Audio Decoder', desc: 'Decode Morse Code from images or audio.', tab: 'decoder', href: '#decoder', icon: Image }
     ]
   },
@@ -26,6 +27,7 @@ const navigationConfig = [
     label: 'Learn',
     items: [
       { label: 'Learn Morse Code', desc: 'Learn Morse Code step by step with practical practice methods.', tab: 'learn', href: '#learn', icon: GraduationCap },
+      { label: 'Morse Code Practice', desc: 'Interactive auditory listening trainer & drills.', tab: 'practice', href: '#morse-code-practice', icon: GraduationCap },
       { label: 'How to Read Morse Code', desc: 'Learn how to decode Morse code by sight and sound.', tab: 'howtoread', href: '#how-to-read', icon: BookOpen },
       { label: 'What is Morse Code', desc: 'Definition, technical specs, timing ratios & applications.', tab: 'whatismorse', href: '#what-is-morse', icon: BookOpen },
       { label: 'History of Morse Code', desc: 'Timeline from Samuel Morse to modern telecommunications.', tab: 'history', href: '#history', icon: BookOpen }
