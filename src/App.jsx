@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { Header } from './components/Header.jsx';
 import { Hero } from './components/Hero.jsx';
 import { MainTranslator } from './components/MainTranslator.jsx';
@@ -8,27 +8,29 @@ import { ImageDecoderModule } from './components/ImageDecoderModule.jsx';
 import { AudioDecoderModule } from './components/AudioDecoderModule.jsx';
 import { MorseKeyerModule } from './components/MorseKeyerModule.jsx';
 import { AlphabetGrid } from './components/AlphabetGrid.jsx';
-import { MorseAlphabetPage } from './components/MorseAlphabetPage.jsx';
-import { MorseNumbersPage } from './components/MorseNumbersPage.jsx';
 import { MorseToEnglishTool } from './components/MorseToEnglishTool.jsx';
-import { MorseToEnglishPage } from './components/MorseToEnglishPage.jsx';
-import { EnglishToMorsePage } from './components/EnglishToMorsePage.jsx';
-import { MorseCodeDecoderPage } from './components/MorseCodeDecoderPage.jsx';
-import { LearnMorseCodePage } from './components/LearnMorseCodePage.jsx';
-import { HowToReadMorseCodePage } from './components/HowToReadMorseCodePage.jsx';
-import { MorseSymbolsPage } from './components/MorseSymbolsPage.jsx';
-import { MorseAmateurRadioPage } from './components/MorseAmateurRadioPage.jsx';
-import { MorseImageDecoderPage } from './components/MorseImageDecoderPage.jsx';
-import { MorseCodePracticePage } from './components/MorseCodePracticePage.jsx';
-import { MorseAudioTranslatorPage } from './components/MorseAudioTranslatorPage.jsx';
-import { MorsePhrasesPage } from './components/MorsePhrasesPage.jsx';
-import { SosMorseCodePage } from './components/SosMorseCodePage.jsx';
-import { ILoveYouMorseCodePage } from './components/ILoveYouMorseCodePage.jsx';
-import { WhatIsMorseCodePage } from './components/WhatIsMorseCodePage.jsx';
-import { HistoryOfMorseCodePage } from './components/HistoryOfMorseCodePage.jsx';
 import { FaqSection } from './components/FaqSection.jsx';
 import { ArticleContent } from './components/ArticleContent.jsx';
 import { Footer } from './components/Footer.jsx';
+
+// Lazy-loaded page components for route code-splitting
+const MorseAlphabetPage = lazy(() => import('./components/MorseAlphabetPage.jsx').then(m => ({ default: m.MorseAlphabetPage })));
+const MorseNumbersPage = lazy(() => import('./components/MorseNumbersPage.jsx').then(m => ({ default: m.MorseNumbersPage })));
+const MorseSymbolsPage = lazy(() => import('./components/MorseSymbolsPage.jsx').then(m => ({ default: m.MorseSymbolsPage })));
+const MorseToEnglishPage = lazy(() => import('./components/MorseToEnglishPage.jsx').then(m => ({ default: m.MorseToEnglishPage })));
+const EnglishToMorsePage = lazy(() => import('./components/EnglishToMorsePage.jsx').then(m => ({ default: m.EnglishToMorsePage })));
+const MorseCodeDecoderPage = lazy(() => import('./components/MorseCodeDecoderPage.jsx').then(m => ({ default: m.MorseCodeDecoderPage })));
+const LearnMorseCodePage = lazy(() => import('./components/LearnMorseCodePage.jsx').then(m => ({ default: m.LearnMorseCodePage })));
+const HowToReadMorseCodePage = lazy(() => import('./components/HowToReadMorseCodePage.jsx').then(m => ({ default: m.HowToReadMorseCodePage })));
+const MorseAmateurRadioPage = lazy(() => import('./components/MorseAmateurRadioPage.jsx').then(m => ({ default: m.MorseAmateurRadioPage })));
+const MorseImageDecoderPage = lazy(() => import('./components/MorseImageDecoderPage.jsx').then(m => ({ default: m.MorseImageDecoderPage })));
+const MorseCodePracticePage = lazy(() => import('./components/MorseCodePracticePage.jsx').then(m => ({ default: m.MorseCodePracticePage })));
+const MorseAudioTranslatorPage = lazy(() => import('./components/MorseAudioTranslatorPage.jsx').then(m => ({ default: m.MorseAudioTranslatorPage })));
+const MorsePhrasesPage = lazy(() => import('./components/MorsePhrasesPage.jsx').then(m => ({ default: m.MorsePhrasesPage })));
+const SosMorseCodePage = lazy(() => import('./components/SosMorseCodePage.jsx').then(m => ({ default: m.SosMorseCodePage })));
+const ILoveYouMorseCodePage = lazy(() => import('./components/ILoveYouMorseCodePage.jsx').then(m => ({ default: m.ILoveYouMorseCodePage })));
+const WhatIsMorseCodePage = lazy(() => import('./components/WhatIsMorseCodePage.jsx').then(m => ({ default: m.WhatIsMorseCodePage })));
+const HistoryOfMorseCodePage = lazy(() => import('./components/HistoryOfMorseCodePage.jsx').then(m => ({ default: m.HistoryOfMorseCodePage })));
 
 import {
   detectInputType,
@@ -821,6 +823,11 @@ export function App() {
       />
 
       <main>
+        <Suspense fallback={
+          <div className="glass-panel" style={{ padding: '3rem', textAlign: 'center', margin: '2rem auto', maxWidth: '600px', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Loading page content...
+          </div>
+        }>
         {activeTab === 'translator' && (
           <>
             <Hero />
@@ -1113,6 +1120,7 @@ export function App() {
             setActiveTab={setActiveTab}
           />
         )}
+        </Suspense>
       </main>
 
       <Footer setActiveTab={setActiveTab} />
