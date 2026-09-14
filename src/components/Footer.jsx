@@ -1,13 +1,15 @@
 import React from 'react';
-import { Radio, ShieldCheck } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { MorseLogo } from './MorseLogo';
 
 export function Footer({ setActiveTab }) {
   return (
     <footer className="footer">
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.1rem', color: 'var(--text-primary)' }}>
-          <Radio size={20} style={{ color: 'var(--accent-primary)' }} />
-          <span>MorsePro Translator</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+          <a href="#translator" onClick={() => setActiveTab('translator')} style={{ textDecoration: 'none' }}>
+            <MorseLogo size={32} showText={true} />
+          </a>
         </div>
 
         <ul className="footer-links">

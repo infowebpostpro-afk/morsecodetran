@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { MorseLogo } from './MorseLogo';
 import { 
   Sun, Moon, Menu, X, ChevronDown, 
   Languages, Type, FileText, Activity, Image, 
@@ -100,11 +101,8 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
   return (
     <header className="navbar" ref={headerRef}>
       <div className="nav-container">
-        <a href="#translator" className="brand-logo" onClick={(e) => handleTabClick(e, 'translator')}>
-          <div className="brand-logo-icon">
-            <span style={{ fontSize: '1.2rem', fontWeight: 900 }}>◉</span>
-          </div>
-          <span>MorsePro</span>
+        <a href="#translator" className="brand-logo" onClick={(e) => handleTabClick(e, 'translator')} aria-label="MorsePro Homepage">
+          <MorseLogo size={36} showText={true} />
         </a>
 
         {/* Desktop Navigation */}
