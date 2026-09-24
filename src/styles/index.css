@@ -1167,55 +1167,68 @@ body::before {
 
 /* Article Figure & Caption Styling */
 .article-figure {
-  margin: 2rem auto;
-  max-width: 760px;
+  margin: 2.25rem auto;
+  max-width: 860px;
   width: 100%;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(99, 102, 241, 0.3);
   background: var(--surface-card);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .article-figure:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 25px rgba(99, 102, 241, 0.2);
   border-color: var(--primary);
+}
+
+.article-figure picture {
+  display: block;
+  width: 100%;
 }
 
 .article-figure img {
   width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
   display: block;
 }
 
 .article-figcaption {
-  padding: 0.85rem 1.25rem;
-  font-size: 0.85rem;
+  padding: 0.9rem 1.4rem;
+  font-size: 0.88rem;
   font-weight: 500;
   color: var(--text-secondary);
   background: var(--surface-elevated);
   border-top: 1px solid var(--border);
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.55;
+}
+
+.article-figcaption strong {
+  color: var(--primary);
+  margin-right: 0.25rem;
 }
 
 @media (max-width: 768px) {
   .article-figure {
     max-width: 100%;
     margin: 1.5rem 0;
+    border-radius: var(--radius-md);
   }
   
   .article-figure img {
-    max-height: 280px;
+    height: auto;
+    max-height: none;
   }
 
   .article-figcaption {
     padding: 0.75rem 1rem;
     font-size: 0.8rem;
+    text-align: left;
   }
 }
 

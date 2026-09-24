@@ -135,13 +135,19 @@ export function ArticleContent({ setActiveTab }) {
           </p>
 
           <figure className="article-figure">
-            <img
-              src="/images/morse-code-translator-interface.webp"
-              alt="Morse Code Translator converting HELLO WORLD into International Morse Code"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/morse-code-translator-interface.webp?v=2" type="image/webp" />
+              <img
+                src="/images/morse-code-translator-interface.png?v=2"
+                alt="Real-time Morse Code Translator converting plain text to international Morse code with live audio playback and copy tools"
+                width="1080"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
-              Enter text into the translator to convert it into Morse code instantly, then review, hear, or copy the result.
+              <strong>Figure 1:</strong> Real-time Morse Code Translator converting English text into ITU-compliant Morse code with live audio tone playback, WAV export, and one-click copy tools.
             </figcaption>
           </figure>
         </section>
@@ -267,13 +273,19 @@ export function ArticleContent({ setActiveTab }) {
           </p>
 
           <figure className="article-figure">
-            <img
-              src="/images/morse-code-translator-character-breakdown.webp"
-              alt="Character-by-character Morse Code breakdown showing letters and their dot and dash patterns"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/morse-code-translator-character-breakdown.webp?v=2" type="image/webp" />
+              <img
+                src="/images/morse-code-translator-character-breakdown.png?v=2"
+                alt="Interactive character-by-character Morse Code breakdown showing letter mapping, dot-dash sequences, phonetic rhythm, and audio controls"
+                width="1080"
+                height="620"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
-              The character breakdown lets users check how each letter is represented in Morse code instead of relying only on the final translation.
+              <strong>Figure 2:</strong> Interactive character breakdown showing each letter mapped to its dot-dash sequence, phonetic dits and dahs, and clickable individual character audio playback.
             </figcaption>
           </figure>
 
@@ -341,13 +353,19 @@ export function ArticleContent({ setActiveTab }) {
           </p>
 
           <figure className="article-figure">
-            <img
-              src="/images/international-morse-code-timing-chart.webp"
-              alt="International Morse Code timing chart showing dot, dash, character, and word spacing"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/morse-code-transmission-settings-timing.webp?v=2" type="image/webp" />
+              <img
+                src="/images/morse-code-transmission-settings-timing.png?v=2"
+                alt="Advanced Morse Code transmission settings showing WPM speed, Farnsworth spacing, tone frequency, and pulse timing metrics"
+                width="1080"
+                height="760"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
-              International Morse timing uses a one-unit dot, a three-unit dash, and longer gaps to separate characters and words.
+              <strong>Figure 3:</strong> Advanced transmission tuning panel featuring PARIS standard WPM controls, Farnsworth spacing, audio frequency pitch adjustment, and real-time pulse duration metrics.
             </figcaption>
           </figure>
         </section>

@@ -568,12 +568,18 @@ export function MorseAlphabetPage({ wpm, setWpm, frequency, volume, onTranslateC
 
           {/* FIGURE 1: TRANSLATOR INTERFACE SCREENSHOT */}
           <figure className="article-figure">
-            <img
-              src="/images/morse-code-translator-interface.webp"
-              alt="Live Morse Code Translator user interface showing text to Morse translation and interactive character playback"
-              className="article-img"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/morse-code-translator-interface.webp?v=2" type="image/webp" />
+              <img
+                src="/images/morse-code-translator-interface.png?v=2"
+                alt="Live Morse Code Translator user interface showing text to Morse translation and interactive character playback"
+                className="article-img"
+                width="1080"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
               Figure 1: Live Morse Code Translator interface showing real-time text to Morse code translation and instant audio controls.
             </figcaption>
@@ -812,12 +818,18 @@ export function MorseAlphabetPage({ wpm, setWpm, frequency, volume, onTranslateC
 
           {/* FIGURE 2: CHARACTER BREAKDOWN SCREENSHOT */}
           <figure className="article-figure">
-            <img
-              src="/images/morse-code-translator-character-breakdown.webp"
-              alt="Interactive character breakdown view showing detailed dot-dash visual bars and spoken rhythm"
-              className="article-img"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/morse-code-translator-character-breakdown.webp?v=2" type="image/webp" />
+              <img
+                src="/images/morse-code-translator-character-breakdown.png?v=2"
+                alt="Interactive character breakdown view showing detailed dot-dash visual bars and spoken rhythm"
+                className="article-img"
+                width="1080"
+                height="620"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
               Figure 2: Interactive character breakdown view displaying dot-dash visual bars and audio rhythm recognition.
             </figcaption>
@@ -986,12 +998,18 @@ export function MorseAlphabetPage({ wpm, setWpm, frequency, volume, onTranslateC
 
           {/* FIGURE 3: TIMING CHART SCREENSHOT */}
           <figure className="article-figure">
-            <img
-              src="/images/international-morse-code-timing-chart.webp"
-              alt="International Morse Code standard element duration and spacing rules diagram"
-              className="article-img"
-              loading="lazy"
-            />
+            <picture>
+              <source srcSet="/images/international-morse-code-timing-chart.webp?v=2" type="image/webp" />
+              <img
+                src="/images/international-morse-code-timing-chart.png?v=2"
+                alt="International Morse Code standard element duration and spacing rules diagram"
+                className="article-img"
+                width="1080"
+                height="760"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
             <figcaption className="article-figcaption">
               Figure 3: International Morse Code timing chart illustrating dot, dash, character gap, and word gap ratios (1-3-1-3-7).
             </figcaption>
