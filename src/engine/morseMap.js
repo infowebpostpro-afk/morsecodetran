@@ -77,11 +77,18 @@ export const MORSE_CODE_MAP = {
   '<STARTING>': { morse: '-.-.-', name: 'Starting Signal (CT)', type: 'prosign', ditDah: 'dah-di-dah-di-dah' },
 };
 
-// Reverse map: morse -> character info
+// Reverse map: morse -> character info (Standard characters take precedence over prosigns)
 export const REVERSE_MORSE_MAP = {};
-Object.entries(MORSE_CODE_MAP).forEach(([char, data]) => {
-  REVERSE_MORSE_MAP[data.morse] = { char, ...data };
-});
+Object.entries(MORSE_CODE_MAP)
+  .filter(([_, data]) => data.type === 'prosign')
+  .forEach(([char, data]) => {
+    REVERSE_MORSE_MAP[data.morse] = { char, ...data };
+  });
+Object.entries(MORSE_CODE_MAP)
+  .filter(([_, data]) => data.type !== 'prosign')
+  .forEach(([char, data]) => {
+    REVERSE_MORSE_MAP[data.morse] = { char, ...data };
+  });
 
 export const QUICK_EXAMPLES = [
   { label: 'SOS', text: 'SOS', description: 'Universal distress signal' },

@@ -1,1 +1,4 @@
-/*  /index.html  200
+# Netlify / Cloudflare Pages Redirects
+# Static prerendered pages are served with 200 automatically from their directories
+# Missing paths return genuine HTTP 404 with /404.html (Do NOT rewrite to /index.html with 200)
+/*  /404.html  404

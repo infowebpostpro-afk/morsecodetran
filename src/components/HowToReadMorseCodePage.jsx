@@ -834,9 +834,9 @@ export function HowToReadMorseCodePage({ wpm = 20, setWpm, frequency = 600, volu
         <div style={{ margin: '2.5rem 0 1rem', background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', padding: '1.25rem', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <ShieldCheck size={32} style={{ color: 'var(--accent-success)', flexShrink: 0 }} />
           <div>
-            <h4 style={{ margin: 0, fontWeight: 800, color: 'var(--text-primary)', fontSize: '1rem' }}>100% Client-Side Privacy Guarantee</h4>
+            <h4 style={{ margin: 0, fontWeight: 800, color: 'var(--text-primary)', fontSize: '1rem' }}>Local Client-Side Privacy Notice</h4>
             <p style={{ margin: '0.25rem 0 0', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-              All Morse translation, audio synthesis, and interactive practice drills execute entirely in your browser using local Web Audio APIs. Zero network calls, telemetry, or server logs.
+              All Morse translation, audio synthesis, and interactive practice drills execute entirely in your browser using local Web Audio APIs without transmitting your input to external translation servers.
             </p>
           </div>
         </div>

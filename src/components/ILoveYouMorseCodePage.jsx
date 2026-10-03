@@ -244,7 +244,7 @@ export function ILoveYouMorseCodePage({ wpm, frequency, volume, showToast, setAc
           <div style={{ background: 'var(--bg-card)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
             <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>⌨️ Type It</h3>
             <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-              Enter text into the <a href="#translator" onClick={(e) => { e.preventDefault(); setActiveTab('translator'); }} style={{ color: 'var(--primary)' }}>Morse Code Translator</a> for instant conversion and copyable output.
+              Enter text into the <a href="/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('translator'); if (typeof window !== 'undefined' && window.location.pathname !== '/') window.history.pushState({}, '', '/'); }} style={{ color: 'var(--primary)' }}>Morse Code Translator</a> for instant conversion and copyable output.
             </p>
           </div>
 

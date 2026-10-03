@@ -1129,7 +1129,7 @@ export function ArticleContent({ setActiveTab }) {
             That is why this translator is based on a defined Morse standard and explains its limitations instead of making blanket accuracy claims. The ITU lists <a href="https://www.itu.int/rec/R-REC-M.1677" target="_blank" rel="noopener noreferrer">Recommendation M.1677-1 <ExternalLink size={12} /></a> as the in-force International Morse Code recommendation, while <a href="https://www.arrl.org/" target="_blank" rel="noopener noreferrer">ARRL <ExternalLink size={12} /></a> provides established resources for Morse learning, sound-based character recognition, Farnsworth timing, and CW practice.
           </p>
           <p>
-            When you use the translator, check important messages before publishing, printing, engraving, or sending them. For learning, use the tool to listen, compare, and verify your work. In my experience, this combination is much more useful than simply copying a Morse result and assuming it must be correct.
+            When you use the translator, check important messages before publishing, printing, engraving, or sending them. For learning, use the tool to listen, compare, and verify your work. For reliable results, this combination of listening and visual verification is much more effective than simply copying a generated Morse sequence and assuming it is free of spacing or character ambiguities.
           </p>
         </section>
 

@@ -2456,3 +2456,29 @@ body::before {
     display: none !important;
   }
 }
+
+/* Turkish Morse Page Mobile Responsive & Overflow Safeguards */
+.turkish-morse-page {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.table-scroll-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radius-md);
+}
+
+.article-container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+

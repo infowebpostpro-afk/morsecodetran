@@ -1082,7 +1082,7 @@ export function MorseKeyerModule({
             Once these individual characters feel comfortable, combine them into short words like <strong>SOS</strong> (<code>... --- ...</code>) and <strong>HELLO</strong> (<code>.... . .-.. .-.. ---</code>).
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
-            To expand your practice, explore our detailed guide on <a href="#learn" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('learn'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>how to learn Morse code</a> or view the complete <a href="#alphabet" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('alphabet'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>Morse Code Alphabet</a> reference.
+            To expand your practice, explore our detailed guide on <a href="/learn-morse-code/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('learn'); if (window.location.pathname !== '/learn-morse-code/') window.history.pushState({}, '', '/learn-morse-code/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>how to learn Morse code</a> or view the complete <a href="/morse-code-alphabet/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('alphabet'); if (window.location.pathname !== '/morse-code-alphabet/') window.history.pushState({}, '', '/morse-code-alphabet/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>Morse Code Alphabet</a> reference.
           </p>
         </section>
 
@@ -1196,14 +1196,14 @@ export function MorseKeyerModule({
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                    <a href="#translator" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('translator'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Translator</a>
+                    <a href="/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('translator'); if (window.location.pathname !== '/') window.history.pushState({}, '', '/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Translator</a>
                   </td>
                   <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Convert text to Morse or Morse to text</td>
                   <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Type text or paste Morse strings</td>
                 </tr>
                 <tr>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                    <a href="#morse-code-decoder" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('morsedecoder'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Decoder</a>
+                    <a href="/morse-code-decoder/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('morsedecoder'); if (window.location.pathname !== '/morse-code-decoder/') window.history.pushState({}, '', '/morse-code-decoder/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Decoder</a>
                   </td>
                   <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Decode Morse patterns & inspect symbols</td>
                   <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Paste dots/dashes to troubleshoot code</td>

@@ -149,8 +149,11 @@ class MorseAudioEngine {
             }
           });
 
-          // Inter-character space = 3 units (at spacing speed)
-          accumTimeSec += 3 * spacingDotDuration;
+          // Inter-character space = 3 units (only if next item is another character in the same word)
+          const nextItem = breakdown[itemIdx + 1];
+          if (nextItem && !nextItem.isSpace) {
+            accumTimeSec += 3 * spacingDotDuration;
+          }
         }
       });
 

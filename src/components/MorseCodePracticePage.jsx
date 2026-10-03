@@ -195,10 +195,15 @@ export function MorseCodePracticePage({ setActiveTab, showToast, wpm: globalWpm 
   };
 
   // Tab Navigation Helper
-  const handleNav = (e, tab) => {
+  const handleNav = (e, tab, path) => {
     e.preventDefault();
     if (setActiveTab) setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (path && typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const accuracyPct = stats.attempts > 0 ? Math.round((stats.correct / stats.attempts) * 100) : 0;
@@ -645,7 +650,7 @@ export function MorseCodePracticePage({ setActiveTab, showToast, wpm: globalWpm 
             <ul style={{ margin: 0, paddingLeft: '1.15rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.5 }}>
               <li>Train with a straight key, paddle, or virtual telegraph key.</li>
               <li>Maintain clean 1:3 dot-to-dash timing ratios.</li>
-              <li>For sending drills, visit our <a href="#" onClick={(e) => handleNav(e, 'keyer')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Code Keyer</a>.</li>
+              <li>For sending drills, visit our <a href="/morse-code-keyer/" onClick={(e) => handleNav(e, 'keyer', '/morse-code-keyer/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Code Keyer</a>.</li>
             </ul>
           </div>
         </div>
@@ -742,36 +747,41 @@ export function MorseCodePracticePage({ setActiveTab, showToast, wpm: globalWpm 
           Explore Other Morse Code Tools &amp; Resources
         </h3>
         <div style={{ display: 'flex', justifyCenter: 'center', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1rem', justifyContent: 'center' }}>
-          <button
-            onClick={(e) => handleNav(e, 'learn')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          <a
+            href="/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'learn', '/learn-morse-code/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Learn Morse Code
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'keyer')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-keyer/"
+            onClick={(e) => handleNav(e, 'keyer', '/morse-code-keyer/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Telegraph Keyer
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'alphabet')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Morse Code Alphabet
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'morsedecoder')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-decoder/"
+            onClick={(e) => handleNav(e, 'morsedecoder', '/morse-code-decoder/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Morse Code Decoder
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'amateurradio')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-amateur-radio/"
+            onClick={(e) => handleNav(e, 'amateurradio', '/morse-code-amateur-radio/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Amateur Radio CW
-          </button>
+          </a>
         </div>
       </footer>
     </article>

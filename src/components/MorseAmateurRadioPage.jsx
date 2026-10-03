@@ -71,10 +71,15 @@ export function MorseAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, volum
     }, 2000);
   };
 
-  const handleNav = (e, tab) => {
+  const handleNav = (e, tab, path) => {
     e.preventDefault();
     if (setActiveTab) setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (path && typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const faqs = [
@@ -304,7 +309,7 @@ export function MorseAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, volum
 
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           You can practice keying skills online without a transmitter using our free{' '}
-          <a href="#keyer" onClick={(e) => handleNav(e, 'keyer')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/morse-code-keyer/" onClick={(e) => handleNav(e, 'keyer', '/morse-code-keyer/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             Telegraph Keyer tool
           </a>.
         </p>
@@ -442,15 +447,15 @@ export function MorseAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, volum
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <a
-            href="#learn"
-            onClick={(e) => handleNav(e, 'learn')}
+            href="/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'learn', '/learn-morse-code/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#ffffff', fontWeight: 700, textDecoration: 'none' }}
           >
             Go to Learn Morse Code Guide <ArrowRight size={16} />
           </a>
           <a
-            href="#keyer"
-            onClick={(e) => handleNav(e, 'keyer')}
+            href="/morse-code-keyer/"
+            onClick={(e) => handleNav(e, 'keyer', '/morse-code-keyer/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none' }}
           >
             Practice with Telegraph Keyer
@@ -543,15 +548,15 @@ export function MorseAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, volum
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
           <a
-            href="#translator"
-            onClick={(e) => handleNav(e, 'translator')}
+            href="/"
+            onClick={(e) => handleNav(e, 'translator', '/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#ffffff', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Launch Morse Translator Tool <ArrowRight size={18} />
           </a>
           <a
-            href="#alphabet"
-            onClick={(e) => handleNav(e, 'alphabet')}
+            href="/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Explore Morse Alphabet Reference

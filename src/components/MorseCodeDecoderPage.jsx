@@ -661,7 +661,7 @@ export function MorseCodeDecoderPage({ wpm: initialWpm = 20, setWpm: setGlobalWp
           {/* PRIVACY GUARANTEE NOTE */}
           <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem', fontSize: '0.775rem', color: 'var(--text-muted)' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <ShieldCheck size={14} className="text-success" /> 100% Local Browser Privacy — Your Morse code is decoded locally in your browser.
+              <ShieldCheck size={14} className="text-success" /> Local Browser Privacy — Your Morse code is decoded locally in your browser without server transmission.
             </span>
             <span>ITU-R M.1677-1 Standard Compliant</span>
           </div>

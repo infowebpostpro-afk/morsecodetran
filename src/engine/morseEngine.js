@@ -42,44 +42,32 @@ export function detectInputType(input) {
 
 /**
  * Text to Morse Translation
+ * Supports prosigns <SOS>, <AR>, etc. and full Unicode/emojis cleanly without breaking surrogate pairs.
  */
-export function translateTextToMorse(text, options = {}) {
+export function translateTextToMorse(text) {
   if (!text) return '';
 
-  const uppercase = text.toUpperCase();
-  const words = uppercase.split(/\s+/);
-  
-  const morseWords = words.map(word => {
-    let wordMorse = [];
-    let i = 0;
-    
-    while (i < word.length) {
-      // Check for prosigns enclosed in brackets like <SOS>, <AR>
-      if (word[i] === '<') {
-        const closeIdx = word.indexOf('>', i);
-        if (closeIdx !== -1) {
-          const prosign = word.substring(i, closeIdx + 1);
-          if (MORSE_CODE_MAP[prosign]) {
-            wordMorse.push(MORSE_CODE_MAP[prosign].morse);
-            i = closeIdx + 1;
-            continue;
-          }
+  const lines = text.split(/\r?\n/);
+  const morseLines = lines.map(line => {
+    const words = line.trim().split(/\s+/).filter(Boolean);
+    const morseWords = words.map(word => {
+      const tokens = word.match(/<[A-Za-z0-9]+>|[\s\S]/gu) || [];
+      const wordMorse = [];
+
+      for (const token of tokens) {
+        const upper = token.toUpperCase();
+        if (MORSE_CODE_MAP[upper]) {
+          wordMorse.push(MORSE_CODE_MAP[upper].morse);
+        } else {
+          wordMorse.push('?');
         }
       }
-
-      const char = word[i];
-      if (MORSE_CODE_MAP[char]) {
-        wordMorse.push(MORSE_CODE_MAP[char].morse);
-      } else {
-        // Fallback or unmappable char
-        wordMorse.push('?');
-      }
-      i++;
-    }
-    return wordMorse.join(' ');
+      return wordMorse.join(' ');
+    });
+    return morseWords.join(' / ');
   });
 
-  return morseWords.join(' / ');
+  return morseLines.join('\n');
 }
 
 /**
@@ -90,56 +78,47 @@ export function encodeEnglishDetailed(text) {
     return { morseText: '', unsupportedChars: [], hasUnsupported: false };
   }
 
-  const uppercase = text.toUpperCase();
-  const words = uppercase.split(/\s+/);
+  const lines = text.split(/\r?\n/);
   const unsupportedSet = new Set();
 
-  const morseWords = words.map(word => {
-    let wordMorse = [];
-    let i = 0;
+  const morseLines = lines.map(line => {
+    const words = line.trim().split(/\s+/).filter(Boolean);
+    const morseWords = words.map(word => {
+      const tokens = word.match(/<[A-Za-z0-9]+>|[\s\S]/gu) || [];
+      const wordMorse = [];
 
-    while (i < word.length) {
-      if (word[i] === '<') {
-        const closeIdx = word.indexOf('>', i);
-        if (closeIdx !== -1) {
-          const prosign = word.substring(i, closeIdx + 1);
-          if (MORSE_CODE_MAP[prosign]) {
-            wordMorse.push(MORSE_CODE_MAP[prosign].morse);
-            i = closeIdx + 1;
-            continue;
-          }
+      for (const token of tokens) {
+        const upper = token.toUpperCase();
+        if (MORSE_CODE_MAP[upper]) {
+          wordMorse.push(MORSE_CODE_MAP[upper].morse);
+        } else {
+          wordMorse.push('?');
+          unsupportedSet.add(token);
         }
       }
-
-      const char = word[i];
-      if (MORSE_CODE_MAP[char]) {
-        wordMorse.push(MORSE_CODE_MAP[char].morse);
-      } else {
-        wordMorse.push('?');
-        unsupportedSet.add(char);
-      }
-      i++;
-    }
-    return wordMorse.join(' ');
+      return wordMorse.join(' ');
+    });
+    return morseWords.join(' / ');
   });
 
   const unsupportedChars = Array.from(unsupportedSet);
 
   return {
-    morseText: morseWords.join(' / '),
+    morseText: morseLines.join('\n'),
     unsupportedChars,
     hasUnsupported: unsupportedChars.length > 0
   };
 }
 
 /**
- * Normalize Morse input dots and dashes
+ * Normalize Morse input dots and dashes explicitly.
+ * Converts common typographical bullets and dashes while strictly preserving word delimiters.
  */
 export function normalizeMorseInput(input) {
   if (!input) return '';
   return input
-    .replace(/[•·]/g, '.')
-    .replace(/[—–−]/g, '-');
+    .replace(/[•·⋅・●]/g, '.')
+    .replace(/[—–−―]/g, '-');
 }
 
 /**
@@ -148,27 +127,32 @@ export function normalizeMorseInput(input) {
 export function translateMorseToText(morse) {
   if (!morse) return '';
 
-  // Normalize dots & dashes (support bullets, em-dash, en-dash, minus)
-  const normalized = normalizeMorseInput(morse).trim();
+  const normalized = normalizeMorseInput(morse);
+  const lines = normalized.split(/\r?\n/);
 
-  if (!normalized) return '';
+  const decodedLines = lines.map(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return '';
 
-  // Split by word boundaries ('/' or 3+ spaces)
-  const morseWords = normalized.split(/\s*\/\s*|\s{3,}/);
+    // Split by word boundaries ('/' or 3+ spaces)
+    const morseWords = trimmed.split(/\s*\/\s*|\s{3,}/).filter(Boolean);
 
-  const decodedWords = morseWords.map(word => {
-    // Split by character boundary (1 space)
-    const morseChars = word.trim().split(/\s+/);
-    return morseChars.map(code => {
-      if (!code) return '';
-      if (REVERSE_MORSE_MAP[code]) {
-        return REVERSE_MORSE_MAP[code].char.replace(/^<|>$ /g, '');
-      }
-      return '[Unknown]';
-    }).join('');
+    const decodedWords = morseWords.map(word => {
+      // Split by character boundary (1 space)
+      const morseChars = word.trim().split(/\s+/).filter(Boolean);
+      return morseChars.map(code => {
+        if (!code) return '';
+        if (REVERSE_MORSE_MAP[code]) {
+          return REVERSE_MORSE_MAP[code].char;
+        }
+        return '?';
+      }).join('');
+    });
+
+    return decodedWords.join(' ');
   });
 
-  return decodedWords.join(' ');
+  return decodedLines.join('\n');
 }
 
 /**
@@ -184,7 +168,7 @@ export function decodeMorseDetailed(morse) {
     return { text: '', tokens: [], invalidTokens: [], hasErrors: false };
   }
 
-  const morseWords = normalized.split(/\s*\/\s*|\s{3,}/);
+  const morseWords = normalized.split(/\s*\/\s*|\s{3,}/).filter(Boolean);
   const tokens = [];
   const invalidTokens = [];
   const textWords = [];
@@ -194,20 +178,20 @@ export function decodeMorseDetailed(morse) {
       tokens.push({ code: '/', char: ' ', isSpace: true, isInvalid: false });
     }
 
-    const morseChars = wordStr.trim().split(/\s+/);
+    const morseChars = wordStr.trim().split(/\s+/).filter(Boolean);
     const wordDecoded = morseChars.map(code => {
       if (!code) return '';
 
       if (REVERSE_MORSE_MAP[code]) {
-        const decodedChar = REVERSE_MORSE_MAP[code].char.replace(/^<|>$ /g, '');
+        const decodedChar = REVERSE_MORSE_MAP[code].char;
         tokens.push({ code, char: decodedChar, isSpace: false, isInvalid: false });
         return decodedChar;
       } else {
-        tokens.push({ code, char: '[Unknown]', isSpace: false, isInvalid: true });
+        tokens.push({ code, char: '?', isSpace: false, isInvalid: true });
         if (!invalidTokens.includes(code)) {
           invalidTokens.push(code);
         }
-        return '[Unknown]';
+        return '?';
       }
     }).join('');
 
@@ -229,11 +213,10 @@ export function getCharacterBreakdown(text, morse) {
   if (!text && !morse) return [];
 
   const items = [];
-  const uppercase = text.toUpperCase();
+  const tokens = (text || '').match(/<[A-Za-z0-9]+>|[\s\S]/gu) || [];
   
-  for (let i = 0; i < uppercase.length; i++) {
-    const char = uppercase[i];
-    if (char === ' ') {
+  tokens.forEach((token, i) => {
+    if (token === ' ' || token === '\n' || token === '\t') {
       items.push({
         char: '[Space]',
         morse: '/',
@@ -242,13 +225,14 @@ export function getCharacterBreakdown(text, morse) {
         isSpace: true,
         originalIndex: i
       });
-      continue;
+      return;
     }
 
-    const mapping = MORSE_CODE_MAP[char];
+    const upper = token.toUpperCase();
+    const mapping = MORSE_CODE_MAP[upper];
     if (mapping) {
       items.push({
-        char,
+        char: upper,
         morse: mapping.morse,
         phonetic: mapping.phonetic || mapping.name,
         ditDah: mapping.ditDah,
@@ -257,7 +241,7 @@ export function getCharacterBreakdown(text, morse) {
       });
     } else {
       items.push({
-        char,
+        char: token,
         morse: '?',
         phonetic: 'Unsupported',
         ditDah: '?',
@@ -265,60 +249,78 @@ export function getCharacterBreakdown(text, morse) {
         originalIndex: i
       });
     }
-  }
+  });
 
   return items;
 }
 
 /**
- * Transmission Metrics & Timing Statistics (Paris Standard)
- * Paris standard: "PARIS " = 50 dot units.
+ * Transmission Metrics & Timing Statistics (Paris Standard / ITU-R M.1677-1)
+ * Standard word "PARIS " = 50 dot units.
  * Dot unit length (T_dot in sec) = 1.2 / WPM.
  */
 export function calculateStatistics(text, morse, wpm = 20, farnsworthWpm = 20) {
   const cleanText = text ? text.trim() : '';
   const cleanMorse = morse ? morse.trim() : '';
 
-  let dotsCount = 0;
-  let dashesCount = 0;
-  let charSpaces = 0;
-  let wordSpaces = 0;
-
-  for (let i = 0; i < cleanMorse.length; i++) {
-    const char = cleanMorse[i];
-    if (char === '.') dotsCount++;
-    else if (char === '-') dashesCount++;
-    else if (char === ' ') charSpaces++;
-    else if (char === '/') wordSpaces++;
+  if (!cleanMorse) {
+    return {
+      characterCount: cleanText.length,
+      wordCount: cleanText ? cleanText.split(/\s+/).filter(Boolean).length : 0,
+      dotsCount: 0,
+      dashesCount: 0,
+      charSpaces: 0,
+      wordSpaces: 0,
+      transmissionTimeSec: 0,
+      dotDashRatio: '0.00'
+    };
   }
 
   const effectiveWpm = Math.min(wpm, farnsworthWpm || wpm);
   const useFarnsworth = farnsworthWpm < wpm;
 
-  // Paris Formula unit timing:
-  // Dot = 1 unit
-  // Dash = 3 units
-  // Space between symbols within char = 1 unit
-  // Space between chars = 3 units (or scaled for Farnsworth)
-  // Space between words = 7 units (or scaled for Farnsworth)
-
   const charSpeedUnit = 1.2 / wpm; // seconds per dot unit at char WPM
   const spacingSpeedUnit = useFarnsworth ? (1.2 / effectiveWpm) : charSpeedUnit;
 
-  // Sound duration
-  const toneUnits = (dotsCount * 1) + (dashesCount * 3);
-  const toneDurationSec = toneUnits * charSpeedUnit;
+  const words = cleanMorse.split(/\s*\/\s*|\s{3,}/).filter(Boolean);
+  let dotsCount = 0;
+  let dashesCount = 0;
+  let interElementSpaces = 0;
+  let interCharSpaces = 0;
+  let wordSpaces = words.length > 1 ? words.length - 1 : 0;
 
-  // Pause duration
-  // Symbol space (1 unit) uses char speed
-  // Char space (3 units) & Word space (7 units) use spacing speed
-  const pauseDurationSec = (dotsCount + dashesCount > 0 ? (dotsCount + dashesCount - 1) * charSpeedUnit : 0)
-    + (charSpaces * 3 * spacingSpeedUnit)
+  words.forEach(word => {
+    const chars = word.trim().split(/\s+/).filter(Boolean);
+    if (chars.length > 1) {
+      interCharSpaces += chars.length - 1;
+    }
+    chars.forEach(ch => {
+      let elements = 0;
+      for (const symbol of ch) {
+        if (symbol === '.') {
+          dotsCount++;
+          elements++;
+        } else if (symbol === '-') {
+          dashesCount++;
+          elements++;
+        }
+      }
+      if (elements > 1) {
+        interElementSpaces += elements - 1;
+      }
+    });
+  });
+
+  // Sound duration
+  const toneDurationSec = (dotsCount * 1 + dashesCount * 3) * charSpeedUnit;
+
+  // Pause duration (inter-element at char speed, inter-char and word at spacing speed)
+  const pauseDurationSec = (interElementSpaces * 1 * charSpeedUnit)
+    + (interCharSpaces * 3 * spacingSpeedUnit)
     + (wordSpaces * 7 * spacingSpeedUnit);
 
-  const totalTimeSec = (toneDurationSec + pauseDurationSec).toFixed(1);
-
-  const wordCount = cleanText ? cleanText.split(/\s+/).filter(Boolean).length : 0;
+  const totalTimeSec = (toneDurationSec + pauseDurationSec).toFixed(2);
+  const wordCount = cleanText ? cleanText.split(/\s+/).filter(Boolean).length : words.length;
   const characterCount = cleanText ? cleanText.length : 0;
 
   return {
@@ -326,9 +328,9 @@ export function calculateStatistics(text, morse, wpm = 20, farnsworthWpm = 20) {
     wordCount,
     dotsCount,
     dashesCount,
-    charSpaces,
+    charSpaces: interCharSpaces,
     wordSpaces,
     transmissionTimeSec: parseFloat(totalTimeSec),
-    dotDashRatio: dashesCount > 0 ? (dotsCount / dashesCount).toFixed(2) : dotsCount
+    dotDashRatio: dashesCount > 0 ? (dotsCount / dashesCount).toFixed(2) : dotsCount.toString()
   };
 }

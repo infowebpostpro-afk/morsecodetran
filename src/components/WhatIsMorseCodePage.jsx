@@ -48,10 +48,15 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
   };
 
   // Tab navigation helper
-  const handleNav = (e, tab) => {
-    e.preventDefault();
+  const handleNav = (e, tab, path) => {
+    if (e) e.preventDefault();
     if (setActiveTab) setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (path && typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({ tab }, '', path);
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const sampleCharacters = [
@@ -410,7 +415,7 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           For a detailed timeline, read our complete{' '}
-          <a href="#history" onClick={(e) => handleNav(e, 'history')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/history-of-morse-code/" onClick={(e) => handleNav(e, 'history', '/history-of-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             Morse Code history guide
           </a>.
         </p>
@@ -432,7 +437,7 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
           <a href="https://www.itu.int/rec/R-REC-M.1677-1-200910-I/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 500 }}>
             Recommendation ITU-R M.1677-1
           </a>. To explore the entire character mapping, consult our complete{' '}
-          <a href="#alphabet" onClick={(e) => handleNav(e, 'alphabet')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/morse-code-alphabet/" onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             Morse Code Alphabet reference
           </a>.
         </p>
@@ -471,7 +476,7 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           For the complete story, read our guide on{' '}
-          <a href="#sos" onClick={(e) => handleNav(e, 'sos')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/sos-in-morse-code/" onClick={(e) => handleNav(e, 'sos', '/sos-in-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             SOS in Morse Code
           </a>.
         </p>
@@ -493,7 +498,7 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
             </h3>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
               Radio amateurs worldwide communicate daily using Morse code (known as Continuous Wave or CW). CW signals penetrate noise and fading far better than voice transmissions. Learn more in our{' '}
-              <a href="#amateur-radio" onClick={(e) => handleNav(e, 'amateurradio')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>
+              <a href="/morse-code-amateur-radio/" onClick={(e) => handleNav(e, 'amateurradio', '/morse-code-amateur-radio/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>
                 Morse Code Amateur Radio guide
               </a>.
             </p>
@@ -583,15 +588,15 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <a
-            href="#learn"
-            onClick={(e) => handleNav(e, 'learn')}
+            href="/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'learn', '/learn-morse-code/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#ffffff', fontWeight: 700, textDecoration: 'none' }}
           >
             Go to Learn Morse Code Guide <ArrowRight size={16} />
           </a>
           <a
-            href="#translator"
-            onClick={(e) => handleNav(e, 'translator')}
+            href="/"
+            onClick={(e) => handleNav(e, 'translator', '/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none' }}
           >
             Open Morse Translator Tool
@@ -662,15 +667,15 @@ export function WhatIsMorseCodePage({ setActiveTab, showToast, wpm = 20, frequen
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
           <a
-            href="#translator"
-            onClick={(e) => handleNav(e, 'translator')}
+            href="/"
+            onClick={(e) => handleNav(e, 'translator', '/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#ffffff', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Launch Morse Translator Tool <ArrowRight size={18} />
           </a>
           <a
-            href="#alphabet"
-            onClick={(e) => handleNav(e, 'alphabet')}
+            href="/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Explore Morse Code Alphabet

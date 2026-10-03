@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/prerender.js",
+    "build:vite": "vite build",
     "lint": "oxlint",
+    "test": "node scripts/test-morse.js && node scripts/test-routes.js",
     "preview": "vite preview"
   },
   "dependencies": {

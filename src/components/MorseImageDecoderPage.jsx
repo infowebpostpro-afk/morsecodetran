@@ -122,10 +122,15 @@ export function MorseImageDecoderPage({ setActiveTab, showToast, wpm = 20, frequ
   };
 
   // Tab Navigation Helper
-  const handleNav = (e, tab) => {
+  const handleNav = (e, tab, path) => {
     e.preventDefault();
     if (setActiveTab) setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (path && typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const faqs = [
@@ -633,7 +638,7 @@ export function MorseImageDecoderPage({ setActiveTab, showToast, wpm = 20, frequ
             <ul style={{ margin: 0, paddingLeft: '1.15rem', color: 'var(--text-muted)', fontSize: '0.85rem', lineHeight: 1.5 }}>
               <li>Photograph the tattoo straight-on under bright, diffused lighting.</li>
               <li>Flatten the skin naturally to prevent curvature distortion.</li>
-              <li>Review the extracted dot/dash sequence against our <a href="#" onClick={(e) => handleNav(e, 'alphabet')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Alphabet Chart</a> to confirm accuracy.</li>
+              <li>Review the extracted dot/dash sequence against our <a href="/morse-code-alphabet/" onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Alphabet Chart</a> to confirm accuracy.</li>
             </ul>
           </div>
         </div>
@@ -661,35 +666,35 @@ export function MorseImageDecoderPage({ setActiveTab, showToast, wpm = 20, frequ
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Photo, Screenshot, Tattoo, Scan</td>
                 <td style={{ padding: '0.75rem 1rem' }}>
-                  <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Image Decoder</a>
+                  <a href="/morse-code-image-decoder/" onClick={(e) => { e.preventDefault(); if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); }} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Image Decoder</a>
                 </td>
                 <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>Pixel binarization &amp; shape detection</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Typed Dots &amp; Dashes (<code style={{ color: 'var(--accent-primary)' }}>.-.-</code>)</td>
                 <td style={{ padding: '0.75rem 1rem' }}>
-                  <a href="#" onClick={(e) => handleNav(e, 'morsedecoder')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Decoder</a>
+                  <a href="/morse-code-decoder/" onClick={(e) => handleNav(e, 'morsedecoder', '/morse-code-decoder/')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Decoder</a>
                 </td>
                 <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>Direct Morse-to-Text conversion &amp; auto-detection</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Plain English Text</td>
                 <td style={{ padding: '0.75rem 1rem' }}>
-                  <a href="#" onClick={(e) => handleNav(e, 'english2morse')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>English to Morse Code</a>
+                  <a href="/english-to-morse-code/" onClick={(e) => handleNav(e, 'english2morse', '/english-to-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>English to Morse Code</a>
                 </td>
                 <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>Text to Morse generator with sound export</td>
               </tr>
               <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                 <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Audio Recording, WAV/MP3, Mic</td>
                 <td style={{ padding: '0.75rem 1rem' }}>
-                  <a href="#" onClick={(e) => handleNav(e, 'audiotranslator')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Audio Translator</a>
+                  <a href="/morse-code-audio-translator/" onClick={(e) => handleNav(e, 'audiotranslator', '/morse-code-audio-translator/')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Audio Translator</a>
                 </td>
                 <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>DSP Goertzel tone filter &amp; mic listener</td>
               </tr>
               <tr>
                 <td style={{ padding: '0.75rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Single Character Lookups</td>
                 <td style={{ padding: '0.75rem 1rem' }}>
-                  <a href="#" onClick={(e) => handleNav(e, 'alphabet')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Alphabet</a>
+                  <a href="/morse-code-alphabet/" onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', fontWeight: 600 }}>Morse Code Alphabet</a>
                 </td>
                 <td style={{ padding: '0.75rem 1rem', color: 'var(--text-muted)' }}>A–Z reference chart &amp; prosign audio samples</td>
               </tr>
@@ -718,7 +723,7 @@ export function MorseImageDecoderPage({ setActiveTab, showToast, wpm = 20, frequ
             <strong>Mark Word Spaces</strong>: Identify wider gaps that are roughly 7× the width of a dot. Insert a forward slash (<code style={{ color: 'var(--accent-primary)' }}>/</code>) to separate words.
           </li>
           <li style={{ marginBottom: '0.5rem' }}>
-            <strong>Paste Clean Morse into Text Decoder</strong>: Copy your typed Morse string into our <a href="#" onClick={(e) => handleNav(e, 'morsedecoder')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Code Decoder</a> to instantly convert it into English.
+            <strong>Paste Clean Morse into Text Decoder</strong>: Copy your typed Morse string into our <a href="/morse-code-decoder/" onClick={(e) => handleNav(e, 'morsedecoder', '/morse-code-decoder/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Morse Code Decoder</a> to instantly convert it into English.
           </li>
         </ol>
       </section>
@@ -782,36 +787,41 @@ export function MorseImageDecoderPage({ setActiveTab, showToast, wpm = 20, frequ
           Explore Other Morse Code Tools &amp; References
         </h3>
         <div style={{ display: 'flex', justifyCenter: 'center', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1rem', justifyContent: 'center' }}>
-          <button
-            onClick={(e) => handleNav(e, 'translator')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          <a
+            href="/"
+            onClick={(e) => handleNav(e, 'translator', '/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Morse Code Translator
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'morsedecoder')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-decoder/"
+            onClick={(e) => handleNav(e, 'morsedecoder', '/morse-code-decoder/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Morse Code Decoder
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'audiotranslator')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-audio-translator/"
+            onClick={(e) => handleNav(e, 'audiotranslator', '/morse-code-audio-translator/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Audio Translator
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'alphabet')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             Morse Code Alphabet
-          </button>
-          <button
-            onClick={(e) => handleNav(e, 'howtoread')}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem' }}
+          </a>
+          <a
+            href="/how-to-read-morse-code/"
+            onClick={(e) => handleNav(e, 'howtoread', '/how-to-read-morse-code/')}
+            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontWeight: 600, cursor: 'pointer', fontSize: '0.875rem', textDecoration: 'none', display: 'inline-block' }}
           >
             How to Read Morse Code
-          </button>
+          </a>
         </div>
       </footer>
     </article>

@@ -1,8 +1,41 @@
+# Apache configuration for MorseCodeTranslatr.io
+# Enforces HTTPS, non-www, trailing-slash consistency, and genuine HTTP 404 handling
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^index\.html$ - [L]
+
+  # 1. Redirect HTTP to HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 2. Redirect www to non-www
+  RewriteCond %{HTTP_HOST} ^www\.morsecodetranslatr\.io$ [NC]
+  RewriteRule ^ https://morsecodetranslatr.io%{REQUEST_URI} [L,R=301]
+
+  # 3. Trailing Slash Normalization for Static Route Directories
+  # Redirect /path to /path/ if not a static file
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
+  RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+  RewriteRule ^(.*)$ /$1/ [R=301,L]
+
+  # 4. Pass through existing static files and directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+</IfModule>
+
+# 5. Return Genuine HTTP 404 for nonexistent resources (Never return 200 for 404)
+ErrorDocument 404 /404.html
+
+# 6. Performance caching headers for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/html "access plus 0 seconds"
 </IfModule>

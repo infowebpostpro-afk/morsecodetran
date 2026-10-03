@@ -31,6 +31,27 @@ const SosMorseCodePage = lazy(() => import('./components/SosMorseCodePage.jsx').
 const ILoveYouMorseCodePage = lazy(() => import('./components/ILoveYouMorseCodePage.jsx').then(m => ({ default: m.ILoveYouMorseCodePage })));
 const WhatIsMorseCodePage = lazy(() => import('./components/WhatIsMorseCodePage.jsx').then(m => ({ default: m.WhatIsMorseCodePage })));
 const HistoryOfMorseCodePage = lazy(() => import('./components/HistoryOfMorseCodePage.jsx').then(m => ({ default: m.HistoryOfMorseCodePage })));
+const TurkishMorsePage = lazy(() => import('./components/TurkishMorsePage.jsx').then(m => ({ default: m.TurkishMorsePage })));
+
+const TurkishAlphabetPage = lazy(() => import('./components/TurkishAlphabetPage.jsx').then(m => ({ default: m.TurkishAlphabetPage })));
+const TurkishNumbersPage = lazy(() => import('./components/TurkishNumbersPage.jsx').then(m => ({ default: m.TurkishNumbersPage })));
+const TurkishMorseToEnglishPage = lazy(() => import('./components/TurkishMorseToEnglishPage.jsx').then(m => ({ default: m.TurkishMorseToEnglishPage })));
+const TurkishEnglishToMorsePage = lazy(() => import('./components/TurkishEnglishToMorsePage.jsx').then(m => ({ default: m.TurkishEnglishToMorsePage })));
+const TurkishDecoderPage = lazy(() => import('./components/TurkishDecoderPage.jsx').then(m => ({ default: m.TurkishDecoderPage })));
+const TurkishAudioTranslatorPage = lazy(() => import('./components/TurkishAudioTranslatorPage.jsx').then(m => ({ default: m.TurkishAudioTranslatorPage })));
+const TurkishLearnMorsePage = lazy(() => import('./components/TurkishLearnMorsePage.jsx').then(m => ({ default: m.TurkishLearnMorsePage })));
+const TurkishHowToReadPage = lazy(() => import('./components/TurkishHowToReadPage.jsx').then(m => ({ default: m.TurkishHowToReadPage })));
+const TurkishSymbolsPage = lazy(() => import('./components/TurkishSymbolsPage.jsx').then(m => ({ default: m.TurkishSymbolsPage })));
+const TurkishPhrasesPage = lazy(() => import('./components/TurkishPhrasesPage.jsx').then(m => ({ default: m.TurkishPhrasesPage })));
+const TurkishSosPage = lazy(() => import('./components/TurkishSosPage.jsx').then(m => ({ default: m.TurkishSosPage })));
+const TurkishILoveYouPage = lazy(() => import('./components/TurkishILoveYouPage.jsx').then(m => ({ default: m.TurkishILoveYouPage })));
+const TurkishWhatIsMorsePage = lazy(() => import('./components/TurkishWhatIsMorsePage.jsx').then(m => ({ default: m.TurkishWhatIsMorsePage })));
+const TurkishHistoryPage = lazy(() => import('./components/TurkishHistoryPage.jsx').then(m => ({ default: m.TurkishHistoryPage })));
+const TurkishAmateurRadioPage = lazy(() => import('./components/TurkishAmateurRadioPage.jsx').then(m => ({ default: m.TurkishAmateurRadioPage })));
+const TurkishKeyerPage = lazy(() => import('./components/TurkishKeyerPage.jsx').then(m => ({ default: m.TurkishKeyerPage })));
+const TurkishImageDecoderPage = lazy(() => import('./components/TurkishImageDecoderPage.jsx').then(m => ({ default: m.TurkishImageDecoderPage })));
+const TurkishPracticePage = lazy(() => import('./components/TurkishPracticePage.jsx').then(m => ({ default: m.TurkishPracticePage })));
+
 
 import {
   detectInputType,
@@ -39,14 +60,45 @@ import {
   getCharacterBreakdown,
   calculateStatistics
 } from './engine/morseEngine.js';
+import { NotFoundPage } from './components/NotFoundPage.jsx';
+import { getRouteByPath, getRouteByTab, generateStructuredData, TAB_TO_PATH } from './routeRegistry.js';
 import { audioEngine } from './engine/audioEngine.js';
 
 export function App() {
   // Theme state
-  const [theme, setTheme] = useState(() => localStorage.getItem('morse_theme') || 'dark');
+  // Theme state
+  const [theme, setTheme] = useState(() => (typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('morse_theme') || 'dark' : 'dark'));
 
-  // Navigation tab
-  const [activeTab, setActiveTab] = useState('translator');
+  // Navigation tab initialized directly from current pathname for zero-flash routing
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window === 'undefined') return 'translator';
+    const route = getRouteByPath(window.location.pathname);
+    if (route) return route.tab;
+    const hash = window.location.hash;
+    if (hash === '#alphabet') return 'alphabet';
+    if (hash === '#numbers') return 'numbers';
+    if (hash === '#symbols') return 'symbols';
+    if (hash === '#morse-to-english') return 'morse2english';
+    if (hash === '#english-to-morse') return 'english2morse';
+    if (hash === '#morse-code-decoder') return 'morsedecoder';
+    if (hash === '#audio-translator') return 'audiotranslator';
+    if (hash === '#keyer') return 'keyer';
+    if (hash === '#learn') return 'learn';
+    if (hash === '#how-to-read') return 'howtoread';
+    if (hash === '#phrases') return 'phrases';
+    if (hash === '#sos') return 'sos';
+    if (hash === '#iloveyou') return 'iloveyou';
+    if (hash === '#what-is-morse' || hash === '#whatismorse') return 'whatismorse';
+    if (hash === '#history') return 'history';
+    if (hash === '#amateur-radio') return 'amateurradio';
+    if (hash === '#image-decoder' || hash === '#imagedecoder') return 'imagedecoder';
+    if (hash === '#practice') return 'practice';
+    if (hash === '#turkish' || hash === '#tr') return 'turkish';
+    if (window.location.pathname !== '/' && window.location.pathname !== '') {
+      return 'notfound';
+    }
+    return 'translator';
+  });
 
   // Translator state
   const [mode, setMode] = useState('auto'); // auto, text2morse, morse2text
@@ -78,53 +130,43 @@ export function App() {
   // Sync theme attribute to <html> element
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('morse_theme', theme);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.setItem('morse_theme', theme);
+    }
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  // Parse URL Hash & Pathname on load (for client-side routing and share links)
+  // Sync URL Pathname and history when activeTab changes
   useEffect(() => {
-    const path = window.location.pathname;
-    if (path.includes('morse-code-alphabet') || window.location.hash === '#alphabet') {
-      setActiveTab('alphabet');
-    } else if (path.includes('morse-code-numbers') || window.location.hash === '#numbers') {
-      setActiveTab('numbers');
-    } else if (path.includes('morse-code-symbols') || window.location.hash === '#symbols') {
-      setActiveTab('symbols');
-    } else if (path.includes('morse-code-to-english') || window.location.hash === '#morse-to-english') {
-      setActiveTab('morse2english');
-    } else if (path.includes('english-to-morse-code') || window.location.hash === '#english-to-morse') {
-      setActiveTab('english2morse');
-    } else if (path.includes('morse-code-decoder') || window.location.hash === '#morse-code-decoder' || window.location.hash === '#morsedecoder') {
-      setActiveTab('morsedecoder');
-    } else if (path.includes('morse-code-audio-translator') || window.location.hash === '#audio-translator') {
-      setActiveTab('audiotranslator');
-    } else if (path.includes('how-to-read-morse-code') || window.location.hash === '#how-to-read') {
-      setActiveTab('howtoread');
-    } else if (path.includes('learn-morse-code') || window.location.hash === '#learn') {
-      setActiveTab('learn');
-    } else if (path.includes('morse-code-keyer') || window.location.hash === '#keyer') {
-      setActiveTab('keyer');
-    } else if (path.includes('morse-code-phrases') || window.location.hash === '#phrases') {
-      setActiveTab('phrases');
-    } else if (path.includes('sos-in-morse-code') || window.location.hash === '#sos') {
-      setActiveTab('sos');
-    } else if (path.includes('i-love-you-in-morse-code') || window.location.hash === '#iloveyou') {
-      setActiveTab('iloveyou');
-    } else if (path.includes('what-is-morse-code') || window.location.hash === '#whatismorse') {
-      setActiveTab('whatismorse');
-    } else if (path.includes('history-of-morse-code') || window.location.hash === '#history') {
-      setActiveTab('history');
-    } else if (path.includes('morse-code-amateur-radio') || window.location.hash === '#amateur-radio') {
-      setActiveTab('amateurradio');
-    } else if (path.includes('morse-code-image-decoder') || window.location.hash === '#image-decoder' || window.location.hash === '#imagedecoder') {
-      setActiveTab('imagedecoder');
-    } else if (path.includes('morse-code-practice') || window.location.hash === '#practice' || window.location.hash === '#morse-code-practice') {
-      setActiveTab('practice');
-    } else if (window.location.hash) {
+    const targetPath = TAB_TO_PATH[activeTab] || '/';
+    if (activeTab !== 'notfound' && window.location.pathname !== targetPath) {
+      window.history.pushState({ tab: activeTab }, '', targetPath);
+    }
+  }, [activeTab]);
+
+  // Handle browser Back & Forward button events (popstate)
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = getRouteByPath(window.location.pathname);
+      if (route) {
+        setActiveTab(route.tab);
+      } else if (window.location.pathname === '/' || window.location.pathname === '') {
+        setActiveTab('translator');
+      } else {
+        setActiveTab('notfound');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Handle hash-based message sharing #msg=
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
       const hash = window.location.hash.substring(1);
       if (hash.startsWith('msg=')) {
         try {
@@ -135,531 +177,37 @@ export function App() {
     }
   }, []);
 
-  // Sync URL Pathname and history when activeTab changes
+  // Sync route metadata to head
   useEffect(() => {
-    let targetPath = '/';
-    if (activeTab === 'alphabet') targetPath = '/morse-code-alphabet/';
-    else if (activeTab === 'numbers') targetPath = '/morse-code-numbers/';
-    else if (activeTab === 'symbols') targetPath = '/morse-code-symbols/';
-    else if (activeTab === 'morse2english') targetPath = '/morse-code-to-english/';
-    else if (activeTab === 'english2morse') targetPath = '/english-to-morse-code/';
-    else if (activeTab === 'morsedecoder') targetPath = '/morse-code-decoder/';
-    else if (activeTab === 'audiotranslator') targetPath = '/morse-code-audio-translator/';
-    else if (activeTab === 'keyer') targetPath = '/morse-code-keyer/';
-    else if (activeTab === 'learn') targetPath = '/learn-morse-code/';
-    else if (activeTab === 'howtoread') targetPath = '/how-to-read-morse-code/';
-    else if (activeTab === 'phrases') targetPath = '/morse-code-phrases/';
-    else if (activeTab === 'sos') targetPath = '/sos-in-morse-code/';
-    else if (activeTab === 'iloveyou') targetPath = '/i-love-you-in-morse-code/';
-    else if (activeTab === 'whatismorse') targetPath = '/what-is-morse-code/';
-    else if (activeTab === 'history') targetPath = '/history-of-morse-code/';
-    else if (activeTab === 'amateurradio') targetPath = '/morse-code-amateur-radio/';
-    else if (activeTab === 'imagedecoder') targetPath = '/morse-code-image-decoder/';
-    else if (activeTab === 'practice') targetPath = '/morse-code-practice/';
+    const route = getRouteByTab(activeTab);
+    if (!route) return;
 
-    if (window.location.pathname !== targetPath) {
-      window.history.pushState({ tab: activeTab }, '', targetPath);
-    }
-  }, [activeTab]);
-
-  // Handle browser Back & Forward button events (popstate)
-  useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      if (path.includes('morse-code-alphabet')) setActiveTab('alphabet');
-      else if (path.includes('morse-code-numbers')) setActiveTab('numbers');
-      else if (path.includes('morse-code-symbols')) setActiveTab('symbols');
-      else if (path.includes('morse-code-to-english')) setActiveTab('morse2english');
-      else if (path.includes('english-to-morse-code')) setActiveTab('english2morse');
-      else if (path.includes('morse-code-decoder')) setActiveTab('morsedecoder');
-      else if (path.includes('morse-code-audio-translator')) setActiveTab('audiotranslator');
-      else if (path.includes('keyer')) setActiveTab('keyer');
-      else if (path.includes('learn')) setActiveTab('learn');
-      else if (path.includes('how-to-read-morse-code')) setActiveTab('howtoread');
-      else if (path.includes('morse-code-phrases')) setActiveTab('phrases');
-      else if (path.includes('sos-in-morse-code')) setActiveTab('sos');
-      else if (path.includes('i-love-you-in-morse-code')) setActiveTab('iloveyou');
-      else if (path.includes('what-is-morse-code')) setActiveTab('whatismorse');
-      else if (path.includes('history-of-morse-code')) setActiveTab('history');
-      else if (path.includes('morse-code-amateur-radio')) setActiveTab('amateurradio');
-      else if (path.includes('morse-code-image-decoder')) setActiveTab('imagedecoder');
-      else if (path.includes('morse-code-practice')) setActiveTab('practice');
-      else setActiveTab('translator');
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  // Dynamic SEO Metadata management per active tab
-  useEffect(() => {
-    let title = "Morse Code Translator – Translate Morse to Text & More";
-    let desc = "Use our free Morse Code Translator to convert text to Morse or Morse to text instantly. Decode messages, play Morse audio, copy results, and learn Morse code.";
-    let canonical = "https://morsecodetranslatr.io/";
-    let isArticlePage = false;
-
-    if (activeTab === 'alphabet') {
-      title = "Morse Code Alphabet: A–Z Letters, Numbers & Symbols";
-      desc = "Explore the Morse Code Alphabet from A–Z, plus numbers and symbols. Hear each signal, learn timing rules, spot useful patterns, and master Morse code faster.";
-      canonical = "https://morsecodetranslatr.io/morse-code-alphabet/";
-      isArticlePage = true;
-    } else if (activeTab === 'numbers') {
-      title = "Morse Code Numbers: 0–9 Converter, Sound & Decoding Chart";
-      desc = "Convert numbers 0–9 to Morse code, hear each signal, and decode Morse numbers instantly.";
-      canonical = "https://morsecodetranslatr.io/morse-code-numbers/";
-      isArticlePage = true;
-    } else if (activeTab === 'symbols') {
-      title = "Morse Code Symbols: Complete Chart & Meanings";
-      desc = "Explore Morse code symbols with a complete chart of punctuation, special signs, meanings, and official International Morse references.";
-      canonical = "https://morsecodetranslatr.io/morse-code-symbols/";
-      isArticlePage = true;
-    } else if (activeTab === 'morse2english') {
-      title = "Morse Code to English Converter - Instant Morse Decoder";
-      desc = "Convert Morse code to English text instantly. Accurate client-side decoding, audio playback, character breakdown, and real-time reverse translation.";
-      canonical = "https://morsecodetranslatr.io/morse-code-to-english/";
-    } else if (activeTab === 'english2morse') {
-      title = "English to Morse Code Translator - Instant Morse Generator";
-      desc = "Convert English text to International Morse Code instantly. Real-time encoding, audio playback, character breakdown, and custom speed controls.";
-      canonical = "https://morsecodetranslatr.io/english-to-morse-code/";
-    } else if (activeTab === 'morsedecoder') {
-      title = "Morse Code Decoder - Decode Morse to Text Online";
-      desc = "Decode Morse code into readable text instantly. Paste dots and dashes, verify character mappings, check spacing, and listen to Morse signals.";
-      canonical = "https://morsecodetranslatr.io/morse-code-decoder/";
-    } else if (activeTab === 'audiotranslator') {
-      title = "Morse Code Audio Translator - Sound Generator & Audio Player";
-      desc = "Convert text and Morse code into audio playback with customizable pitch and WPM speed. Download WAV sound files or decode audio signals.";
-      canonical = "https://morsecodetranslatr.io/morse-code-audio-translator/";
-    } else if (activeTab === 'decoder') {
-      title = "Morse Code Decoder – Audio & Optical Image Decoder";
-      desc = "Decode Morse code from live audio signals or uploaded images. Instant spectrum audio tone analyzer and OCR visual dot-dash reader.";
-      canonical = "https://morsecodetranslatr.io/morse-code-decoder/";
-    } else if (activeTab === 'keyer') {
-      title = "Morse Code Keyer – Practice Telegraph Key Online";
-      desc = "Interactive Morse telegraph keyer. Practice keying dits and dahs with mouse, touch, or keyboard to test your speed and timing.";
-      canonical = "https://morsecodetranslatr.io/morse-code-keyer/";
-    } else if (activeTab === 'learn') {
-      title = "How to Learn Morse Code: Beginner's Guide";
-      desc = "Learn Morse code step by step with sound-based training, Koch and Farnsworth methods, daily practice, common mistakes, and useful tools.";
-      canonical = "https://morsecodetranslatr.io/learn-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'howtoread') {
-      title = "How to Read Morse Code: A Beginner's Guide";
-      desc = "Learn how to read Morse code by sight and sound. Understand dots, dashes, spacing, timing, examples, common mistakes, and practice methods.";
-      canonical = "https://morsecodetranslatr.io/how-to-read-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'phrases') {
-      title = "Morse Code Phrases: Common Expressions, Greetings & Sound";
-      desc = "Discover essential Morse code phrases for daily greetings, romantic messages, emergency calls, and ham radio expressions with audio.";
-      canonical = "https://morsecodetranslatr.io/morse-code-phrases/";
-      isArticlePage = true;
-    } else if (activeTab === 'sos') {
-      title = "SOS in Morse Code: Distress Signal Meaning, Pattern & Sound";
-      desc = "Learn the SOS Morse code distress signal (... --- ...), its history, continuous prosign timing, flashlight transmission, and myths.";
-      canonical = "https://morsecodetranslatr.io/sos-in-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'iloveyou') {
-      title = "I Love You in Morse Code: Sound, Breakdown & Copy";
-      desc = "Learn how to write and speak I Love You in Morse code. Listen to sound playback, copy the pattern for gifts, jewelry, or hidden messages.";
-      canonical = "https://morsecodetranslatr.io/i-love-you-in-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'whatismorse') {
-      title = "What Is Morse Code? How It Works & Why It Matters";
-      desc = "What is Morse code? Learn how dots, dashes, timing, and spacing work, where Morse came from, and how it is still used today.";
-      canonical = "https://morsecodetranslatr.io/what-is-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'history') {
-      title = "History of Morse Code: From Telegraph to Modern Radio";
-      desc = "Discover the history of Morse code: how Samuel Morse and Alfred Vail developed the electric telegraph, how International Morse evolved, SOS, and modern uses.";
-      canonical = "https://morsecodetranslatr.io/history-of-morse-code/";
-      isArticlePage = true;
-    } else if (activeTab === 'amateurradio') {
-      title = "Morse Code Amateur Radio: CW, QSO & Getting Started";
-      desc = "Learn how Morse code works in amateur radio, what CW means, which equipment you need, common Q-codes, and how to make your first QSO.";
-      canonical = "https://morsecodetranslatr.io/morse-code-amateur-radio/";
-      isArticlePage = true;
-    } else if (activeTab === 'imagedecoder') {
-      title = "Morse Code Image Decoder: Decode Pictures to Text";
-      desc = "Decode Morse code from images, photos, and screenshots. Upload an image, inspect detected dots and dashes, convert to text, and troubleshoot.";
-      canonical = "https://morsecodetranslatr.io/morse-code-image-decoder/";
-      isArticlePage = true;
-    } else if (activeTab === 'practice') {
-      title = "Morse Code Practice: Free Online Trainer & Drills";
-      desc = "Practice Morse code online with listening drills, WPM controls, feedback, and focused exercises for letters, words, and real CW skills.";
-      canonical = "https://morsecodetranslatr.io/morse-code-practice/";
-      isArticlePage = true;
-    }
-
-    document.title = title;
+    document.title = route.title;
 
     const metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) metaDesc.setAttribute('content', desc);
+    if (metaDesc) metaDesc.setAttribute('content', route.description);
 
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) {
-      let ogT = title;
-      if (activeTab === 'whatismorse') ogT = "What Is Morse Code? How It Works & Why It Matters";
-      else if (activeTab === 'history') ogT = "History of Morse Code: From Telegraph to Modern Radio";
-      else if (activeTab === 'amateurradio') ogT = "Morse Code in Amateur Radio: CW, QSO & Getting Started";
-      else if (activeTab === 'imagedecoder') ogT = "Morse Code Image Decoder: Decode Pictures to Text";
-      else if (activeTab === 'practice') ogT = "Morse Code Practice: Free Online Trainer & Drills";
-      ogTitle.setAttribute('content', ogT);
-    }
+    if (ogTitle) ogTitle.setAttribute('content', route.title);
 
     const ogDesc = document.querySelector('meta[property="og:description"]');
-    if (ogDesc) {
-      let ogD = desc;
-      if (activeTab === 'whatismorse') ogD = "Learn what Morse code is, how dots and dashes work, why timing matters, where it came from, and where it is still used today.";
-      else if (activeTab === 'history') ogD = "Discover the history of Morse code: Samuel Morse, Alfred Vail, the 1844 message, International Morse standardization, SOS, Titanic, and modern ham radio.";
-      else if (activeTab === 'amateurradio') ogD = "Learn how ham-radio operators use Morse code, what CW means, what equipment you need, how QSO contacts work, and how to start learning.";
-      else if (activeTab === 'imagedecoder') ogD = "Upload a picture, photo, or screenshot containing Morse code. Detect dots and dashes, inspect extracted Morse, and convert to text.";
-      else if (activeTab === 'practice') ogD = "Listen to Morse, type what you hear, check your answer, and build recognition with adjustable speed, focused drills, and progressive practice.";
-      ogDesc.setAttribute('content', ogD);
-    }
+    if (ogDesc) ogDesc.setAttribute('content', route.description);
 
     const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) ogUrl.setAttribute('content', canonical);
+    if (ogUrl) ogUrl.setAttribute('content', route.canonical);
 
     const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-    if (twitterTitle) {
-      let twT = title;
-      if (activeTab === 'whatismorse') twT = "What Is Morse Code? A Simple Guide to Dots & Dashes";
-      else if (activeTab === 'history') twT = "History of Morse Code: From Telegraph to Modern Radio";
-      else if (activeTab === 'amateurradio') twT = "Morse Code in Amateur Radio: A Beginner's CW Guide";
-      else if (activeTab === 'imagedecoder') twT = "Morse Code Image Decoder: Pictures to Text";
-      else if (activeTab === 'practice') twT = "Morse Code Practice — Listen, Type & Improve";
-      twitterTitle.setAttribute('content', twT);
-    }
+    if (twitterTitle) twitterTitle.setAttribute('content', route.title);
 
     const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-    if (twitterDesc) {
-      let twD = desc;
-      if (activeTab === 'whatismorse') twD = "Discover how Morse code works, why timing matters, who helped develop it, what SOS means, and how Morse is still used today.";
-      else if (activeTab === 'history') twD = "Learn how Morse code was invented, how it evolved from American to International Morse, why SOS was chosen, and how it survives today.";
-      else if (activeTab === 'amateurradio') twD = "Understand CW, Morse keys, Q-codes, QSO procedure, licensing, equipment, and the practical path to your first amateur-radio contact.";
-      else if (activeTab === 'imagedecoder') twD = "Decode Morse code from photos and screenshots. Upload an image, check detected dots/dashes, and convert to text.";
-      else if (activeTab === 'practice') twD = "Build Morse skills with listening drills, adjustable WPM, Farnsworth timing, accuracy feedback, and progressive character-to-word practice.";
-      twitterDesc.setAttribute('content', twD);
-    }
+    if (twitterDesc) twitterDesc.setAttribute('content', route.description);
 
     const linkCanonical = document.querySelector('link[rel="canonical"]');
-    if (linkCanonical) linkCanonical.setAttribute('href', canonical);
+    if (linkCanonical) linkCanonical.setAttribute('href', route.canonical);
 
-    // Dynamic JSON-LD Structured Data Schema update
     const jsonLdElement = document.getElementById('json-ld-schema');
     if (jsonLdElement) {
-      const pageName = title.split('–')[0].split('-')[0].split(':')[0].trim();
-      const mainEntityId = isArticlePage ? `${canonical}#article` : `${canonical}#application`;
-
-      const graphNodes = [
-        {
-          "@type": "WebSite",
-          "@id": "https://morsecodetranslatr.io/#website",
-          "url": "https://morsecodetranslatr.io/",
-          "name": "MorseCodeTranslatr",
-          "alternateName": "Morse Code Translator",
-          "description": "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code.",
-          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
-          "inLanguage": "en-US"
-        },
-        {
-          "@type": "Organization",
-          "@id": "https://morsecodetranslatr.io/#organization",
-          "name": "MorseCodeTranslatr",
-          "url": "https://morsecodetranslatr.io/",
-          "logo": {
-            "@type": "ImageObject",
-            "@id": "https://morsecodetranslatr.io/#logo",
-            "url": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
-            "contentUrl": "https://morsecodetranslatr.io/images/morse-code-translator-interface.png",
-            "width": 512,
-            "height": 512
-          }
-        },
-        {
-          "@type": "WebPage",
-          "@id": `${canonical}#webpage`,
-          "url": canonical,
-          "name": title,
-          "headline": pageName,
-          "description": desc,
-          "isPartOf": { "@id": "https://morsecodetranslatr.io/#website" },
-          "about": { "@id": mainEntityId },
-          "mainEntity": { "@id": mainEntityId },
-          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
-          "inLanguage": "en-US"
-        }
-      ];
-
-      if (isArticlePage) {
-        graphNodes.push({
-          "@type": "Article",
-          "@id": `${canonical}#article`,
-          "url": canonical,
-          "headline": title,
-          "description": desc,
-          "inLanguage": "en-US",
-          "isPartOf": { "@id": `${canonical}#webpage` },
-          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
-          "mainEntityOfPage": { "@id": `${canonical}#webpage` }
-        });
-
-        if (activeTab === 'amateurradio') {
-          graphNodes.push({
-            "@type": "FAQPage",
-            "@id": `${canonical}#faq`,
-            "isPartOf": { "@id": `${canonical}#webpage` },
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Is Morse code still used in amateur radio?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Morse code remains an active amateur-radio operating mode, commonly called CW. ARRL continues to provide CW resources, and amateur operators continue making CW contacts, including during organized events such as Straight Key Night."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Is Morse code required for a U.S. ham-radio license?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No. The FCC eliminated the Morse-code examination requirement in 2007 (Report & Order 06-178). You can become a U.S. amateur-radio operator without passing a Morse test."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What does CW mean in ham radio?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "CW means continuous wave. In amateur radio, the term is commonly used for Morse-code telegraphy transmitted by keying a radio carrier."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What is a QSO?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "A QSO is a two-way amateur-radio contact between stations. It can be a short exchange or a longer conversation."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What is CQ in Morse code?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "CQ is a general call used by an operator who is seeking another station to contact. A typical call may include CQ, the operator's callsign, and a signal inviting another station to respond."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What does QTH mean?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "QTH refers to a station's location. An operator can ask for another station's QTH or give their own location."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do I need a straight key to use CW?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No. You can use a straight key, paddle with an electronic keyer, or other compatible keying equipment. The choice depends on your goals and operating style."
-                }
-              }
-            ]
-          });
-        }
-
-        if (activeTab === 'imagedecoder') {
-          graphNodes.push({
-            "@type": "FAQPage",
-            "@id": `${canonical}#faq`,
-            "isPartOf": { "@id": `${canonical}#webpage` },
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Can I decode Morse code from an image?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. A Morse code image decoder analyzes a picture, photo, screenshot, scan, or graphic containing visible dots and dashes. It threshold-binarizes the pixels, segments marks and gaps, builds a Morse sequence, and translates it to readable text."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I decode Morse code from a screenshot?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Clear screenshots (especially PNG format) are often among the best input sources because they feature sharp edges, high contrast, and consistent pixel dimensions without severe compression artifacts or shadows."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can a Morse code image decoder read handwriting?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Handwritten Morse can be decoded if the dots and dashes are drawn clearly with consistent width and spacing. However, irregular stroke weights, merged symbols, or slanted lines may cause detection errors. Manual editing of detected Morse is recommended for handwritten sources."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I decode a Morse code tattoo from a photo?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, provided the photo is shot straight-on under good lighting with minimal glare. Skin curvature and perspective angle can distort dot/dash width ratios, so reviewing the intermediate detected Morse sequence is essential before relying on the final text."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Why did the image decoder give me the wrong text?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Common causes include low image contrast, dark shadows, incorrect binarization threshold, merged dot/dash marks, background noise, or missing spaces between characters. Adjusting the threshold slider, toggling color inversion, or manually correcting detected dots/dashes will fix errors."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What is better: an image decoder or a Morse code translator?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Use an image decoder when Morse code exists inside a graphic or photo. Use the text Morse Code Translator when you already have typed dots and dashes or plain text. Use the Audio Translator when Morse code exists as sound."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Is a Morse code image decoder the same as OCR?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Not entirely. Standard Optical Character Recognition (OCR) engines like Tesseract.js are trained to recognize typographic characters (A–Z, 0–9). A dedicated visual Morse detector analyzes pixel shapes, aspect ratios, and horizontal gap spacing to extract dot/dash sequences directly from graphical shapes."
-                }
-              }
-            ]
-          });
-        }
-
-        if (activeTab === 'practice') {
-          graphNodes.push({
-            "@type": "FAQPage",
-            "@id": `${canonical}#faq`,
-            "isPartOf": { "@id": `${canonical}#webpage` },
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "What is the best way to practice Morse code?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Practice by listening to Morse signals, answering without looking at a visual dot-and-dash chart, checking your answer, and repeating weak characters. Start with a small character set (like Starter 8) and gradually move to words, callsigns, and full sentences."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How many minutes a day should I practice Morse code?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "A short, repeatable daily session of 10 to 15 minutes is much more effective than a single long session once a week. Short daily sessions prevent mental fatigue and build reliable auditory sound-recognition memory."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What WPM should a beginner use for Morse code practice?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Modern Morse training recommends using a relatively brisk character speed (18–20 WPM) combined with slower Farnsworth spacing (8–12 WPM). This ensures you learn each character as a single rhythmic sound unit rather than an artificially slow series of counted dots and dashes."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Should I learn Morse code by sound or by looking at dots and dashes?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "For receiving practice, prioritize sound. Visual charts are helpful reference tools, but relying on visual dot/dash counting creates a mental bottleneck that prevents copying at higher speeds. ARRL specifically recommends sound-first learning for amateur radio CW."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What is the Koch method for Morse code?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "The Koch method, developed by German psychologist Ludwig Koch, introduces characters one by one at full target speed (e.g., 20 WPM). You practice a 2-character set until reaching 90% accuracy, then add a 3rd character, gradually building the full alphabet at target speed."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What is Farnsworth timing?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Farnsworth timing preserves the fast internal dot-and-dash timing of individual characters while inserting extra spacing between characters and words. It gives beginners extra thinking time without forcing them to learn slow, distorted character rhythms."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Why can I recognize letters but not Morse words?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Word copying requires you to hold recognized letters in memory while simultaneously receiving the next incoming sound. Practice transitioning from single letters to 2-letter groups, then short 3-letter words (THE, AND, FOR), and finally full phrases."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Should I practice sending Morse code too?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes, if your goal includes transmitting Morse code on amateur radio. However, receiving and sending build different auditory and motor skills. Most instructors recommend building solid receiving recognition before spending heavy time on keyer sending practice."
-                }
-              }
-            ]
-          });
-        }
-      } else {
-        graphNodes.push({
-          "@type": "WebApplication",
-          "@id": `${canonical}#application`,
-          "name": pageName,
-          "alternateName": "MorseCodeTranslatr",
-          "url": canonical,
-          "description": desc,
-          "applicationCategory": "EducationalApplication",
-          "applicationSubCategory": "Morse Code Translator",
-          "operatingSystem": "Any",
-          "browserRequirements": "Requires a modern web browser with JavaScript enabled.",
-          "availableOnDevice": ["Desktop", "Mobile", "Tablet"],
-          "countriesSupported": "Worldwide",
-          "inLanguage": "en-US",
-          "isAccessibleForFree": true,
-          "featureList": [
-            "Morse Code to text conversion",
-            "Text to Morse Code conversion",
-            "Automatic direction detection",
-            "Morse Code audio playback",
-            "WPM speed control",
-            "Farnsworth timing",
-            "Character breakdown",
-            "Copy and share results",
-            "Morse Code learning resources",
-            "Morse Code alphabet reference",
-            "Morse Code numbers reference"
-          ],
-          "softwareHelp": {
-            "@type": "WebPage",
-            "url": "https://morsecodetranslatr.io/learn-morse-code/"
-          },
-          "publisher": { "@id": "https://morsecodetranslatr.io/#organization" },
-          "mainEntityOfPage": { "@id": `${canonical}#webpage` }
-        });
-      }
-
-      graphNodes.push({
-        "@type": "BreadcrumbList",
-        "@id": `${canonical}#breadcrumb`,
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://morsecodetranslatr.io/" },
-          ...(canonical !== "https://morsecodetranslatr.io/" ? [{ "@type": "ListItem", "position": 2, "name": pageName, "item": canonical }] : [])
-        ]
-      });
-
-      const schemaData = {
-        "@context": "https://schema.org",
-        "@graph": graphNodes
-      };
-      jsonLdElement.textContent = JSON.stringify(schemaData, null, 2);
+      jsonLdElement.textContent = JSON.stringify(generateStructuredData(route), null, 2);
     }
   }, [activeTab]);
 
@@ -1120,10 +668,199 @@ export function App() {
             setActiveTab={setActiveTab}
           />
         )}
+
+        {activeTab === 'turkish' && (
+          <TurkishMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-alphabet' && (
+          <TurkishAlphabetPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-numbers' && (
+          <TurkishNumbersPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-morse2english' && (
+          <TurkishMorseToEnglishPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-english2morse' && (
+          <TurkishEnglishToMorsePage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-morsedecoder' && (
+          <TurkishDecoderPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-audiotranslator' && (
+          <TurkishAudioTranslatorPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-learn' && (
+          <TurkishLearnMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-howtoread' && (
+          <TurkishHowToReadPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-symbols' && (
+          <TurkishSymbolsPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-phrases' && (
+          <TurkishPhrasesPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-sos' && (
+          <TurkishSosPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-iloveyou' && (
+          <TurkishILoveYouPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-whatismorse' && (
+          <TurkishWhatIsMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-history' && (
+          <TurkishHistoryPage
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-amateurradio' && (
+          <TurkishAmateurRadioPage
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-keyer' && (
+          <TurkishKeyerPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-imagedecoder' && (
+          <TurkishImageDecoderPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'tr-practice' && (
+          <TurkishPracticePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'notfound' && (
+          <NotFoundPage setActiveTab={setActiveTab} />
+        )}
         </Suspense>
       </main>
 
-      <Footer setActiveTab={setActiveTab} />
+      <Footer activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Toast Notification Container */}
       {toastMessage && (

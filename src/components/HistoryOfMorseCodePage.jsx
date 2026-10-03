@@ -47,10 +47,15 @@ export function HistoryOfMorseCodePage({ setActiveTab, showToast, wpm = 20, freq
   };
 
   // Navigation helper
-  const handleNav = (e, tab) => {
-    e.preventDefault();
+  const handleNav = (e, tab, path) => {
+    if (e) e.preventDefault();
     if (setActiveTab) setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (path && typeof window !== 'undefined' && window.location.pathname !== path) {
+      window.history.pushState({ tab }, '', path);
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const timelineEvents = [
@@ -274,7 +279,7 @@ export function HistoryOfMorseCodePage({ setActiveTab, showToast, wpm = 20, freq
 
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           For modern translation and learning, International Morse Code is the universal standard used worldwide. For character details, consult our{' '}
-          <a href="#alphabet" onClick={(e) => handleNav(e, 'alphabet')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/morse-code-alphabet/" onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             Morse Code Alphabet guide
           </a>.
         </p>
@@ -309,7 +314,7 @@ export function HistoryOfMorseCodePage({ setActiveTab, showToast, wpm = 20, freq
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           For full details on distress signaling, see our guide on{' '}
-          <a href="#sos" onClick={(e) => handleNav(e, 'sos')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/sos-in-morse-code/" onClick={(e) => handleNav(e, 'sos', '/sos-in-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             SOS in Morse Code
           </a>.
         </p>
@@ -332,7 +337,7 @@ export function HistoryOfMorseCodePage({ setActiveTab, showToast, wpm = 20, freq
             ITU-R M.1677-1: International Morse code
           </a>
           , listed as currently in force for radiocommunication services. Learn more in our{' '}
-          <a href="#amateur-radio" onClick={(e) => handleNav(e, 'amateurradio')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/morse-code-amateur-radio/" onClick={(e) => handleNav(e, 'amateurradio', '/morse-code-amateur-radio/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             Morse Code Amateur Radio guide
           </a>.
         </p>
@@ -422,15 +427,15 @@ export function HistoryOfMorseCodePage({ setActiveTab, showToast, wpm = 20, freq
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
           <a
-            href="#translator"
-            onClick={(e) => handleNav(e, 'translator')}
+            href="/"
+            onClick={(e) => handleNav(e, 'translator', '/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#ffffff', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Launch Morse Translator Tool <ArrowRight size={18} />
           </a>
           <a
-            href="#alphabet"
-            onClick={(e) => handleNav(e, 'alphabet')}
+            href="/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'alphabet', '/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Explore Morse Alphabet Reference
