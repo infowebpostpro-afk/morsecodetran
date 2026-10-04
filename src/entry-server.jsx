@@ -51,6 +51,8 @@ import { TurkishAmateurRadioPage } from './components/TurkishAmateurRadioPage.js
 import { TurkishKeyerPage } from './components/TurkishKeyerPage.jsx';
 import { TurkishImageDecoderPage } from './components/TurkishImageDecoderPage.jsx';
 import { TurkishPracticePage } from './components/TurkishPracticePage.jsx';
+import { PrivacyPolicyPage } from './components/PrivacyPolicyPage.jsx';
+import { TurkishPrivacyPolicyPage } from './components/TurkishPrivacyPolicyPage.jsx';
 
 
 import {
@@ -519,6 +521,14 @@ export function render(url) {
             showToast={() => {}}
             setActiveTab={() => {}}
           />
+        )}
+
+        {activeTab === 'privacy' && (
+          <PrivacyPolicyPage setActiveTab={() => {}} />
+        )}
+
+        {activeTab === 'tr-privacy' && (
+          <TurkishPrivacyPolicyPage setActiveTab={() => {}} />
         )}
 
         {activeTab === 'notfound' && (

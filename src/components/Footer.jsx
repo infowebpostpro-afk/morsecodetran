@@ -140,12 +140,13 @@ export function Footer({ activeTab, setActiveTab }) {
           >
             <Info size={14} /> {isTr ? "Hakkımızda" : "About MorseCodeTranslatr"}
           </button>
-          <button
-            onClick={() => openModal('privacy')}
-            style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', textDecoration: 'underline' }}
+          <a
+            href={isTr ? "/tr/privacy-policy/" : "/privacy-policy/"}
+            onClick={(e) => handleNav(e, isTr ? 'tr-privacy' : 'privacy', isTr ? '/tr/privacy-policy/' : '/privacy-policy/')}
+            style={{ color: 'inherit', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', textDecoration: 'underline' }}
           >
             <Lock size={14} /> {isTr ? "Gizlilik Politikası" : "Privacy Policy"}
-          </button>
+          </a>
           <button
             onClick={() => openModal('contact')}
             style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '0.3rem', textDecoration: 'underline' }}

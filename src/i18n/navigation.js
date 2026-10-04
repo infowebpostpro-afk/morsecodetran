@@ -22,7 +22,8 @@ export const ROUTE_PAIRS = [
   { en: '/morse-code-amateur-radio/', tr: '/tr/morse-code-amateur-radio/', enTab: 'amateurradio', trTab: 'tr-amateurradio' },
   { en: '/morse-code-keyer/', tr: '/tr/morse-code-keyer/', enTab: 'keyer', trTab: 'tr-keyer' },
   { en: '/morse-code-image-decoder/', tr: '/tr/morse-code-image-decoder/', enTab: 'imagedecoder', trTab: 'tr-imagedecoder' },
-  { en: '/morse-code-practice/', tr: '/tr/morse-code-practice/', enTab: 'practice', trTab: 'tr-practice' }
+  { en: '/morse-code-practice/', tr: '/tr/morse-code-practice/', enTab: 'practice', trTab: 'tr-practice' },
+  { en: '/privacy-policy/', tr: '/tr/privacy-policy/', enTab: 'privacy', trTab: 'tr-privacy' }
 ];
 
 export function isTurkishRoute(tabOrPath) {
@@ -158,6 +159,7 @@ export const footerLinksEn = [
   { label: 'What is Morse Code', tab: 'whatismorse', href: '/what-is-morse-code/' },
   { label: 'History of Morse', tab: 'history', href: '/history-of-morse-code/' },
   { label: 'Amateur Radio CW', tab: 'amateurradio', href: '/morse-code-amateur-radio/' },
+  { label: 'Privacy Policy', tab: 'privacy', href: '/privacy-policy/' },
   { label: 'Mors Alfabesi Çeviri (Türkçe)', tab: 'turkish', href: '/tr/' }
 ];
 
@@ -181,5 +183,6 @@ export const footerLinksTr = [
   { label: 'Mors Alfabesi Nedir', tab: 'tr-whatismorse', href: '/tr/what-is-morse-code/' },
   { label: 'Mors Alfabesinin Tarihi', tab: 'tr-history', href: '/tr/history-of-morse-code/' },
   { label: 'Amatör Telsiz CW Rehberi', tab: 'tr-amateurradio', href: '/tr/morse-code-amateur-radio/' },
+  { label: 'Gizlilik Politikası', tab: 'tr-privacy', href: '/tr/privacy-policy/' },
   { label: 'Morse Code Translator (English)', tab: 'translator', href: '/' }
 ];

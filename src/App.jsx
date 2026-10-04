@@ -51,6 +51,8 @@ const TurkishAmateurRadioPage = lazy(() => import('./components/TurkishAmateurRa
 const TurkishKeyerPage = lazy(() => import('./components/TurkishKeyerPage.jsx').then(m => ({ default: m.TurkishKeyerPage })));
 const TurkishImageDecoderPage = lazy(() => import('./components/TurkishImageDecoderPage.jsx').then(m => ({ default: m.TurkishImageDecoderPage })));
 const TurkishPracticePage = lazy(() => import('./components/TurkishPracticePage.jsx').then(m => ({ default: m.TurkishPracticePage })));
+const PrivacyPolicyPage = lazy(() => import('./components/PrivacyPolicyPage.jsx').then(m => ({ default: m.PrivacyPolicyPage })));
+const TurkishPrivacyPolicyPage = lazy(() => import('./components/TurkishPrivacyPolicyPage.jsx').then(m => ({ default: m.TurkishPrivacyPolicyPage })));
 
 
 import {
@@ -93,7 +95,9 @@ export function App() {
     if (hash === '#amateur-radio') return 'amateurradio';
     if (hash === '#image-decoder' || hash === '#imagedecoder') return 'imagedecoder';
     if (hash === '#practice') return 'practice';
+    if (hash === '#privacy' || hash === '#privacy-policy') return 'privacy';
     if (hash === '#turkish' || hash === '#tr') return 'turkish';
+    if (hash === '#tr-privacy' || hash === '#gizlilik') return 'tr-privacy';
     if (window.location.pathname !== '/' && window.location.pathname !== '') {
       return 'notfound';
     }
@@ -852,6 +856,14 @@ export function App() {
             showToast={showToast}
             setActiveTab={setActiveTab}
           />
+        )}
+
+        {activeTab === 'privacy' && (
+          <PrivacyPolicyPage setActiveTab={setActiveTab} />
+        )}
+
+        {activeTab === 'tr-privacy' && (
+          <TurkishPrivacyPolicyPage setActiveTab={setActiveTab} />
         )}
 
         {activeTab === 'notfound' && (

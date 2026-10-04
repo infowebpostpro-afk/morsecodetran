@@ -583,6 +583,36 @@ export const ROUTES = [
     inLanguage: 'tr-TR',
   },
 
+  // Privacy Policy
+  {
+    path: '/privacy-policy/',
+    tab: 'privacy',
+    title: 'Privacy Policy – MorseCodeTranslatr.io',
+    description: 'Our Privacy Policy details our 100% client-side processing, zero data collection policy, and Chrome Web Store extension compliance guarantees.',
+    h1: 'Privacy Policy',
+    canonical: `${SITE_URL}/privacy-policy/`,
+    isArticle: true,
+    priority: '0.4',
+    changefreq: 'monthly',
+    lastmod: '2026-10-04',
+    isIndexable: true,
+    inLanguage: 'en-US',
+  },
+  {
+    path: '/tr/privacy-policy/',
+    tab: 'tr-privacy',
+    title: 'Gizlilik Politikası – MorseCodeTranslatr.io',
+    description: 'MorseCodeTranslatr gizlilik politikası: %100 tarayıcı içi yerel işlem, sıfır veri kaydı ve Chrome Web Mağazası eklenti uyumluluk ilkelerimiz.',
+    h1: 'Gizlilik Politikası',
+    canonical: `${SITE_URL}/tr/privacy-policy/`,
+    isArticle: true,
+    priority: '0.4',
+    changefreq: 'monthly',
+    lastmod: '2026-10-04',
+    isIndexable: true,
+    inLanguage: 'tr-TR',
+  },
+
   // 404
   {
     path: '/404.html',
