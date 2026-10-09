@@ -12,6 +12,7 @@ import { ArticleContent } from './components/ArticleContent.jsx';
 import { FaqSection } from './components/FaqSection.jsx';
 import { Footer } from './components/Footer.jsx';
 import { NotFoundPage } from './components/NotFoundPage.jsx';
+import { ChromeExtensionBanner } from './components/ChromeExtensionBanner.jsx';
 
 // Direct synchronous page imports for full server-side prerendering
 import { MorseAlphabetPage } from './components/MorseAlphabetPage.jsx';
@@ -155,6 +156,8 @@ export function render(url) {
               setVibrateEnabled={() => {}}
               stats={stats}
             />
+
+            <ChromeExtensionBanner activeTab={activeTab} />
 
             <ArticleContent setActiveTab={() => {}} />
             <FaqSection />

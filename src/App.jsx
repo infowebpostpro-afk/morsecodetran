@@ -12,6 +12,7 @@ import { MorseToEnglishTool } from './components/MorseToEnglishTool.jsx';
 import { FaqSection } from './components/FaqSection.jsx';
 import { ArticleContent } from './components/ArticleContent.jsx';
 import { Footer } from './components/Footer.jsx';
+import { ChromeExtensionBanner } from './components/ChromeExtensionBanner.jsx';
 
 // Lazy-loaded page components for route code-splitting
 const MorseAlphabetPage = lazy(() => import('./components/MorseAlphabetPage.jsx').then(m => ({ default: m.MorseAlphabetPage })));
@@ -486,6 +487,8 @@ export function App() {
               stats={stats}
             />
 
+            <ChromeExtensionBanner activeTab={activeTab} />
+
             <ArticleContent setActiveTab={setActiveTab} />
             <FaqSection />
           </>
@@ -495,6 +498,7 @@ export function App() {
           <>
             <ImageDecoderModule showToast={showToast} />
             <AudioDecoderModule showToast={showToast} />
+            <ChromeExtensionBanner activeTab={activeTab} />
           </>
         )}
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ShieldCheck, Info, Mail, Lock, X } from 'lucide-react';
 import { MorseLogo } from './MorseLogo';
 import { isTurkishRoute, isSpanishRoute, getEquivalentRoute, footerLinksEn, footerLinksTr, footerLinksEs } from '../i18n/navigation.js';
+import { ChromeIcon } from './ChromeIcon.jsx';
+import { CHROME_EXTENSION_URL } from './ChromeExtensionBanner.jsx';
 
 export function Footer({ activeTab, setActiveTab }) {
   const [modalType, setModalType] = useState(null); // 'about' | 'privacy' | 'contact' | null
@@ -133,6 +135,55 @@ export function Footer({ activeTab, setActiveTab }) {
             }}
           >
             Español
+          </a>
+        </div>
+
+        {/* Chrome Extension Showcase in Footer */}
+        <div className="footer-extension-showcase">
+          <a
+            href={CHROME_EXTENSION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-extension-card"
+            aria-label={
+              isTr
+                ? "Morse Code Translator Google Chrome Eklentisi"
+                : (isEs
+                  ? "Extensión de Código Morse para Google Chrome"
+                  : "Morse Code Translator Google Chrome Extension")
+            }
+          >
+            <div className="footer-extension-left">
+              <ChromeIcon size={32} />
+              <div className="footer-extension-details">
+                <div className="footer-extension-headline">
+                  <span>
+                    {isTr
+                      ? "Morse Code Translator Chrome Eklentisi"
+                      : (isEs
+                        ? "Extensión Morse Code Translator para Chrome"
+                        : "Morse Code Translator Chrome Extension")}
+                  </span>
+                  <span className="footer-ext-tag">Chrome Web Store</span>
+                </div>
+                <p className="footer-extension-desc">
+                  {isTr
+                    ? "İnternetteki herhangi bir sayfada metinleri seçip sağ tıklayarak tek adımda Mors koduna çevirin. Çevrimdışı, hafif ve %100 gizli."
+                    : (isEs
+                      ? "Selecciona texto en cualquier página y tradúcelo al instante a código Morse con un clic derecho. Rápido, offline y privado."
+                      : "Highlight text on any webpage and right-click to translate instantly to Morse code. Fast, offline, and 100% private.")}
+                </p>
+              </div>
+            </div>
+            <div className="footer-extension-cta-btn">
+              <span>
+                {isTr
+                  ? "Chrome'a Ekle (Ücretsiz)"
+                  : (isEs
+                    ? "Añadir a Chrome (Gratis)"
+                    : "Add to Chrome — Free")}
+              </span>
+            </div>
           </a>
         </div>
 

@@ -4,6 +4,7 @@ import { TurkishTranslator } from './TurkishTranslator.jsx';
 import { TurkishCharacterBreakdown } from './TurkishCharacterBreakdown.jsx';
 import { TurkishAdvancedControls } from './TurkishAdvancedControls.jsx';
 import { TurkishArticleContent } from './TurkishArticleContent.jsx';
+import { ChromeExtensionBanner } from './ChromeExtensionBanner.jsx';
 import {
   translateTurkishToMorse,
   translateMorseToTurkish,
@@ -224,6 +225,8 @@ export function TurkishMorsePage({
         setVibrateEnabled={setVibrateEnabled}
         stats={stats}
       />
+
+      <ChromeExtensionBanner lang="tr" />
 
       <TurkishArticleContent
         wpm={wpm}

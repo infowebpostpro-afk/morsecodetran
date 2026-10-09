@@ -4,6 +4,7 @@ import { SpanishTranslator } from './SpanishTranslator.jsx';
 import { SpanishCharacterBreakdown } from './SpanishCharacterBreakdown.jsx';
 import { SpanishAdvancedControls } from './SpanishAdvancedControls.jsx';
 import { SpanishArticleContent } from './SpanishArticleContent.jsx';
+import { ChromeExtensionBanner } from './ChromeExtensionBanner.jsx';
 import {
   translateSpanishToMorse,
   translateMorseToSpanish,
@@ -224,6 +225,8 @@ export function SpanishMorsePage({
         setVibrateEnabled={setVibrateEnabled}
         stats={stats}
       />
+
+      <ChromeExtensionBanner lang="es" />
 
       <SpanishArticleContent
         setActiveTab={setActiveTab}

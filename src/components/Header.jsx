@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MorseLogo } from './MorseLogo';
 import { Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
 import { navigationEn, navigationTr, navigationEs, isTurkishRoute, isSpanishRoute, getEquivalentRoute } from '../i18n/navigation.js';
+import { ChromeIcon } from './ChromeIcon.jsx';
+import { CHROME_EXTENSION_URL } from './ChromeExtensionBanner.jsx';
 
 export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -126,6 +128,27 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
 
         {/* Action Controls */}
         <div className="header-actions">
+          {/* Chrome Extension Direct Link */}
+          <a
+            href={CHROME_EXTENSION_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-extension-badge"
+            title={
+              isTr
+                ? "Google Chrome Mors Alfabesi Eklentisi — Ücretsiz İndir"
+                : (isEs
+                  ? "Extensión de Código Morse para Google Chrome — Gratis"
+                  : "Google Chrome Morse Code Translator Extension — Free Download")
+            }
+            aria-label="Google Chrome Extension"
+          >
+            <ChromeIcon size={16} />
+            <span className="nav-extension-text">
+              {isTr ? "Eklenti" : (isEs ? "Extensión" : "Extension")}
+            </span>
+          </a>
+
           {/* Context-Preserving Crawlable Language Switcher */}
           <div className="language-switcher" aria-label={isTr ? "Dil Seçici" : (isEs ? "Selector de idioma" : "Language Selector")} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-sunken)', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', fontSize: '0.8rem', fontWeight: 600 }}>
             <a
@@ -194,6 +217,33 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
       {/* Mobile Navigation Dropdown */}
       {mobileMenuOpen && (
         <div className="mobile-menu-overlay">
+          {/* Mobile Chrome Extension Callout */}
+          <div className="mobile-extension-cta">
+            <a
+              href={CHROME_EXTENSION_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mobile-extension-link"
+            >
+              <ChromeIcon size={24} />
+              <div className="mobile-extension-info">
+                <span className="mobile-extension-title">
+                  {isTr ? "Chrome Eklentisi" : (isEs ? "Extensión Chrome" : "Chrome Extension")}
+                </span>
+                <span className="mobile-extension-sub">
+                  {isTr
+                    ? "Sağ tıkla her web sitesinde anında Mors çevirisi yapın"
+                    : (isEs
+                      ? "Traduce Morse en cualquier web con clic derecho"
+                      : "Translate Morse on any page with a right-click")}
+                </span>
+              </div>
+              <span className="mobile-extension-btn">
+                {isTr ? "Ücretsiz Ekle" : (isEs ? "Gratis" : "Get Free")}
+              </span>
+            </a>
+          </div>
+
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', padding: '1rem', borderBottom: '1px solid var(--border)' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Language / Dil / Idioma:</span>
             <a
