@@ -54,7 +54,26 @@ import { TurkishPracticePage } from './components/TurkishPracticePage.jsx';
 import { PrivacyPolicyPage } from './components/PrivacyPolicyPage.jsx';
 import { TurkishPrivacyPolicyPage } from './components/TurkishPrivacyPolicyPage.jsx';
 
-
+import { SpanishMorsePage } from './components/SpanishMorsePage.jsx';
+import { SpanishAlphabetPage } from './components/SpanishAlphabetPage.jsx';
+import { SpanishNumbersPage } from './components/SpanishNumbersPage.jsx';
+import { SpanishMorseToEnglishPage } from './components/SpanishMorseToEnglishPage.jsx';
+import { SpanishEnglishToMorsePage } from './components/SpanishEnglishToMorsePage.jsx';
+import { SpanishDecoderPage } from './components/SpanishDecoderPage.jsx';
+import { SpanishAudioTranslatorPage } from './components/SpanishAudioTranslatorPage.jsx';
+import { SpanishLearnMorsePage } from './components/SpanishLearnMorsePage.jsx';
+import { SpanishHowToReadPage } from './components/SpanishHowToReadPage.jsx';
+import { SpanishSymbolsPage } from './components/SpanishSymbolsPage.jsx';
+import { SpanishPhrasesPage } from './components/SpanishPhrasesPage.jsx';
+import { SpanishSosPage } from './components/SpanishSosPage.jsx';
+import { SpanishILoveYouPage } from './components/SpanishILoveYouPage.jsx';
+import { SpanishWhatIsMorsePage } from './components/SpanishWhatIsMorsePage.jsx';
+import { SpanishHistoryPage } from './components/SpanishHistoryPage.jsx';
+import { SpanishAmateurRadioPage } from './components/SpanishAmateurRadioPage.jsx';
+import { SpanishKeyerPage } from './components/SpanishKeyerPage.jsx';
+import { SpanishImageDecoderPage } from './components/SpanishImageDecoderPage.jsx';
+import { SpanishPracticePage } from './components/SpanishPracticePage.jsx';
+import { SpanishPrivacyPolicyPage } from './components/SpanishPrivacyPolicyPage.jsx';
 import {
   detectInputType,
   translateTextToMorse,
@@ -529,6 +548,195 @@ export function render(url) {
 
         {activeTab === 'tr-privacy' && (
           <TurkishPrivacyPolicyPage setActiveTab={() => {}} />
+        )}
+
+        {activeTab === 'spanish' && (
+          <SpanishMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-alphabet' && (
+          <SpanishAlphabetPage
+            wpm={20}
+            setWpm={() => {}}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-numbers' && (
+          <SpanishNumbersPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-morse2english' && (
+          <SpanishMorseToEnglishPage
+            wpm={20}
+            setWpm={() => {}}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-english2morse' && (
+          <SpanishEnglishToMorsePage
+            wpm={20}
+            setWpm={() => {}}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-morsedecoder' && (
+          <SpanishDecoderPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-audiotranslator' && (
+          <SpanishAudioTranslatorPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-learn' && (
+          <SpanishLearnMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-howtoread' && (
+          <SpanishHowToReadPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-symbols' && (
+          <SpanishSymbolsPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-phrases' && (
+          <SpanishPhrasesPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-sos' && (
+          <SpanishSosPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-iloveyou' && (
+          <SpanishILoveYouPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-whatismorse' && (
+          <SpanishWhatIsMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-history' && (
+          <SpanishHistoryPage
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-amateurradio' && (
+          <SpanishAmateurRadioPage
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-keyer' && (
+          <SpanishKeyerPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-imagedecoder' && (
+          <SpanishImageDecoderPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-practice' && (
+          <SpanishPracticePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'es-privacy' && (
+          <SpanishPrivacyPolicyPage setActiveTab={() => {}} />
         )}
 
         {activeTab === 'notfound' && (

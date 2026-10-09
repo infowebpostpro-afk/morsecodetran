@@ -32,6 +32,7 @@ const ILoveYouMorseCodePage = lazy(() => import('./components/ILoveYouMorseCodeP
 const WhatIsMorseCodePage = lazy(() => import('./components/WhatIsMorseCodePage.jsx').then(m => ({ default: m.WhatIsMorseCodePage })));
 const HistoryOfMorseCodePage = lazy(() => import('./components/HistoryOfMorseCodePage.jsx').then(m => ({ default: m.HistoryOfMorseCodePage })));
 const TurkishMorsePage = lazy(() => import('./components/TurkishMorsePage.jsx').then(m => ({ default: m.TurkishMorsePage })));
+const SpanishMorsePage = lazy(() => import('./components/SpanishMorsePage.jsx').then(m => ({ default: m.SpanishMorsePage })));
 
 const TurkishAlphabetPage = lazy(() => import('./components/TurkishAlphabetPage.jsx').then(m => ({ default: m.TurkishAlphabetPage })));
 const TurkishNumbersPage = lazy(() => import('./components/TurkishNumbersPage.jsx').then(m => ({ default: m.TurkishNumbersPage })));
@@ -54,7 +55,25 @@ const TurkishPracticePage = lazy(() => import('./components/TurkishPracticePage.
 const PrivacyPolicyPage = lazy(() => import('./components/PrivacyPolicyPage.jsx').then(m => ({ default: m.PrivacyPolicyPage })));
 const TurkishPrivacyPolicyPage = lazy(() => import('./components/TurkishPrivacyPolicyPage.jsx').then(m => ({ default: m.TurkishPrivacyPolicyPage })));
 
-
+const SpanishAlphabetPage = lazy(() => import('./components/SpanishAlphabetPage.jsx').then(m => ({ default: m.SpanishAlphabetPage })));
+const SpanishNumbersPage = lazy(() => import('./components/SpanishNumbersPage.jsx').then(m => ({ default: m.SpanishNumbersPage })));
+const SpanishMorseToEnglishPage = lazy(() => import('./components/SpanishMorseToEnglishPage.jsx').then(m => ({ default: m.SpanishMorseToEnglishPage })));
+const SpanishEnglishToMorsePage = lazy(() => import('./components/SpanishEnglishToMorsePage.jsx').then(m => ({ default: m.SpanishEnglishToMorsePage })));
+const SpanishDecoderPage = lazy(() => import('./components/SpanishDecoderPage.jsx').then(m => ({ default: m.SpanishDecoderPage })));
+const SpanishAudioTranslatorPage = lazy(() => import('./components/SpanishAudioTranslatorPage.jsx').then(m => ({ default: m.SpanishAudioTranslatorPage })));
+const SpanishLearnMorsePage = lazy(() => import('./components/SpanishLearnMorsePage.jsx').then(m => ({ default: m.SpanishLearnMorsePage })));
+const SpanishHowToReadPage = lazy(() => import('./components/SpanishHowToReadPage.jsx').then(m => ({ default: m.SpanishHowToReadPage })));
+const SpanishSymbolsPage = lazy(() => import('./components/SpanishSymbolsPage.jsx').then(m => ({ default: m.SpanishSymbolsPage })));
+const SpanishPhrasesPage = lazy(() => import('./components/SpanishPhrasesPage.jsx').then(m => ({ default: m.SpanishPhrasesPage })));
+const SpanishSosPage = lazy(() => import('./components/SpanishSosPage.jsx').then(m => ({ default: m.SpanishSosPage })));
+const SpanishILoveYouPage = lazy(() => import('./components/SpanishILoveYouPage.jsx').then(m => ({ default: m.SpanishILoveYouPage })));
+const SpanishWhatIsMorsePage = lazy(() => import('./components/SpanishWhatIsMorsePage.jsx').then(m => ({ default: m.SpanishWhatIsMorsePage })));
+const SpanishHistoryPage = lazy(() => import('./components/SpanishHistoryPage.jsx').then(m => ({ default: m.SpanishHistoryPage })));
+const SpanishAmateurRadioPage = lazy(() => import('./components/SpanishAmateurRadioPage.jsx').then(m => ({ default: m.SpanishAmateurRadioPage })));
+const SpanishKeyerPage = lazy(() => import('./components/SpanishKeyerPage.jsx').then(m => ({ default: m.SpanishKeyerPage })));
+const SpanishImageDecoderPage = lazy(() => import('./components/SpanishImageDecoderPage.jsx').then(m => ({ default: m.SpanishImageDecoderPage })));
+const SpanishPracticePage = lazy(() => import('./components/SpanishPracticePage.jsx').then(m => ({ default: m.SpanishPracticePage })));
+const SpanishPrivacyPolicyPage = lazy(() => import('./components/SpanishPrivacyPolicyPage.jsx').then(m => ({ default: m.SpanishPrivacyPolicyPage })));
 import {
   detectInputType,
   translateTextToMorse,
@@ -98,6 +117,8 @@ export function App() {
     if (hash === '#privacy' || hash === '#privacy-policy') return 'privacy';
     if (hash === '#turkish' || hash === '#tr') return 'turkish';
     if (hash === '#tr-privacy' || hash === '#gizlilik') return 'tr-privacy';
+    if (hash === '#spanish' || hash === '#es') return 'spanish';
+    if (hash === '#es-privacy') return 'es-privacy';
     if (window.location.pathname !== '/' && window.location.pathname !== '') {
       return 'notfound';
     }
@@ -683,6 +704,16 @@ export function App() {
           />
         )}
 
+        {activeTab === 'spanish' && (
+          <SpanishMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
         {activeTab === 'tr-alphabet' && (
           <TurkishAlphabetPage
             wpm={wpm}
@@ -864,6 +895,185 @@ export function App() {
 
         {activeTab === 'tr-privacy' && (
           <TurkishPrivacyPolicyPage setActiveTab={setActiveTab} />
+        )}
+
+        {activeTab === 'es-alphabet' && (
+          <SpanishAlphabetPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-numbers' && (
+          <SpanishNumbersPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-morse2english' && (
+          <SpanishMorseToEnglishPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-english2morse' && (
+          <SpanishEnglishToMorsePage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-morsedecoder' && (
+          <SpanishDecoderPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-audiotranslator' && (
+          <SpanishAudioTranslatorPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-learn' && (
+          <SpanishLearnMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-howtoread' && (
+          <SpanishHowToReadPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-symbols' && (
+          <SpanishSymbolsPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-phrases' && (
+          <SpanishPhrasesPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-sos' && (
+          <SpanishSosPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-iloveyou' && (
+          <SpanishILoveYouPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-whatismorse' && (
+          <SpanishWhatIsMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-history' && (
+          <SpanishHistoryPage
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-amateurradio' && (
+          <SpanishAmateurRadioPage
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-keyer' && (
+          <SpanishKeyerPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-imagedecoder' && (
+          <SpanishImageDecoderPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-practice' && (
+          <SpanishPracticePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'es-privacy' && (
+          <SpanishPrivacyPolicyPage setActiveTab={setActiveTab} />
         )}
 
         {activeTab === 'notfound' && (

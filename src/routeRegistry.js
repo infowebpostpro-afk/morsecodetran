@@ -3,14 +3,14 @@
  * Single source of truth for routes, metadata, canonicals, sitemap, and structured data.
  */
 
-import { ROUTE_PAIRS, isTurkishRoute, getEquivalentRoute } from './i18n/navigation.js';
+import { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, getEquivalentRoute } from './i18n/navigation.js';
 
 export const SITE_URL = 'https://morsecodetranslatr.io';
 export const SITE_NAME = 'MorseCodeTranslatr';
 export const LOGO_URL = `${SITE_URL}/images/logo.png`;
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/morse-code-translator-interface.png`;
 
-export { ROUTE_PAIRS, isTurkishRoute, getEquivalentRoute };
+export { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, getEquivalentRoute };
 
 export const ROUTES = [
   // 1. Home / Translator
@@ -42,6 +42,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/',
+    tab: 'spanish',
+    title: 'Traductor de Código Morse – Convierte Texto a Morse al Instante',
+    description: 'Traductor de código Morse gratuito para convertir texto a Morse y Morse a texto al instante. Reproduce audio, copia resultados y aprende el alfabeto Morse internacional.',
+    h1: 'Traductor de Código Morse',
+    canonical: `${SITE_URL}/es/`,
+    isArticle: false,
+    priority: '1.0',
+    changefreq: 'daily',
+    lastmod: '2026-10-07',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 2. Alphabet
   {
@@ -71,6 +85,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-alphabet/',
+    tab: 'es-alphabet',
+    title: 'Alfabeto Código Morse: Letras A–Z, Letra Ñ, Números y Símbolos',
+    description: 'Consulta el alfabeto código Morse completo: letras de la A a la Z, letra Ñ española, números y signos. Escucha las señales de audio y aprende las reglas ITU.',
+    h1: 'Alfabeto Código Morse: Tabla Completa de Letras A–Z, Ñ y Sonidos',
+    canonical: `${SITE_URL}/es/morse-code-alphabet/`,
+    isArticle: true,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 3. Numbers
@@ -102,6 +130,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/morse-code-numbers/',
+    tab: 'es-numbers',
+    title: 'Números en Código Morse: Tabla 0–9, Sonido y Regla de Escalera',
+    description: 'Aprende los números del 0 al 9 en código Morse. Escucha cada señal de audio, comprende la regla de escalera simétrica y practica ejercicios interactivos.',
+    h1: 'Números en Código Morse 0–9: Tabla Completa, Reglas y Audio',
+    canonical: `${SITE_URL}/es/morse-code-numbers/`,
+    isArticle: true,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 4. Morse to English (Preserves English-decoding intent in Turkish)
   {
@@ -131,6 +173,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-to-english/',
+    tab: 'es-morse2english',
+    title: 'Traductor de Morse a Texto: Decodifica Código Morse al Instante',
+    description: 'Convierte código Morse a texto en español al instante. Decodificación precisa en el navegador, reproducción de audio, desglose por letras y traducción inversa.',
+    h1: 'Traductor de Morse a Texto (Decodificador de Código Morse)',
+    canonical: `${SITE_URL}/es/morse-code-to-english/`,
+    isArticle: false,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 5. English to Morse (Preserves English-text encoding intent in Turkish)
@@ -162,6 +218,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/english-to-morse-code/',
+    tab: 'es-english2morse',
+    title: 'Traductor de Texto a Código Morse: Generador Instantáneo',
+    description: 'Convierte texto en español a código Morse internacional al instante. Reproduce el sonido de los puntos y rayas, ajusta la velocidad WPM y descarga audio WAV.',
+    h1: 'Traductor de Texto a Código Morse',
+    canonical: `${SITE_URL}/es/english-to-morse-code/`,
+    isArticle: false,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 6. Morse Decoder
   {
@@ -191,6 +261,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-decoder/',
+    tab: 'es-morsedecoder',
+    title: 'Decodificador de Código Morse: Descifra Puntos y Rayas en Línea',
+    description: 'Descifra código Morse a texto legible al instante. Pega puntos y rayas, comprueba los espacios entre letras, analiza errores y escucha las señales.',
+    h1: 'Decodificador de Código Morse',
+    canonical: `${SITE_URL}/es/morse-code-decoder/`,
+    isArticle: false,
+    priority: '0.8',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 7. Audio Translator
@@ -222,6 +306,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/morse-code-audio-translator/',
+    tab: 'es-audiotranslator',
+    title: 'Traductor de Audio Morse: Generador de Sonido y Reproductor CW',
+    description: 'Convierte texto y código Morse a audio con tono (Hz) y velocidad (WPM) personalizables. Descarga archivos de sonido WAV o practica escucha con decodificador de micrófono.',
+    h1: 'Traductor de Audio en Código Morse',
+    canonical: `${SITE_URL}/es/morse-code-audio-translator/`,
+    isArticle: false,
+    priority: '0.8',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 8. Learn Morse Code
   {
@@ -251,6 +349,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/learn-morse-code/',
+    tab: 'es-learn',
+    title: 'Cómo Aprender Código Morse: Guía Práctica para Principiantes',
+    description: 'Aprende código Morse paso a paso con entrenamiento auditivo, métodos Koch y Farnsworth, rutinas diarias de práctica y consejos para evitar errores comunes.',
+    h1: 'Cómo Aprender Código Morse: Guía Paso a Paso',
+    canonical: `${SITE_URL}/es/learn-morse-code/`,
+    isArticle: true,
+    priority: '0.8',
+    changefreq: 'weekly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 9. How to Read Morse Code
@@ -282,6 +394,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/how-to-read-morse-code/',
+    tab: 'es-howtoread',
+    title: 'Cómo Leer Código Morse: Guía Visual y Auditiva para Principiantes',
+    description: 'Aprende a leer código Morse por vista y por oído. Conoce las proporciones de puntos, rayas, espacios, tiempos PARIS, ejemplos prácticos y errores comunes.',
+    h1: 'Cómo Leer Código Morse: Guía Visual y de Oído',
+    canonical: `${SITE_URL}/es/how-to-read-morse-code/`,
+    isArticle: true,
+    priority: '0.7',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 10. Symbols
   {
@@ -311,6 +437,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-symbols/',
+    tab: 'es-symbols',
+    title: 'Símbolos en Código Morse: Puntuación, Signos Especiales y Prosigns',
+    description: 'Tabla completa de signos de puntuación, símbolos especiales y prosigns internacionales en código Morse. Escucha cada signo y aprende las normas de telegrafía.',
+    h1: 'Símbolos y Puntuación en Código Morse',
+    canonical: `${SITE_URL}/es/morse-code-symbols/`,
+    isArticle: true,
+    priority: '0.7',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 11. Phrases
@@ -342,6 +482,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/morse-code-phrases/',
+    tab: 'es-phrases',
+    title: 'Frases en Código Morse: Expresiones Populares, Saludos y Audio',
+    description: 'Descubre frases esenciales en código Morse para saludos diarios, mensajes de amor, señales de emergencia y códigos de radioaficionados con reproducción de audio.',
+    h1: 'Frases Comunes en Código Morse',
+    canonical: `${SITE_URL}/es/morse-code-phrases/`,
+    isArticle: true,
+    priority: '0.7',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 12. SOS
   {
@@ -371,6 +525,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/sos-in-morse-code/',
+    tab: 'es-sos',
+    title: 'SOS en Código Morse: Patrón (... --- ...), Significado y Sonido',
+    description: 'Aprende la señal de auxilio SOS en código Morse (... --- ...), su historia desde 1906, el prosign continuo sin espacios, señales con linterna y mitos comunes.',
+    h1: 'SOS en Código Morse: Señal de Emergencia (... --- ...)',
+    canonical: `${SITE_URL}/es/sos-in-morse-code/`,
+    isArticle: true,
+    priority: '0.7',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 13. I Love You
@@ -402,6 +570,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/i-love-you-in-morse-code/',
+    tab: 'es-iloveyou',
+    title: 'Te Amo en Código Morse: Sonido, Desglose de Letras y Copia',
+    description: 'Aprende a escribir y escuchar "Te amo" y "I love you" en código Morse. Escucha el sonido, copia el patrón para pulseras, joyas o mensajes secretos.',
+    h1: 'Te Amo en Código Morse: Desglose, Audio y Significado',
+    canonical: `${SITE_URL}/es/i-love-you-in-morse-code/`,
+    isArticle: true,
+    priority: '0.7',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 14. What is Morse Code
   {
@@ -431,6 +613,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/what-is-morse-code/',
+    tab: 'es-whatismorse',
+    title: '¿Qué es el Código Morse? Cómo Funciona y Por Qué Importa',
+    description: '¿Qué es el código Morse? Descubre cómo funcionan los puntos, las rayas, las proporciones 1:3:7, el estándar PARIS y por qué sigue utilizándose hoy en día.',
+    h1: '¿Qué es el Código Morse? Principios, Funcionamiento y Usos',
+    canonical: `${SITE_URL}/es/what-is-morse-code/`,
+    isArticle: true,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 15. History of Morse Code
@@ -462,6 +658,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/history-of-morse-code/',
+    tab: 'es-history',
+    title: 'Historia del Código Morse: Del Telégrafo a la Radio Moderna',
+    description: 'Descubre la historia del código Morse: Samuel Morse, Alfred Vail, el telégrafo eléctrico de 1844, la tragedia del Titanic y su uso en la radioafición actual.',
+    h1: 'Historia del Código Morse: De 1844 a la Era Moderna',
+    canonical: `${SITE_URL}/es/history-of-morse-code/`,
+    isArticle: true,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 16. Amateur Radio
   {
@@ -491,6 +701,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-amateur-radio/',
+    tab: 'es-amateurradio',
+    title: 'Código Morse en Radioafición: Guía CW, QSO y Códigos Q',
+    description: 'Guía de código Morse (CW) para radioaficionados: cómo realizar un contacto QSO estándar, tabla de códigos Q (QTH, QSL, QRZ), reporte RST y consejos de operación.',
+    h1: 'Código Morse en Radioafición: Guía Práctica de CW y QSO',
+    canonical: `${SITE_URL}/es/morse-code-amateur-radio/`,
+    isArticle: true,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 17. Keyer
@@ -522,6 +746,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/morse-code-keyer/',
+    tab: 'es-keyer',
+    title: 'Manipulador de Telégrafo Online: Simulador de Llave Morse',
+    description: 'Manipulador de código Morse interactivo. Practica la pulsación de puntos y rayas con teclado, ratón o pantalla táctil para medir tu velocidad y ritmo.',
+    h1: 'Manipulador Telegráfico Interactivo (Simulador de Llave Morse)',
+    canonical: `${SITE_URL}/es/morse-code-keyer/`,
+    isArticle: false,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // 18. Image Decoder
   {
@@ -551,6 +789,20 @@ export const ROUTES = [
     lastmod: '2026-10-03',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/morse-code-image-decoder/',
+    tab: 'es-imagedecoder',
+    title: 'Decodificador de Código Morse desde Imágenes y Fotos Online',
+    description: 'Decodifica código Morse a partir de imágenes, fotos y capturas de pantalla. Sube una imagen, ajusta el contraste, extrae los puntos y rayas y conviértelos a texto.',
+    h1: 'Decodificador de Código Morse desde Imágenes y Fotos',
+    canonical: `${SITE_URL}/es/morse-code-image-decoder/`,
+    isArticle: true,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 19. Practice
@@ -582,6 +834,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'tr-TR',
   },
+  {
+    path: '/es/morse-code-practice/',
+    tab: 'es-practice',
+    title: 'Práctica de Código Morse: Entrenador Auditivo y Ejercicios',
+    description: 'Mejora tu capacidad de comprensión auditiva en código Morse. Entrenador interactivo con velocidad WPM y tono configurables para reconocer letras y palabras de oído.',
+    h1: 'Práctica de Código Morse: Entrenador Auditivo Interactivo',
+    canonical: `${SITE_URL}/es/morse-code-practice/`,
+    isArticle: true,
+    priority: '0.6',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
+  },
 
   // Privacy Policy
   {
@@ -611,6 +877,20 @@ export const ROUTES = [
     lastmod: '2026-10-04',
     isIndexable: true,
     inLanguage: 'tr-TR',
+  },
+  {
+    path: '/es/privacy-policy/',
+    tab: 'es-privacy',
+    title: 'Política de Privacidad – MorseCodeTranslatr.io',
+    description: 'Política de privacidad de MorseCodeTranslatr: procesamiento 100% en el navegador del cliente, sin recopilación de datos personales y cumplimiento estricto.',
+    h1: 'Política de Privacidad',
+    canonical: `${SITE_URL}/es/privacy-policy/`,
+    isArticle: true,
+    priority: '0.4',
+    changefreq: 'monthly',
+    lastmod: '2026-10-08',
+    isIndexable: true,
+    inLanguage: 'es-ES',
   },
 
   // 404
@@ -658,11 +938,12 @@ export function getRouteByTab(tab) {
 }
 
 export function generateStructuredData(route) {
-  const isHome = route.path === '/' || route.path === '/tr/';
+  const isHome = route.path === '/' || route.path === '/tr/' || route.path === '/es/';
   const isTurkish = isTurkishRoute(route);
+  const isSpanish = isSpanishRoute(route);
   const pageName = route.title.split('–')[0].split('-')[0].split(':')[0].trim();
   const mainEntityId = route.isArticle ? `${route.canonical}#article` : `${route.canonical}#application`;
-  const language = isTurkish ? 'tr-TR' : 'en-US';
+  const language = isTurkish ? 'tr-TR' : (isSpanish ? 'es-ES' : 'en-US');
 
   const graph = [
     {
@@ -670,10 +951,12 @@ export function generateStructuredData(route) {
       "@id": `${SITE_URL}/#website`,
       "url": `${SITE_URL}/`,
       "name": SITE_NAME,
-      "alternateName": isTurkish ? "Mors Alfabesi Çeviri" : "Morse Code Translator",
+      "alternateName": isTurkish ? "Mors Alfabesi Çeviri" : (isSpanish ? "Traductor de Código Morse" : "Morse Code Translator"),
       "description": isTurkish
         ? "Metin ve Mors kodunu anında dönüştüren, sesli dinleme ve Türkçe karakter desteği sunan ücretsiz çevrimiçi Mors alfabesi çeviri aracı."
-        : "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code.",
+        : (isSpanish
+          ? "Traductor de código Morse gratuito para convertir texto a Morse y Morse a texto al instante. Reproduce audio, copia resultados y aprende el alfabeto Morse internacional."
+          : "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code."),
       "publisher": {
         "@id": `${SITE_URL}/#organization`
       },
@@ -745,6 +1028,16 @@ export function generateStructuredData(route) {
       "WAV ses dosyası indirme",
       "Tek tıkla panoya kopyalama ve paylaşma",
       "Türkçe Mors alfabesi tablosu"
+    ] : isSpanish ? [
+      "Conversión instantánea de texto a código Morse",
+      "Decodificación instantánea de Morse a texto",
+      "Soporte para caracteres españoles y normalización (Ñ, Á, É, Í, Ó, Ú)",
+      "Reproducción de audio Morse y control de velocidad WPM",
+      "Ajuste de temporización Farnsworth",
+      "Visualización letra por letra y vista previa de audio",
+      "Descarga de archivo de audio WAV",
+      "Copia y compartir con un clic",
+      "Referencia del alfabeto Morse español"
     ] : [
       "Morse Code to text conversion",
       "Text to Morse Code conversion",
@@ -762,14 +1055,14 @@ export function generateStructuredData(route) {
     graph.push({
       "@type": "WebApplication",
       "@id": `${route.canonical}#application`,
-      "name": isTurkish ? (route.h1 || "Mors Alfabesi Çeviri & Mors Kodu Çevirici") : pageName,
-      "alternateName": isTurkish ? "Mors Çevirici" : SITE_NAME,
+      "name": isTurkish ? (route.h1 || "Mors Alfabesi Çeviri & Mors Kodu Çevirici") : (isSpanish ? (route.h1 || "Traductor de Código Morse") : pageName),
+      "alternateName": isTurkish ? "Mors Çevirici" : (isSpanish ? "Traductor Morse" : SITE_NAME),
       "url": route.canonical,
       "description": route.description,
       "applicationCategory": "EducationalApplication",
-      "applicationSubCategory": isTurkish ? "Mors Alfabesi Çevirici" : "Morse Code Translator",
+      "applicationSubCategory": isTurkish ? "Mors Alfabesi Çevirici" : (isSpanish ? "Traductor de Código Morse" : "Morse Code Translator"),
       "operatingSystem": "Any",
-      "browserRequirements": isTurkish ? "JavaScript etkin modern bir web tarayıcısı gerektirir." : "Requires a modern web browser with JavaScript enabled.",
+      "browserRequirements": isTurkish ? "JavaScript etkin modern bir web tarayıcısı gerektirir." : (isSpanish ? "Requiere un navegador web moderno con JavaScript habilitado." : "Requires a modern web browser with JavaScript enabled."),
       "availableOnDevice": ["Desktop", "Mobile", "Tablet"],
       "countriesSupported": "Worldwide",
       "inLanguage": language,
@@ -777,7 +1070,7 @@ export function generateStructuredData(route) {
       "featureList": featureList,
       "softwareHelp": {
         "@type": "WebPage",
-        "url": isTurkish ? `${SITE_URL}/tr/` : `${SITE_URL}/learn-morse-code/`
+        "url": isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/learn-morse-code/`)
       },
       "publisher": {
         "@id": `${SITE_URL}/#organization`
@@ -845,13 +1138,70 @@ export function generateStructuredData(route) {
     });
   }
 
+  if (route.tab === 'spanish') {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${route.canonical}#faq`,
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "¿Cómo se traducen los caracteres españoles (Ñ, Á, É, Í, Ó, Ú) en código Morse?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La Unión Internacional de Telecomunicaciones (ITU-R M.1677-1) define oficialmente solo las 26 letras latinas básicas (A–Z). Por ello, en la comunicación Morse internacional, los caracteres especiales del español se normalizan generalmente a su equivalente latino más cercano (Á→A, É→E, Í→I, Ó→O, Ú→U, Ü→U, Ñ→N). Sin embargo, existe una convención de extensión para la letra Ñ con el código --.--. Nuestro traductor admite ambos enfoques: normalización estándar ITU y extensión española para Ñ."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cómo se deben dejar los espacios entre letras y palabras en código Morse?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El código Morse sigue reglas de temporización estrictas: entre los símbolos dentro de una letra hay 1 unidad, entre dos letras diferentes hay 3 unidades (en texto: 1 espacio estándar), y entre dos palabras diferentes hay 7 unidades (en texto: barra / o 3 espacios)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Por qué el código Morse sin espacios no se puede decodificar correctamente?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Porque el código Morse es un código de longitud variable. La misma secuencia de puntos y rayas puede interpretarse como diferentes combinaciones de letras sin espacios para identificar los límites de cada carácter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuál es la diferencia entre SOS y la señal de emergencia continua (<SOS>)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cuando se escribe como letras separadas S O S, hay espacios de 3 unidades entre ellas (... --- ...). Sin embargo, la señal internacional de emergencia <SOS> se transmite como un solo símbolo continuo (prosign) sin espacios entre letras (...---...)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Puedo descargar el código Morse como archivo de audio (WAV)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí. Después de ingresar tu texto o código Morse, haz clic en el botón Descargar WAV en la barra de herramientas para descargar la señal Morse generada como un archivo de audio WAV estándar."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Para qué sirven los ajustes WPM y Farnsworth?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WPM (Words Per Minute) representa el número de palabras estándar transmitidas por minuto. El ajuste Farnsworth mantiene la velocidad interna de las letras alta mientras alarga el tiempo de espera entre letras y palabras, ayudando a los principiantes a memorizar las letras auditivamente."
+          }
+        }
+      ]
+    });
+  }
+
   if (route.isIndexable) {
     const breadcrumbs = [
       {
         "@type": "ListItem",
         "position": 1,
-        "name": isTurkish ? "Ana Sayfa" : "Home",
-        "item": isTurkish ? `${SITE_URL}/tr/` : `${SITE_URL}/`
+        "name": isTurkish ? "Ana Sayfa" : (isSpanish ? "Inicio" : "Home"),
+        "item": isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/`)
       }
     ];
 

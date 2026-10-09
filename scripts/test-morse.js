@@ -1,5 +1,6 @@
 import { translateTextToMorse, translateMorseToText, detectInputType, encodeEnglishDetailed, calculateStatistics } from '../src/engine/morseEngine.js';
 import { translateTurkishToMorse, translateMorseToTurkish, toTurkishUpper, detectTurkishCharacters } from '../src/engine/turkishMorse.js';
+import { translateSpanishToMorse, translateMorseToSpanish, detectSpanishCharacters } from '../src/engine/spanishMorse.js';
 import { audioEngine } from '../src/engine/audioEngine.js';
 
 console.log('=== MORSE CONVERSION & ENGINE UNIT TESTS ===');
@@ -33,7 +34,20 @@ const tests = [
   { name: 'Turkish Special Chars (Extended Mode)', fn: () => translateTurkishToMorse('ÇĞÖŞÜ', 'extended').morseText, expected: '-.-.. --.-. ---. ---- ..--' },
   { name: 'Turkish Decode Extended Mode (ÇĞÖŞÜ)', fn: () => translateMorseToTurkish('-.-.. --.-. ---. ---- ..--', 'extended'), expected: 'ÇĞÖŞÜ' },
   { name: 'Turkish Case Conversion (dotted i / dotless ı)', fn: () => `${toTurkishUpper('i')} ${toTurkishUpper('ı')}`, expected: 'İ I' },
-  { name: 'Turkish Diacritic Detection', fn: () => detectTurkishCharacters('Türkçe Öğreniyorum').sort().join(','), expected: 'i,k,r,y,z' ? detectTurkishCharacters('Türkçe Öğreniyorum').sort().join(',') : '' }
+  { name: 'Turkish Diacritic Detection', fn: () => detectTurkishCharacters('Türkçe Öğreniyorum').sort().join(','), expected: 'i,k,r,y,z' ? detectTurkishCharacters('Türkçe Öğreniyorum').sort().join(',') : '' },
+  // Spanish Specific Engine Tests
+  { name: 'Spanish HOLA', fn: () => translateSpanishToMorse('HOLA').morseText, expected: '.... --- .-.. .-' },
+  { name: 'Spanish HOLA MUNDO', fn: () => translateSpanishToMorse('HOLA MUNDO').morseText, expected: '.... --- .-.. .- / -- ..- -. -.. ---' },
+  { name: 'Spanish Decode HOLA MUNDO', fn: () => translateMorseToSpanish('.... --- .-.. .- / -- ..- -. -.. ---'), expected: 'HOLA MUNDO' },
+  { name: 'Spanish TE AMO', fn: () => translateSpanishToMorse('TE AMO').morseText, expected: '- . / .- -- ---' },
+  { name: 'Spanish SOS', fn: () => translateSpanishToMorse('SOS').morseText, expected: '... --- ...' },
+  { name: 'Spanish EÑE (Extended Mode --.--)', fn: () => translateSpanishToMorse('NIÑO', 'extended').morseText, expected: '-. .. --.-- ---' },
+  { name: 'Spanish Decode EÑE (Extended Mode)', fn: () => translateMorseToSpanish('-. .. --.-- ---', 'extended'), expected: 'NIÑO' },
+  { name: 'Spanish EÑE (Standard ITU Normalization N)', fn: () => translateSpanishToMorse('NIÑO', 'standard').morseText, expected: '-. .. -. ---' },
+  { name: 'Spanish Accents Normalization (Á É Í Ó Ú Ü)', fn: () => translateSpanishToMorse('ÁRBOL ÉXITO DÍA CANCIÓN MÚSICA PINGÜINO').morseText, expected: translateSpanishToMorse('ARBOL EXITO DIA CANCION MUSICA PINGUINO').morseText },
+  { name: 'Spanish Inverted Punctuation (¿ and ¡) in Extended Mode', fn: () => translateSpanishToMorse('¿HOLA? ¡SI!', 'extended').morseText, expected: '..-.- .... --- .-.. .- ..--.. / --...- ... .. -.-.--' },
+  { name: 'Spanish Inverted Punctuation (¿ and ¡) in Standard Mode Normalization', fn: () => translateSpanishToMorse('¿HOLA? ¡SI!', 'standard').morseText, expected: '..--.. .... --- .-.. .- ..--.. / -.-.-- ... .. -.-.--' },
+  { name: 'Spanish Diacritic Detection', fn: () => detectSpanishCharacters('¿Cómo estás, niño?').sort().join(','), expected: '¿,á,ñ,ó' }
 ];
 
 let passed = 0;

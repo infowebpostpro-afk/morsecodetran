@@ -56,24 +56,27 @@ for (const route of ROUTES) {
 
   // HTML Lang check
   const isTr = route.path.startsWith('/tr/');
-  const expectedLang = isTr ? 'tr' : 'en';
+  const isEs = route.path.startsWith('/es/');
+  const expectedLang = isTr ? 'tr' : (isEs ? 'es' : 'en');
   const langMatch = html.match(/<html[^>]*lang=["']([^"']+)["']/i);
   const actualLang = langMatch ? langMatch[1] : '';
   const langOk = actualLang === expectedLang;
 
   // Hreflang reciprocal check
   let hreflangOk = true;
-  const pair = ROUTE_PAIRS.find(p => p.en === route.path || p.tr === route.path);
+  const pair = ROUTE_PAIRS.find(p => p.en === route.path || p.tr === route.path || p.es === route.path);
   if (pair && route.isIndexable) {
     const enUrl = `https://morsecodetranslatr.io${pair.en}`;
     const trUrl = `https://morsecodetranslatr.io${pair.tr}`;
+    const esUrl = `https://morsecodetranslatr.io${pair.es}`;
     const hasEnHreflang = html.includes(`hreflang="en" href="${enUrl}"`);
     const hasTrHreflang = html.includes(`hreflang="tr" href="${trUrl}"`);
+    const hasEsHreflang = html.includes(`hreflang="es" href="${esUrl}"`);
     const hasXDefault = html.includes(`hreflang="x-default" href="${enUrl}"`);
-    hreflangOk = hasEnHreflang && hasTrHreflang && hasXDefault;
+    hreflangOk = hasEnHreflang && hasTrHreflang && hasEsHreflang && hasXDefault;
   } else {
     // 404 or non-indexable routes should NOT have hreflang
-    hreflangOk = !html.includes('hreflang="tr"') && !html.includes('hreflang="en"');
+    hreflangOk = !html.includes('hreflang="tr"') && !html.includes('hreflang="en"') && !html.includes('hreflang="es"');
   }
 
   // Robots check

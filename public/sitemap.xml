@@ -11,12 +11,22 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-alphabet/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-alphabet/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-alphabet/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,12 +41,22 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-numbers/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-to-english/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-to-english/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-to-english/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -51,12 +71,22 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/english-to-morse-code/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-decoder/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-decoder/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-decoder/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -71,12 +101,22 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-audio-translator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/learn-morse-code/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/learn-morse-code/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/learn-morse-code/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -91,12 +131,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/how-to-read-morse-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-symbols/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-symbols/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-symbols/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -111,12 +161,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-phrases/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/sos-in-morse-code/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/sos-in-morse-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/sos-in-morse-code/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -131,12 +191,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/i-love-you-in-morse-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/what-is-morse-code/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/what-is-morse-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/what-is-morse-code/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -151,12 +221,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/history-of-morse-code/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-amateur-radio/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-amateur-radio/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-amateur-radio/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -171,12 +251,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-keyer/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/morse-code-image-decoder/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/morse-code-image-decoder/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-image-decoder/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -191,12 +281,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://morsecodetranslatr.io/es/morse-code-practice/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://morsecodetranslatr.io/privacy-policy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
     <loc>https://morsecodetranslatr.io/tr/privacy-policy/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://morsecodetranslatr.io/es/privacy-policy/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
