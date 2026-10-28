@@ -34,6 +34,12 @@ const WhatIsMorseCodePage = lazy(() => import('./components/WhatIsMorseCodePage.
 const HistoryOfMorseCodePage = lazy(() => import('./components/HistoryOfMorseCodePage.jsx').then(m => ({ default: m.HistoryOfMorseCodePage })));
 const TurkishMorsePage = lazy(() => import('./components/TurkishMorsePage.jsx').then(m => ({ default: m.TurkishMorsePage })));
 const SpanishMorsePage = lazy(() => import('./components/SpanishMorsePage.jsx').then(m => ({ default: m.SpanishMorsePage })));
+const PortugueseMorsePage = lazy(() => import('./components/PortugueseMorsePage.jsx').then(m => ({ default: m.PortugueseMorsePage })));
+const PortugueseAlphabetPage = lazy(() => import('./components/PortugueseAlphabetPage.jsx').then(m => ({ default: m.PortugueseAlphabetPage })));
+const PortugueseNumbersPage = lazy(() => import('./components/PortugueseNumbersPage.jsx').then(m => ({ default: m.PortugueseNumbersPage })));
+const PortugueseMorseToEnglishPage = lazy(() => import('./components/PortugueseMorseToEnglishPage.jsx').then(m => ({ default: m.PortugueseMorseToEnglishPage })));
+const PortugueseEnglishToMorsePage = lazy(() => import('./components/PortugueseEnglishToMorsePage.jsx').then(m => ({ default: m.PortugueseEnglishToMorsePage })));
+const PortugueseDecoderPage = lazy(() => import('./components/PortugueseDecoderPage.jsx').then(m => ({ default: m.PortugueseDecoderPage })));
 
 const TurkishAlphabetPage = lazy(() => import('./components/TurkishAlphabetPage.jsx').then(m => ({ default: m.TurkishAlphabetPage })));
 const TurkishNumbersPage = lazy(() => import('./components/TurkishNumbersPage.jsx').then(m => ({ default: m.TurkishNumbersPage })));
@@ -120,6 +126,7 @@ export function App() {
     if (hash === '#tr-privacy' || hash === '#gizlilik') return 'tr-privacy';
     if (hash === '#spanish' || hash === '#es') return 'spanish';
     if (hash === '#es-privacy') return 'es-privacy';
+    if (hash === '#portuguese' || hash === '#pt') return 'portuguese';
     if (window.location.pathname !== '/' && window.location.pathname !== '') {
       return 'notfound';
     }
@@ -710,6 +717,67 @@ export function App() {
 
         {activeTab === 'spanish' && (
           <SpanishMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'portuguese' && (
+          <PortugueseMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'pt-alphabet' && (
+          <PortugueseAlphabetPage
+            wpm={wpm}
+            setWpm={setWpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'pt-numbers' && (
+          <PortugueseNumbersPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'pt-english2morse' && (
+          <PortugueseEnglishToMorsePage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'pt-morse2english' && (
+          <PortugueseMorseToEnglishPage
+            wpm={wpm}
+            frequency={frequency}
+            volume={volume}
+            showToast={showToast}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab === 'pt-morsedecoder' && (
+          <PortugueseDecoderPage
             wpm={wpm}
             frequency={frequency}
             volume={volume}

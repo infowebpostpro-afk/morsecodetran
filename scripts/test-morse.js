@@ -1,6 +1,7 @@
 import { translateTextToMorse, translateMorseToText, detectInputType, encodeEnglishDetailed, calculateStatistics } from '../src/engine/morseEngine.js';
 import { translateTurkishToMorse, translateMorseToTurkish, toTurkishUpper, detectTurkishCharacters } from '../src/engine/turkishMorse.js';
 import { translateSpanishToMorse, translateMorseToSpanish, detectSpanishCharacters } from '../src/engine/spanishMorse.js';
+import { translatePortugueseToMorse, translateMorseToPortuguese, normalizePortugueseText, translatePortugueseNumbersToMorse, translateMorseToPortugueseNumbers, diagnosePortugueseMorse } from '../src/engine/portugueseMorse.js';
 import { audioEngine } from '../src/engine/audioEngine.js';
 
 console.log('=== MORSE CONVERSION & ENGINE UNIT TESTS ===');
@@ -47,7 +48,65 @@ const tests = [
   { name: 'Spanish Accents Normalization (Á É Í Ó Ú Ü)', fn: () => translateSpanishToMorse('ÁRBOL ÉXITO DÍA CANCIÓN MÚSICA PINGÜINO').morseText, expected: translateSpanishToMorse('ARBOL EXITO DIA CANCION MUSICA PINGUINO').morseText },
   { name: 'Spanish Inverted Punctuation (¿ and ¡) in Extended Mode', fn: () => translateSpanishToMorse('¿HOLA? ¡SI!', 'extended').morseText, expected: '..-.- .... --- .-.. .- ..--.. / --...- ... .. -.-.--' },
   { name: 'Spanish Inverted Punctuation (¿ and ¡) in Standard Mode Normalization', fn: () => translateSpanishToMorse('¿HOLA? ¡SI!', 'standard').morseText, expected: '..--.. .... --- .-.. .- ..--.. / -.-.-- ... .. -.-.--' },
-  { name: 'Spanish Diacritic Detection', fn: () => detectSpanishCharacters('¿Cómo estás, niño?').sort().join(','), expected: '¿,á,ñ,ó' }
+  { name: 'Spanish Diacritic Detection', fn: () => detectSpanishCharacters('¿Cómo estás, niño?').sort().join(','), expected: '¿,á,ñ,ó' },
+  // Portuguese Specific Engine Tests
+  { name: 'Portuguese Example 1 (OI)', fn: () => translatePortugueseToMorse('OI').morseText, expected: '--- ..' },
+  { name: 'Portuguese Example 2 (OLA MUNDO)', fn: () => translatePortugueseToMorse('OLA MUNDO').morseText, expected: '--- .-.. .- / -- ..- -. -.. ---' },
+  { name: 'Portuguese Example 3 (SOS)', fn: () => translatePortugueseToMorse('SOS').morseText, expected: '... --- ...' },
+  { name: 'Portuguese Example 4 (AJUDA)', fn: () => translatePortugueseToMorse('AJUDA').morseText, expected: '.- .--- ..- -.. .-' },
+  { name: 'Portuguese Example 5 (OBRIGADO)', fn: () => translatePortugueseToMorse('OBRIGADO').morseText, expected: '--- -... .-. .. --. .- -.. ---' },
+  { name: 'Portuguese Example 6 (EU TE AMO)', fn: () => translatePortugueseToMorse('EU TE AMO').morseText, expected: '. ..- / - . / .- -- ---' },
+  { name: 'Portuguese Decode OI', fn: () => translateMorseToPortuguese('--- ..').text, expected: 'OI' },
+  { name: 'Portuguese Decode OLA MUNDO', fn: () => translateMorseToPortuguese('--- .-.. .- / -- ..- -. -.. ---').text, expected: 'OLA MUNDO' },
+  { name: 'Portuguese Decode SOS', fn: () => translateMorseToPortuguese('... --- ...').text, expected: 'SOS' },
+  { name: 'Portuguese Decode AJUDA', fn: () => translateMorseToPortuguese('.- .--- ..- -.. .-').text, expected: 'AJUDA' },
+  { name: 'Portuguese Decode OBRIGADO', fn: () => translateMorseToPortuguese('--- -... .-. .. --. .- -.. ---').text, expected: 'OBRIGADO' },
+  { name: 'Portuguese Decode EU TE AMO', fn: () => translateMorseToPortuguese('. ..- / - . / .- -- ---').text, expected: 'EU TE AMO' },
+  { name: 'Portuguese OLÁ -> OLA normalization', fn: () => {
+    const res = translatePortugueseToMorse('OLÁ');
+    return res.normalizedText === 'OLA' && res.morseText === '--- .-.. .-' && res.hasNormalizedDiacritics;
+  }, expected: true },
+  { name: 'Portuguese AÇÃO -> ACAO normalization', fn: () => {
+    const res = translatePortugueseToMorse('AÇÃO');
+    return res.normalizedText === 'ACAO' && res.morseText === '.- -.-. .- ---' && res.hasNormalizedDiacritics;
+  }, expected: true },
+  { name: 'Portuguese Combining Marks normalization', fn: () => {
+    const precomposed = normalizePortugueseText('Olá, você!');
+    const combining = normalizePortugueseText('Ola\u0301, voce\u0302!');
+    return precomposed.normalized === 'OLA, VOCE!' && combining.normalized === 'OLA, VOCE!';
+  }, expected: true },
+  { name: 'Portuguese Unsupported emoji detection', fn: () => {
+    const res = translatePortugueseToMorse('Olá 😀');
+    return res.hasUnsupported && res.unsupportedChars.includes('😀');
+  }, expected: true },
+  { name: 'Portuguese Unrecognized Morse sequence', fn: () => {
+    const res = translateMorseToPortuguese('.......');
+    return res.hasUnrecognizedMorse && res.unrecognizedSequences.includes('.......');
+  }, expected: true },
+  { name: 'Portuguese Boundary check / ambiguous letters without space', fn: () => {
+    const res = translateMorseToPortuguese('...---...');
+    return res.hasAmbiguousLetters;
+  }, expected: true },
+  { name: 'Portuguese BOM DIA -> Morse', fn: () => translatePortugueseToMorse('BOM DIA').morseText, expected: '-... --- -- / -.. .. .-' },
+  { name: 'Portuguese Decode BOM DIA', fn: () => translateMorseToPortuguese('-... --- -- / -.. .. .-').text, expected: 'BOM DIA' },
+  { name: 'Portuguese Numbers 2026 -> Morse', fn: () => translatePortugueseNumbersToMorse('2026').morseText, expected: '..--- ----- ..--- -....' },
+  { name: 'Portuguese Numbers Decode 2026', fn: () => translateMorseToPortugueseNumbers('..--- ----- ..--- -....').text, expected: '2026' },
+  { name: 'Portuguese Numbers 007 (leading zeros preserved)', fn: () => translatePortugueseNumbersToMorse('007').morseText, expected: '----- ----- --...' },
+  { name: 'Portuguese Numbers Decode 007', fn: () => translateMorseToPortugueseNumbers('----- ----- --...').text, expected: '007' },
+  { name: 'Portuguese .- decodes as A', fn: () => translateMorseToPortuguese('.-').text, expected: 'A' },
+  { name: 'Portuguese . - decodes as ET', fn: () => translateMorseToPortuguese('. -').text, expected: 'ET' },
+  { name: 'Portuguese .......... identified as unrecognized', fn: () => {
+    const res = translateMorseToPortuguese('..........');
+    return res.hasUnrecognizedMorse && res.unrecognizedSequences.includes('..........');
+  }, expected: true },
+  { name: 'Portuguese Decoder diagnostics on invalid group', fn: () => {
+    const diag = diagnosePortugueseMorse('--- .......... ..');
+    return !diag.allValid && diag.hasInvalid && diag.groups.some(g => g.group === '..........' && !g.isValid && g.status === 'Não reconhecido');
+  }, expected: true },
+  { name: 'Portuguese Decoder diagnostics on valid message', fn: () => {
+    const diag = diagnosePortugueseMorse('--- .. / - ..- -.. --- / -... . --');
+    return diag.allValid && !diag.hasInvalid && diag.recognizedText === 'OI TUDO BEM';
+  }, expected: true }
 ];
 
 let passed = 0;

@@ -287,7 +287,7 @@ export function SpanishHistoryPage({ setActiveTab, showToast, wpm = 20, frequenc
 
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           Este estándar internacional unificado es el que se enseña y utiliza hoy en todo el mundo. Para consultar la correspondencia completa de caracteres, revisa nuestra guía del{' '}
-          <a href="/es/alfabeto-codigo-morse/" onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/morse-code-alphabet/" onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             alfabeto Morse
           </a>.
         </p>
@@ -322,7 +322,7 @@ export function SpanishHistoryPage({ setActiveTab, showToast, wpm = 20, frequenc
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           La tragedia impulsó la promulgación de la Ley de Radio de 1912 y acuerdos mundiales SOLAS, estableciendo guardias de escucha radiotelegráfica obligatorias las 24 horas a bordo de todos los buques comerciales de ultramar. Consulta nuestra guía sobre{' '}
-          <a href="/es/sos-en-codigo-morse/" onClick={(e) => handleNav(e, 'sos', '/es/sos-en-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/sos-in-morse-code/" onClick={(e) => handleNav(e, 'es-sos', '/es/sos-in-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             SOS en código Morse
           </a>.
         </p>
@@ -345,7 +345,7 @@ export function SpanishHistoryPage({ setActiveTab, showToast, wpm = 20, frequenc
             Recomendación UIT-R M.1677-1: Código Morse Internacional
           </a>
           . Para descubrir su aplicación en bandas de aficionados, consulta nuestra guía de{' '}
-          <a href="/es/radioaficionados-codigo-morse/" onClick={(e) => handleNav(e, 'amateurradio', '/es/radioaficionados-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/morse-code-amateur-radio/" onClick={(e) => handleNav(e, 'es-amateurradio', '/es/morse-code-amateur-radio/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             código Morse para radioaficionados
           </a>.
         </p>
@@ -442,8 +442,8 @@ export function SpanishHistoryPage({ setActiveTab, showToast, wpm = 20, frequenc
             Lanzar Traductor Morse en Español <ArrowRight size={18} />
           </a>
           <a
-            href="/es/alfabeto-codigo-morse/"
-            onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')}
+            href="/es/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Explorar Alfabeto en Código Morse

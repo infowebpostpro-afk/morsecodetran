@@ -14,7 +14,18 @@
   RewriteCond %{HTTP_HOST} ^www\.morsecodetranslatr\.io$ [NC]
   RewriteRule ^ https://morsecodetranslatr.io%{REQUEST_URI} [L,R=301]
 
-  # 3. Trailing Slash Normalization for Static Route Directories
+  # 3. Spanish URL Migration 301 Redirects (One-hop permanent redirects)
+  RewriteRule ^es/alfabeto-codigo-morse/?$ /es/morse-code-alphabet/ [R=301,L]
+  RewriteRule ^es/aprender-codigo-morse/?$ /es/learn-morse-code/ [R=301,L]
+  RewriteRule ^es/sos-en-codigo-morse/?$ /es/sos-in-morse-code/ [R=301,L]
+  RewriteRule ^es/manipulador-codigo-morse/?$ /es/morse-code-keyer/ [R=301,L]
+  RewriteRule ^es/numeros-codigo-morse/?$ /es/morse-code-numbers/ [R=301,L]
+  RewriteRule ^es/morse-code-i-love-you/?$ /es/i-love-you-in-morse-code/ [R=301,L]
+  RewriteRule ^es/radioaficionados-codigo-morse/?$ /es/morse-code-amateur-radio/ [R=301,L]
+  RewriteRule ^es/decodificador-codigo-morse/?$ /es/morse-code-decoder/ [R=301,L]
+  RewriteRule ^es/historia-del-codigo-morse/?$ /es/history-of-morse-code/ [R=301,L]
+
+  # 4. Trailing Slash Normalization for Static Route Directories
   # Redirect /path to /path/ if not a static file
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$

@@ -1,15 +1,31 @@
 import React from 'react';
 import { ChromeIcon } from './ChromeIcon.jsx';
 import { ExternalLink, Zap, ShieldCheck, MousePointerClick, CheckCircle2, Sparkles } from 'lucide-react';
-import { isTurkishRoute, isSpanishRoute } from '../i18n/navigation.js';
+import { isTurkishRoute, isSpanishRoute, isPortugueseRoute } from '../i18n/navigation.js';
 
 export const CHROME_EXTENSION_URL = 'https://chromewebstore.google.com/detail/morse-code-translator/hnnkhgpepcnlfdboenfhmajkbckimceo';
 
 export function ChromeExtensionBanner({ activeTab, lang, className = '' }) {
   const isTr = lang === 'tr' || isTurkishRoute(activeTab);
   const isEs = lang === 'es' || isSpanishRoute(activeTab);
+  const isPt = lang === 'pt' || isPortugueseRoute(activeTab);
 
-  const content = isTr
+  const content = isPt
+    ? {
+        badge: 'EXTENSÃO OFICIAL DO CHROME',
+        headline: 'Traduza Código Morse em Qualquer Página da Web',
+        subheadline:
+          'Instale nossa extensão gratuita para o Google Chrome. Selecione qualquer texto em qualquer página da web, clique com o botão direito e converta instantaneamente em código Morse sem sair da sua aba.',
+        features: [
+          { icon: MousePointerClick, text: 'Tradução rápida com o botão direito em qualquer site' },
+          { icon: ShieldCheck, text: '100% Offline e privado (sem rastreamento, processamento local)' },
+          { icon: Zap, text: 'Conversor bidirecional instantâneo (Texto ⇄ Código Morse)' }
+        ],
+        cta: 'Adicionar ao Chrome — Grátis',
+        subCta: 'Disponível na Chrome Web Store • Manifest V3 • Grátis',
+        rating: '5.0 ★★★★★ Extensão Oficial'
+      }
+    : isTr
     ? {
         badge: 'RESMİ CHROME EKLENTİSİ',
         headline: 'Web’de Gezinirken Her Yerde Mors Kodu Çevirin',

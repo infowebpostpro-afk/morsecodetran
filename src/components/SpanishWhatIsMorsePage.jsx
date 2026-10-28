@@ -420,7 +420,7 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           Para profundizar en esta cronología, consulta nuestra guía completa sobre la{' '}
-          <a href="/es/historia-del-codigo-morse/" onClick={(e) => handleNav(e, 'history', '/es/historia-del-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/history-of-morse-code/" onClick={(e) => handleNav(e, 'es-history', '/es/history-of-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             historia del código Morse
           </a>.
         </p>
@@ -442,7 +442,7 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
           <a href="https://www.itu.int/rec/R-REC-M.1677-1-200910-I/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 500 }}>
             Recomendación UIT-R M.1677-1
           </a>. Para consultar todas las letras y signos, accede a nuestra tabla del{' '}
-          <a href="/es/alfabeto-codigo-morse/" onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/morse-code-alphabet/" onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             alfabeto Morse completo
           </a>.
         </p>
@@ -481,7 +481,7 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
         </p>
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           Descubre los detalles completos en nuestro artículo sobre{' '}
-          <a href="/es/sos-en-codigo-morse/" onClick={(e) => handleNav(e, 'sos', '/es/sos-en-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/sos-in-morse-code/" onClick={(e) => handleNav(e, 'es-sos', '/es/sos-in-morse-code/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             SOS en código Morse
           </a>.
         </p>
@@ -503,7 +503,7 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
             </h3>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
               Cientos de miles de radioaficionados en España y Latinoamérica practican diariamente telegrafía (onda continua / CW). Las señales telegráficas atraviesan el ruido y el desvanecimiento ionosférico con mucha mayor eficacia que la voz. Conoce más en nuestra guía de{' '}
-              <a href="/es/radioaficionados-codigo-morse/" onClick={(e) => handleNav(e, 'amateurradio', '/es/radioaficionados-codigo-morse/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>
+              <a href="/es/morse-code-amateur-radio/" onClick={(e) => handleNav(e, 'es-amateurradio', '/es/morse-code-amateur-radio/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>
                 código Morse para radioaficionados
               </a>.
             </p>
@@ -593,8 +593,8 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <a
-            href="/es/aprender-codigo-morse/"
-            onClick={(e) => handleNav(e, 'learn', '/es/aprender-codigo-morse/')}
+            href="/es/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'es-learn', '/es/learn-morse-code/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#000000', fontWeight: 700, textDecoration: 'none' }}
           >
             Ir a la Guía para Aprender Morse <ArrowRight size={16} />
@@ -679,8 +679,8 @@ export function SpanishWhatIsMorsePage({ setActiveTab, showToast, wpm = 20, freq
             Lanzar Traductor Morse <ArrowRight size={18} />
           </a>
           <a
-            href="/es/alfabeto-codigo-morse/"
-            onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')}
+            href="/es/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Explorar Alfabeto en Código Morse

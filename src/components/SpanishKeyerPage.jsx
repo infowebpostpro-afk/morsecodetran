@@ -715,7 +715,7 @@ export function SpanishKeyerPage({
               </tr>
               <tr>
                 <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                  <a href="/es/decodificador-codigo-morse/" onClick={(e) => handleNav(e, 'morsedecoder', '/es/decodificador-codigo-morse/')} style={{ color: 'inherit', textDecoration: 'underline' }}>Decodificador Morse</a>
+                  <a href="/es/morse-code-decoder/" onClick={(e) => handleNav(e, 'es-morsedecoder', '/es/morse-code-decoder/')} style={{ color: 'inherit', textDecoration: 'underline' }}>Decodificador Morse</a>
                 </td>
                 <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Analizar sintácticamente secuencias de puntos y rayas</td>
                 <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Pegar código para resolver inconsistencias de espacio</td>
@@ -796,8 +796,8 @@ export function SpanishKeyerPage({
             Traductor Morse en Español <ArrowRight size={16} />
           </a>
           <a
-            href="/es/aprender-codigo-morse/"
-            onClick={(e) => handleNav(e, 'learn', '/es/aprender-codigo-morse/')}
+            href="/es/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'es-learn', '/es/learn-morse-code/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--surface-hover)', color: 'var(--text-primary)', fontWeight: 700, border: '1px solid var(--border-color)', textDecoration: 'none' }}
           >
             Guía de Aprendizaje

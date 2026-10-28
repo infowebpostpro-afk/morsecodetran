@@ -467,7 +467,7 @@ export function SpanishLearnMorsePage({ wpm = 20, setWpm, frequency = 600, volum
 
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           Para profundizar en la simetría de las cifras, revisa nuestra guía completa de{' '}
-          <a href="/es/numeros-codigo-morse/" onClick={(e) => handleNav(e, 'numbers', '/es/numeros-codigo-morse/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>
+          <a href="/es/morse-code-numbers/" onClick={(e) => handleNav(e, 'es-numbers', '/es/morse-code-numbers/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>
             Números en Código Morse
           </a>.
         </p>
@@ -625,15 +625,15 @@ export function SpanishLearnMorsePage({ wpm = 20, setWpm, frequency = 600, volum
 
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
           <a
-            href="/es/decodificador-codigo-morse/"
-            onClick={(e) => handleNav(e, 'morsedecoder', '/es/decodificador-codigo-morse/')}
+            href="/es/morse-code-decoder/"
+            onClick={(e) => handleNav(e, 'es-morsedecoder', '/es/morse-code-decoder/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#000000', fontWeight: 700, textDecoration: 'none' }}
           >
             Decodificador de Código Morse <ArrowRight size={16} />
           </a>
           <a
-            href="/es/manipulador-codigo-morse/"
-            onClick={(e) => handleNav(e, 'keyer', '/es/manipulador-codigo-morse/')}
+            href="/es/morse-code-keyer/"
+            onClick={(e) => handleNav(e, 'es-keyer', '/es/morse-code-keyer/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none' }}
           >
             Manipulador Telegráfico Interactivo

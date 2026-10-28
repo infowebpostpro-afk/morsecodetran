@@ -157,20 +157,20 @@ export function SpanishSymbolsPage({ wpm = 20, frequency = 600, volume = 0.5, sh
         {/* Botones de navegación interna rápida */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '0.75rem', marginTop: '1rem' }}>
           <a 
-            href="/es/alfabeto-codigo-morse/"
-            onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')}
+            href="/es/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.45rem 0.9rem', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', textDecoration: 'none', transition: 'all 0.2s' }}>
             <Type size={15} /> Alfabeto Morse (A–Z y Ñ)
           </a>
           <a 
-            href="/es/numeros-codigo-morse/"
-            onClick={(e) => handleNav(e, 'numbers', '/es/numeros-codigo-morse/')}
+            href="/es/morse-code-numbers/"
+            onClick={(e) => handleNav(e, 'es-numbers', '/es/morse-code-numbers/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.45rem 0.9rem', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', textDecoration: 'none', transition: 'all 0.2s' }}>
             <Hash size={15} /> Números Morse (0–9)
           </a>
           <a 
-            href="/es/decodificador-codigo-morse/"
-            onClick={(e) => handleNav(e, 'morsedecoder', '/es/decodificador-codigo-morse/')}
+            href="/es/morse-code-decoder/"
+            onClick={(e) => handleNav(e, 'es-morsedecoder', '/es/morse-code-decoder/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-hover)', border: '1px solid var(--border-color)', color: 'var(--text-primary)', padding: '0.45rem 0.9rem', borderRadius: '0.5rem', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer', textDecoration: 'none', transition: 'all 0.2s' }}>
             <FileText size={15} /> Decodificador Morse
           </a>
@@ -623,8 +623,8 @@ export function SpanishSymbolsPage({ wpm = 20, frequency = 600, volume = 0.5, sh
             Traductor Morse en Español <ArrowRight size={16} />
           </a>
           <a
-            href="/es/decodificador-codigo-morse/"
-            onClick={(e) => handleNav(e, 'morsedecoder', '/es/decodificador-codigo-morse/')}
+            href="/es/morse-code-decoder/"
+            onClick={(e) => handleNav(e, 'es-morsedecoder', '/es/morse-code-decoder/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.65rem 1.25rem', borderRadius: '0.5rem', background: 'var(--surface-hover)', color: 'var(--text-primary)', fontWeight: 600, border: '1px solid var(--border-color)', textDecoration: 'none' }}
           >
             Decodificador de Código Morse <ArrowRight size={16} />

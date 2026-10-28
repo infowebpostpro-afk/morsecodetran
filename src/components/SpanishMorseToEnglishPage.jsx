@@ -722,8 +722,8 @@ export function SpanishMorseToEnglishPage({ wpm = 20, setWpm, frequency = 600, v
             Traductor de Texto a Morse <ArrowRight size={16} />
           </a>
           <a
-            href="/es/alfabeto-codigo-morse/"
-            onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')}
+            href="/es/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none' }}
           >
             Tabla del Alfabeto Morse

@@ -415,8 +415,8 @@ export function SpanishPhrasesPage({ wpm = 20, frequency = 600, volume = 0.5, sh
             Abrir Traductor de Texto a Morse
           </a>
           <a
-            href="/es/morse-code-i-love-you/"
-            onClick={(e) => handleNav(e, 'es-iloveyou', '/es/morse-code-i-love-you/')}
+            href="/es/i-love-you-in-morse-code/"
+            onClick={(e) => handleNav(e, 'es-iloveyou', '/es/i-love-you-in-morse-code/')}
             style={{ padding: '0.85rem 1.75rem', background: 'var(--surface-elevated)', color: 'var(--text)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', fontWeight: 700, cursor: 'pointer', fontSize: '1rem', textDecoration: 'none' }}
           >
             Ver Frases de Amor (Te Amo)

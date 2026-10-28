@@ -63,18 +63,24 @@ async function runPrerender() {
     );
 
     // Handle html lang attribute
+    const isPortuguese = route.path.startsWith('/pt/') || route.inLanguage === 'pt-BR' || (route.tab && route.tab.startsWith('pt-')) || route.tab === 'portuguese';
     const isTurkish = route.path.startsWith('/tr/') || route.inLanguage === 'tr-TR' || (route.tab && route.tab.startsWith('tr-')) || route.tab === 'turkish';
     const isSpanish = route.path.startsWith('/es/') || route.inLanguage === 'es-ES' || (route.tab && route.tab.startsWith('es-')) || route.tab === 'spanish';
-    const htmlLang = isTurkish ? 'tr' : (isSpanish ? 'es' : 'en');
+    const htmlLang = isPortuguese ? 'pt-BR' : (isTurkish ? 'tr' : (isSpanish ? 'es' : 'en'));
     html = html.replace(/<html[^>]*lang=["'][^"']*["']/i, `<html lang="${htmlLang}"`);
 
-    // Handle reciprocal hreflang for English, Turkish, and Spanish equivalent pages
-    const pair = ROUTE_PAIRS.find(p => p.en === route.path || p.tr === route.path || p.es === route.path);
+    // Handle reciprocal hreflang for English, Turkish, Spanish, and Portuguese equivalent pages
+    const pair = ROUTE_PAIRS.find(p => p.en === route.path || p.tr === route.path || p.es === route.path || (p.pt && p.pt === route.path));
     if (pair && route.isIndexable) {
       const enUrl = `https://morsecodetranslatr.io${pair.en}`;
       const trUrl = `https://morsecodetranslatr.io${pair.tr}`;
       const esUrl = `https://morsecodetranslatr.io${pair.es}`;
-      const hreflangTags = `  <link rel="alternate" hreflang="en" href="${enUrl}" />\n  <link rel="alternate" hreflang="tr" href="${trUrl}" />\n  <link rel="alternate" hreflang="es" href="${esUrl}" />\n  <link rel="alternate" hreflang="x-default" href="${enUrl}" />\n`;
+      let hreflangTags = `  <link rel="alternate" hreflang="en" href="${enUrl}" />\n  <link rel="alternate" hreflang="tr" href="${trUrl}" />\n  <link rel="alternate" hreflang="es" href="${esUrl}" />\n`;
+      if (pair.pt) {
+        const ptUrl = `https://morsecodetranslatr.io${pair.pt}`;
+        hreflangTags += `  <link rel="alternate" hreflang="pt-BR" href="${ptUrl}" />\n`;
+      }
+      hreflangTags += `  <link rel="alternate" hreflang="x-default" href="${enUrl}" />\n`;
       html = html.replace('</head>', `${hreflangTags}</head>`);
     }
 
@@ -157,7 +163,7 @@ async function runPrerender() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${indexableRoutes.map(r => `  <url>
     <loc>${r.canonical}</loc>
-    <changefreq>${r.changefreq}</changefreq>
+    ${r.lastmod ? `<lastmod>${r.lastmod}</lastmod>\n    ` : ''}<changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
   </url>`).join('\n')}
 </urlset>

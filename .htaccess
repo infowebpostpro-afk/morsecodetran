@@ -1,0 +1,52 @@
+# Apache configuration for MorseCodeTranslatr.io
+# Enforces HTTPS, non-www, trailing-slash consistency, and genuine HTTP 404 handling
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Redirect HTTP to HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 2. Redirect www to non-www
+  RewriteCond %{HTTP_HOST} ^www\.morsecodetranslatr\.io$ [NC]
+  RewriteRule ^ https://morsecodetranslatr.io%{REQUEST_URI} [L,R=301]
+
+  # 3. Spanish URL Migration 301 Redirects (One-hop permanent redirects)
+  RewriteRule ^es/alfabeto-codigo-morse/?$ /es/morse-code-alphabet/ [R=301,L]
+  RewriteRule ^es/aprender-codigo-morse/?$ /es/learn-morse-code/ [R=301,L]
+  RewriteRule ^es/sos-en-codigo-morse/?$ /es/sos-in-morse-code/ [R=301,L]
+  RewriteRule ^es/manipulador-codigo-morse/?$ /es/morse-code-keyer/ [R=301,L]
+  RewriteRule ^es/numeros-codigo-morse/?$ /es/morse-code-numbers/ [R=301,L]
+  RewriteRule ^es/morse-code-i-love-you/?$ /es/i-love-you-in-morse-code/ [R=301,L]
+  RewriteRule ^es/radioaficionados-codigo-morse/?$ /es/morse-code-amateur-radio/ [R=301,L]
+  RewriteRule ^es/decodificador-codigo-morse/?$ /es/morse-code-decoder/ [R=301,L]
+  RewriteRule ^es/historia-del-codigo-morse/?$ /es/history-of-morse-code/ [R=301,L]
+
+  # 4. Trailing Slash Normalization for Static Route Directories
+  # Redirect /path to /path/ if not a static file
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+  RewriteRule ^(.*)$ /$1/ [R=301,L]
+
+  # 5. Pass through existing static files and directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+</IfModule>
+
+# 6. Return Genuine HTTP 404 for nonexistent resources (Never return 200 for 404)
+ErrorDocument 404 /404.html
+
+# 7. Performance caching headers for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/webp "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/html "access plus 0 seconds"
+</IfModule>

@@ -316,7 +316,7 @@ export function SpanishAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, vol
 
         <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           Puedes entrenar tu técnica de manipulación directamente en el navegador con nuestro{' '}
-          <a href="/es/manipulador-codigo-morse/" onClick={(e) => handleNav(e, 'keyer', '/es/manipulador-codigo-morse/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
+          <a href="/es/morse-code-keyer/" onClick={(e) => handleNav(e, 'es-keyer', '/es/morse-code-keyer/')} style={{ color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline' }}>
             manipulador telegráfico interactivo
           </a>.
         </p>
@@ -454,15 +454,15 @@ export function SpanishAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, vol
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           <a
-            href="/es/aprender-codigo-morse/"
-            onClick={(e) => handleNav(e, 'learn', '/es/aprender-codigo-morse/')}
+            href="/es/learn-morse-code/"
+            onClick={(e) => handleNav(e, 'es-learn', '/es/learn-morse-code/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'var(--accent-primary)', color: '#000000', fontWeight: 700, textDecoration: 'none' }}
           >
             Ir a la Guía para Aprender Morse <ArrowRight size={16} />
           </a>
           <a
-            href="/es/manipulador-codigo-morse/"
-            onClick={(e) => handleNav(e, 'keyer', '/es/manipulador-codigo-morse/')}
+            href="/es/morse-code-keyer/"
+            onClick={(e) => handleNav(e, 'es-keyer', '/es/morse-code-keyer/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none' }}
           >
             Practicar con el Manipulador Telegráfico
@@ -562,8 +562,8 @@ export function SpanishAmateurRadioPage({ wpm = 20, setWpm, frequency = 600, vol
             Lanzar Traductor Morse en Español <ArrowRight size={18} />
           </a>
           <a
-            href="/es/alfabeto-codigo-morse/"
-            onClick={(e) => handleNav(e, 'alphabet', '/es/alfabeto-codigo-morse/')}
+            href="/es/morse-code-alphabet/"
+            onClick={(e) => handleNav(e, 'es-alphabet', '/es/morse-code-alphabet/')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.85rem 1.75rem', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', fontWeight: 700, textDecoration: 'none', fontSize: '1rem' }}
           >
             Consultar Alfabeto Morse

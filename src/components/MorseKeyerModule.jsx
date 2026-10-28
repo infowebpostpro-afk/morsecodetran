@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { audioEngine } from '../engine/audioEngine.js';
 import { translateMorseToText } from '../engine/morseEngine.js';
+import { translateMorseToPortuguese } from '../engine/portugueseMorse.js';
 
 // Preset target messages for practice modes
 const PRESET_CATEGORIES = {
@@ -32,6 +33,30 @@ const PRESET_CATEGORIES = {
   ]
 };
 
+const PRESET_CATEGORIES_PT = {
+  beginner: [
+    { label: 'Letra E', text: 'E' },
+    { label: 'Letra T', text: 'T' },
+    { label: 'Letra A', text: 'A' },
+    { label: 'Letra N', text: 'N' },
+    { label: 'Letra S', text: 'S' },
+    { label: 'Letra O', text: 'O' }
+  ],
+  common: [
+    { label: 'SOS', text: 'SOS' },
+    { label: 'OLÁ', text: 'OLA' },
+    { label: 'TESTE', text: 'TESTE' },
+    { label: 'CQ', text: 'CQ' },
+    { label: 'RÁDIO', text: 'RADIO' }
+  ],
+  phrases: [
+    { label: 'OLÁ MUNDO', text: 'OLA MUNDO' },
+    { label: 'BOM DIA', text: 'BOM DIA' },
+    { label: 'OBRIGADO', text: 'OBRIGADO' },
+    { label: '73 DE PY', text: '73 DE PY' }
+  ]
+};
+
 export function MorseKeyerModule({
   wpm = 20,
   frequency = 600,
@@ -39,8 +64,11 @@ export function MorseKeyerModule({
   volume = 0.5,
   setVolume,
   showToast,
-  setActiveTab
+  setActiveTab,
+  lang = 'en'
 }) {
+  const isPt = lang === 'pt';
+  const presets = isPt ? PRESET_CATEGORIES_PT : PRESET_CATEGORIES;
   // Keyer Input State
   const [keyedMorse, setKeyedMorse] = useState('');
   const [isKeyDown, setIsKeyDown] = useState(false);
@@ -207,7 +235,10 @@ export function MorseKeyerModule({
   }, [isKeyDown, dashThreshold, keySoundEnabled, keyFrequency, keyVolume]);
 
   // Derived Decoded Text
-  const decodedText = useMemo(() => translateMorseToText(keyedMorse), [keyedMorse]);
+  const decodedText = useMemo(() => {
+    if (!keyedMorse) return '';
+    return isPt ? translateMorseToPortuguese(keyedMorse).text : translateMorseToText(keyedMorse);
+  }, [keyedMorse, isPt]);
 
   // Practice Accuracy & Completion Calculation
   const practiceMetrics = useMemo(() => {
@@ -332,9 +363,9 @@ export function MorseKeyerModule({
   const copyToClipboard = async (text, label) => {
     try {
       await navigator.clipboard.writeText(text);
-      if (showToast) showToast(`Copied ${label} to clipboard! ✓`);
+      if (showToast) showToast(isPt ? `${label} copiado! ✓` : `Copied ${label} to clipboard! ✓`);
     } catch (e) {
-      if (showToast) showToast('Copy failed. Please copy manually.');
+      if (showToast) showToast(isPt ? 'Não foi possível copiar. Copie manualmente.' : 'Copy failed. Please copy manually.');
     }
   };
 
@@ -351,13 +382,15 @@ export function MorseKeyerModule({
       {/* PAGE HEADER SECTION (Step 3) */}
       <div style={{ textAlign: 'center', padding: '2rem 1rem 1.5rem', marginBottom: '1.5rem' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(168, 85, 247, 0.1)', color: 'var(--accent-primary)', padding: '0.35rem 0.85rem', borderRadius: '999px', fontSize: '0.85rem', fontWeight: 600, marginBottom: '0.75rem', border: '1px solid rgba(168, 85, 247, 0.2)' }}>
-          <Radio size={16} /> Morse Telegraph Workstation & Practice Trainer
+          <Radio size={16} /> {isPt ? 'Estação de Telegrafia Morse e Treinador Prático' : 'Morse Telegraph Workstation & Practice Trainer'}
         </div>
         <h1 style={{ fontSize: 'clamp(2rem, 4.5vw, 2.75rem)', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.2, margin: '0 0 0.5rem' }}>
-          Interactive Morse Telegraph Keyer
+          {isPt ? 'Manipulador Telegráfico Morse Interativo' : 'Interactive Morse Telegraph Keyer'}
         </h1>
         <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', maxWidth: '720px', margin: '0 auto', lineHeight: 1.6 }}>
-          Practice sending Morse code with a virtual telegraph key or your keyboard. Tap for dots, hold for dashes, and see your Morse decoded in real time.
+          {isPt
+            ? 'Pratique o envio de código Morse com um manipulador virtual ou seu teclado. Toque para pontos, segure para traços e veja seu Morse decodificado em tempo real.'
+            : 'Practice sending Morse code with a virtual telegraph key or your keyboard. Tap for dots, hold for dashes, and see your Morse decoded in real time.'}
         </p>
       </div>
 
@@ -365,9 +398,9 @@ export function MorseKeyerModule({
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
         <div style={{ display: 'inline-flex', background: 'var(--surface-card)', padding: '0.3rem', borderRadius: '0.75rem', border: '1px solid var(--border-color)', gap: '0.25rem' }}>
           {[
-            { id: 'free', label: 'Free Keying', icon: Radio, desc: 'Send any Morse message freely' },
-            { id: 'guided', label: 'Guided Practice', icon: Target, desc: 'Key against a target message' },
-            { id: 'challenge', label: 'Speed Challenge', icon: Zap, desc: 'Test sending speed & accuracy' }
+            { id: 'free', label: isPt ? 'Modo Livre' : 'Free Keying', icon: Radio, desc: isPt ? 'Transmita qualquer mensagem Morse livremente' : 'Send any Morse message freely' },
+            { id: 'guided', label: isPt ? 'Prática Guiada' : 'Guided Practice', icon: Target, desc: isPt ? 'Transmita contra uma mensagem alvo' : 'Key against a target message' },
+            { id: 'challenge', label: isPt ? 'Desafio de Velocidade' : 'Speed Challenge', icon: Zap, desc: isPt ? 'Teste velocidade e precisão de envio' : 'Test sending speed & accuracy' }
           ].map((modeItem) => {
             const Icon = modeItem.icon;
             const isActive = practiceMode === modeItem.id;
@@ -377,7 +410,7 @@ export function MorseKeyerModule({
                 onClick={() => {
                   setPracticeMode(modeItem.id);
                   if (modeItem.id !== 'free' && practiceStatus === 'idle') {
-                    setTargetText('HELLO');
+                    setTargetText(isPt ? 'OLA' : 'HELLO');
                   }
                 }}
                 style={{
@@ -410,16 +443,16 @@ export function MorseKeyerModule({
         <div style={{ background: 'var(--surface-card)', padding: '1.75rem 1.5rem', borderRadius: '1rem', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '340px', position: 'relative' }}>
           
           <div style={{ position: 'absolute', top: '1rem', left: '1.25rem', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Radio size={14} style={{ color: 'var(--accent-primary)' }} /> TELEGRAPH KEY
+            <Radio size={14} style={{ color: 'var(--accent-primary)' }} /> {isPt ? 'CHAVE TELEGRÁFICA' : 'TELEGRAPH KEY'}
           </div>
 
           {/* Settings Collapsible Toggle */}
           <button
             onClick={() => setShowSettings((prev) => !prev)}
-            title="Key Settings"
+            title={isPt ? "Configurações da Chave" : "Key Settings"}
             style={{ position: 'absolute', top: '0.85rem', right: '1.25rem', background: 'var(--surface-hover)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)', padding: '0.35rem 0.65rem', borderRadius: '0.4rem', fontSize: '0.8rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer' }}
           >
-            <Settings size={14} /> Settings {showSettings ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            <Settings size={14} /> {isPt ? 'Configurações' : 'Settings'} {showSettings ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
           </button>
 
           {/* TELEGRAPH KEY PAD */}
@@ -431,7 +464,7 @@ export function MorseKeyerModule({
               onTouchStart={(e) => { e.preventDefault(); handleKeyDown(); }}
               onTouchEnd={(e) => { e.preventDefault(); handleKeyUp(); }}
               onTouchCancel={(e) => { e.preventDefault(); handleKeyUp(); }}
-              aria-label="Telegraph Key - Press to transmit dot or hold for dash"
+              aria-label={isPt ? "Chave Telegráfica - Pressione para transmitir ponto ou segure para traço" : "Telegraph Key - Press to transmit dot or hold for dash"}
               style={{
                 width: '170px',
                 height: '170px',
@@ -459,10 +492,10 @@ export function MorseKeyerModule({
             >
               <Radio size={36} style={{ filter: isKeyDown ? 'drop-shadow(0 0 8px #fff)' : 'none' }} />
               <span style={{ fontSize: '1.1rem', fontWeight: 900, letterSpacing: '0.05em' }}>
-                {isKeyDown ? 'KEY DOWN' : 'PRESS & HOLD'}
+                {isKeyDown ? (isPt ? 'TRANSMITINDO' : 'KEY DOWN') : (isPt ? 'PRESSIONE E SEGURE' : 'PRESS & HOLD')}
               </span>
               <span style={{ fontSize: '0.75rem', opacity: 0.85, fontWeight: 500 }}>
-                (Mouse / Touch / Spacebar)
+                {isPt ? '(Mouse / Toque / Barra de espaço)' : '(Mouse / Touch / Spacebar)'}
               </span>
             </button>
           </div>
@@ -496,10 +529,12 @@ export function MorseKeyerModule({
                 background: isKeyDown ? 'var(--accent-primary)' : lastSymbol ? 'var(--accent-warning)' : 'var(--text-muted)'
               }} />
               {isKeyDown
-                ? 'TRANSMITTING...'
+                ? (isPt ? 'TRANSMITINDO...' : 'TRANSMITTING...')
                 : lastSymbol
-                ? `LAST SIGNAL: ${lastSymbol.type.toUpperCase()} (${lastSymbol.symbol}) — ${lastSymbol.duration}ms`
-                : 'READY TO KEY'}
+                ? (isPt
+                    ? `ÚLTIMO SINAL: ${lastSymbol.type === 'dit' ? 'PONTO' : 'TRAÇO'} (${lastSymbol.symbol}) — ${lastSymbol.duration}ms`
+                    : `LAST SIGNAL: ${lastSymbol.type.toUpperCase()} (${lastSymbol.symbol}) — ${lastSymbol.duration}ms`)
+                : (isPt ? 'PRONTO PARA TRANSMITIR' : 'READY TO KEY')}
             </span>
           </div>
 
@@ -510,10 +545,10 @@ export function MorseKeyerModule({
               style={{ background: 'none', border: 'none', color: keySoundEnabled ? 'var(--accent-success)' : 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600 }}
             >
               {keySoundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-              Sound: {keySoundEnabled ? 'ON' : 'MUTED'}
+              {isPt ? `Som: ${keySoundEnabled ? 'LIGADO' : 'MUDO'}` : `Sound: ${keySoundEnabled ? 'ON' : 'MUTED'}`}
             </button>
             <span>•</span>
-            <span>Threshold: {dashThreshold}ms</span>
+            <span>{isPt ? `Limiar: ${dashThreshold}ms` : `Threshold: ${dashThreshold}ms`}</span>
           </div>
 
         </div>
@@ -525,12 +560,16 @@ export function MorseKeyerModule({
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 {practiceMode === 'free' ? <Radio size={18} style={{ color: 'var(--accent-primary)' }} /> : <Target size={18} style={{ color: 'var(--accent-warning)' }} />}
-                {practiceMode === 'free' ? 'Free Keying Mode' : practiceMode === 'guided' ? 'Guided Practice Mode' : 'Speed Challenge Mode'}
+                {practiceMode === 'free'
+                  ? (isPt ? 'Modo Livre' : 'Free Keying Mode')
+                  : practiceMode === 'guided'
+                  ? (isPt ? 'Modo de Prática Guiada' : 'Guided Practice Mode')
+                  : (isPt ? 'Modo de Desafio de Velocidade' : 'Speed Challenge Mode')}
               </h3>
               
               {practiceMode !== 'free' && (
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, background: 'rgba(245, 158, 11, 0.15)', color: 'var(--accent-warning)', padding: '0.2rem 0.6rem', borderRadius: '0.35rem' }}>
-                  Target: {targetText}
+                  {isPt ? `Alvo: ${targetText}` : `Target: ${targetText}`}
                 </span>
               )}
             </div>
@@ -541,43 +580,43 @@ export function MorseKeyerModule({
                 
                 {practiceStatus === 'countdown' ? (
                   <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>GET READY TO KEY</div>
+                    <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{isPt ? 'PREPARE-SE PARA TRANSMITIR' : 'GET READY TO KEY'}</div>
                     <div style={{ fontSize: '3rem', fontWeight: 900, color: 'var(--accent-primary)', margin: '0.2rem 0' }}>
-                      {countdown > 0 ? countdown : 'GO!'}
+                      {countdown > 0 ? countdown : (isPt ? 'VAI!' : 'GO!')}
                     </div>
                   </div>
                 ) : practiceStatus === 'completed' && completedPracticeStats ? (
                   <div style={{ textAlign: 'center', padding: '0.5rem 0' }}>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--accent-success)', fontWeight: 800, fontSize: '1.1rem', marginBottom: '0.5rem' }}>
-                      <Award size={20} /> Practice Complete!
+                      <Award size={20} /> {isPt ? 'Prática Concluída!' : 'Practice Complete!'}
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', textAlign: 'center', margin: '0.5rem 0 1rem' }}>
                       <div style={{ background: 'var(--surface-hover)', padding: '0.5rem', borderRadius: '0.5rem' }}>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-success)' }}>{completedPracticeStats.accuracy}%</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>ACCURACY</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{isPt ? 'PRECISÃO' : 'ACCURACY'}</div>
                       </div>
                       <div style={{ background: 'var(--surface-hover)', padding: '0.5rem', borderRadius: '0.5rem' }}>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-warning)' }}>
                           {completedPracticeStats.estimatedWpm ? `${completedPracticeStats.estimatedWpm} WPM` : '—'}
                         </div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>ESTIMATED SPEED</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{isPt ? 'VELOCIDADE ESTIMADA' : 'ESTIMATED SPEED'}</div>
                       </div>
                       <div style={{ background: 'var(--surface-hover)', padding: '0.5rem', borderRadius: '0.5rem' }}>
                         <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)' }}>{formatTime(completedPracticeStats.durationSec)}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>TIME</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>{isPt ? 'TEMPO' : 'TIME'}</div>
                       </div>
                     </div>
                     <button
                       onClick={() => startPracticeSession(targetText)}
                       style={{ padding: '0.5rem 1.25rem', background: 'var(--accent-primary)', color: '#000', fontWeight: 700, borderRadius: '0.5rem', border: 'none', cursor: 'pointer' }}
                     >
-                      Try Again
+                      {isPt ? 'Tentar Novamente' : 'Try Again'}
                     </button>
                   </div>
                 ) : (
                   <div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                      Practice Target Characters
+                      {isPt ? 'Caracteres Alvo da Prática' : 'Practice Target Characters'}
                     </div>
 
                     {/* Character Match Grid */}
@@ -605,7 +644,7 @@ export function MorseKeyerModule({
                         onClick={() => startPracticeSession(targetText)}
                         style={{ width: '100%', padding: '0.65rem', background: 'var(--accent-primary)', color: '#000', fontWeight: 700, borderRadius: '0.5rem', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}
                       >
-                        <Play size={16} /> Start Practice Countdown
+                        <Play size={16} /> {isPt ? 'Iniciar Contagem de Prática' : 'Start Practice Countdown'}
                       </button>
                     )}
                   </div>
@@ -614,17 +653,19 @@ export function MorseKeyerModule({
               </div>
             ) : (
               <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: '1rem' }}>
-                Free Keying allows you to send any Morse message using mouse, touch, or spacebar. Your dots and dashes will decode live in real time below.
+                {isPt
+                  ? 'O Modo Livre permite transmitir qualquer mensagem Morse usando mouse, toque ou barra de espaço. Seus pontos e traços serão decodificados em tempo real abaixo.'
+                  : 'Free Keying allows you to send any Morse message using mouse, touch, or spacebar. Your dots and dashes will decode live in real time below.'}
               </p>
             )}
 
             {/* PRESETS SELECTOR (Step 16) */}
             <div>
               <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-                Practice Message Presets
+                {isPt ? 'Predefinições de Mensagens para Prática' : 'Practice Message Presets'}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                {PRESET_CATEGORIES.common.concat(PRESET_CATEGORIES.phrases.slice(0, 2)).map((p, idx) => (
+                {presets.common.concat(presets.phrases.slice(0, 2)).map((p, idx) => (
                   <button
                     key={idx}
                     onClick={() => {
@@ -653,8 +694,8 @@ export function MorseKeyerModule({
 
           {/* Shortcut hint */}
           <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)', borderTop: '1px solid var(--border-color)', paddingTop: '0.75rem', marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
-            <span>Shortcut: <strong>Spacebar</strong> = Key</span>
-            <span><strong>Ctrl+Z</strong> = Undo</span>
+            <span>{isPt ? 'Atalho: ' : 'Shortcut: '}<strong>{isPt ? 'Barra de espaço' : 'Spacebar'}</strong> = {isPt ? 'Chave' : 'Key'}</span>
+            <span><strong>Ctrl+Z</strong> = {isPt ? 'Desfazer' : 'Undo'}</span>
           </div>
 
         </div>
@@ -665,14 +706,14 @@ export function MorseKeyerModule({
       {showSettings && (
         <div style={{ background: 'var(--surface-card)', padding: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border-color)', marginBottom: '1.5rem' }}>
           <h4 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <Sliders size={16} style={{ color: 'var(--accent-primary)' }} /> Key & Audio Settings
+            <Sliders size={16} style={{ color: 'var(--accent-primary)' }} /> {isPt ? 'Configurações de Chave e Áudio' : 'Key & Audio Settings'}
           </h4>
 
           <div style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', display: 'grid', gap: '1.25rem' }}>
             {/* Dash Threshold */}
             <div>
               <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.35rem' }}>
-                Dash Threshold: <strong style={{ color: 'var(--accent-primary)' }}>{dashThreshold} ms</strong>
+                {isPt ? 'Limiar de Traço:' : 'Dash Threshold:'} <strong style={{ color: 'var(--accent-primary)' }}>{dashThreshold} ms</strong>
               </label>
               <input
                 type="range"
@@ -683,13 +724,13 @@ export function MorseKeyerModule({
                 onChange={(e) => setDashThreshold(Number(e.target.value))}
                 style={{ width: '100%' }}
               />
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Press duration to distinguish dash (-) from dot (.)</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{isPt ? 'Duração de pressão para distinguir traço (-) de ponto (.)' : 'Press duration to distinguish dash (-) from dot (.)'}</span>
             </div>
 
             {/* Frequency */}
             <div>
               <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.35rem' }}>
-                Tone Frequency: <strong style={{ color: 'var(--accent-primary)' }}>{keyFrequency} Hz</strong>
+                {isPt ? 'Frequência do Tom:' : 'Tone Frequency:'} <strong style={{ color: 'var(--accent-primary)' }}>{keyFrequency} Hz</strong>
               </label>
               <input
                 type="range"
@@ -703,13 +744,13 @@ export function MorseKeyerModule({
                 }}
                 style={{ width: '100%' }}
               />
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Audio tone pitch frequency</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{isPt ? 'Frequência de áudio do tom telegráfico' : 'Audio tone pitch frequency'}</span>
             </div>
 
             {/* Volume */}
             <div>
               <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', display: 'block', marginBottom: '0.35rem' }}>
-                Tone Volume: <strong style={{ color: 'var(--accent-primary)' }}>{Math.round(keyVolume * 100)}%</strong>
+                {isPt ? 'Volume do Tom:' : 'Tone Volume:'} <strong style={{ color: 'var(--accent-primary)' }}>{Math.round(keyVolume * 100)}%</strong>
               </label>
               <input
                 type="range"
@@ -723,7 +764,7 @@ export function MorseKeyerModule({
                 }}
                 style={{ width: '100%' }}
               />
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Audio tone output level</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{isPt ? 'Nível de saída do áudio' : 'Audio tone output level'}</span>
             </div>
           </div>
         </div>
@@ -737,19 +778,19 @@ export function MorseKeyerModule({
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-                YOUR KEYED MORSE CODE
+                {isPt ? 'CÓDIGO MORSE TRANSMITIDO' : 'YOUR KEYED MORSE CODE'}
               </span>
               <button
-                onClick={() => copyToClipboard(keyedMorse, 'Morse Code')}
-                title="Copy Morse"
+                onClick={() => copyToClipboard(keyedMorse, isPt ? 'Código Morse' : 'Morse Code')}
+                title={isPt ? "Copiar Código Morse" : "Copy Morse"}
                 style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.775rem', fontWeight: 600 }}
               >
-                <Copy size={13} /> Copy
+                <Copy size={13} /> {isPt ? 'Copiar' : 'Copy'}
               </button>
             </div>
 
             <div className="morse-font" style={{ minHeight: '70px', padding: '0.85rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.5rem', border: '1px solid var(--border-color)', fontSize: '1.35rem', color: 'var(--accent-warning)', wordBreak: 'break-all', letterSpacing: '2px', lineHeight: 1.5 }}>
-              {keyedMorse || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem', letterSpacing: 'normal' }}>Your keyed dots and dashes will appear here...</span>}
+              {keyedMorse || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem', letterSpacing: 'normal' }}>{isPt ? 'Seus pontos e traços transmitidos aparecerão aqui...' : 'Your keyed dots and dashes will appear here...'}</span>}
             </div>
           </div>
 
@@ -760,25 +801,25 @@ export function MorseKeyerModule({
               disabled={!keyedMorse}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.45rem 0.8rem', borderRadius: '0.4rem', border: '1px solid var(--border-color)', background: 'var(--surface-hover)', color: keyedMorse ? 'var(--text-primary)' : 'var(--text-muted)', fontSize: '0.8rem', fontWeight: 600, cursor: keyedMorse ? 'pointer' : 'not-allowed' }}
             >
-              <Undo2 size={14} /> Undo (Ctrl+Z)
+              <Undo2 size={14} /> {isPt ? 'Desfazer (Ctrl+Z)' : 'Undo (Ctrl+Z)'}
             </button>
             <button
               onClick={handleAddCharSpace}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.45rem 0.8rem', borderRadius: '0.4rem', border: '1px solid var(--border-color)', background: 'var(--surface-hover)', color: 'var(--text-primary)', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
             >
-              + Char Space
+              {isPt ? '+ Espaço Letra' : '+ Char Space'}
             </button>
             <button
               onClick={handleAddWordSpace}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.45rem 0.8rem', borderRadius: '0.4rem', border: '1px solid var(--border-color)', background: 'var(--surface-hover)', color: 'var(--text-primary)', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer' }}
             >
-              + Word Space (/)
+              {isPt ? '+ Espaço Palavra (/)' : '+ Word Space (/)'}
             </button>
             <button
               onClick={handleClear}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.45rem 0.8rem', borderRadius: '0.4rem', border: '1px solid var(--border-color)', background: 'rgba(239, 68, 68, 0.1)', color: 'var(--accent-danger)', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', marginLeft: 'auto' }}
             >
-              <Trash2 size={14} /> Clear
+              <Trash2 size={14} /> {isPt ? 'Limpar' : 'Clear'}
             </button>
           </div>
         </div>
@@ -788,25 +829,25 @@ export function MorseKeyerModule({
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', letterSpacing: '0.05em' }}>
-                LIVE DECODED TEXT
+                {isPt ? 'TEXTO DECODIFICADO EM TEMPO REAL' : 'LIVE DECODED TEXT'}
               </span>
               <button
-                onClick={() => copyToClipboard(decodedText, 'Decoded Text')}
-                title="Copy Text"
+                onClick={() => copyToClipboard(decodedText, isPt ? 'Texto Decodificado' : 'Decoded Text')}
+                title={isPt ? "Copiar Texto" : "Copy Text"}
                 style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.775rem', fontWeight: 600 }}
               >
-                <Copy size={13} /> Copy
+                <Copy size={13} /> {isPt ? 'Copiar' : 'Copy'}
               </button>
             </div>
 
             <div style={{ minHeight: '70px', padding: '0.85rem', background: 'rgba(15, 23, 42, 0.7)', borderRadius: '0.5rem', border: '1px solid var(--border-color)', fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)', wordBreak: 'break-all', lineHeight: 1.5 }}>
-              {decodedText || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem', fontWeight: 400 }}>Start pressing the key to see your decoded message...</span>}
+              {decodedText || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.9rem', fontWeight: 400 }}>{isPt ? 'Pressione a chave para ver a mensagem decodificada...' : 'Start pressing the key to see your decoded message...'}</span>}
             </div>
           </div>
 
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span>Decoded Characters: {decodedText.replace(/ /g, '').length}</span>
-            <span style={{ color: 'var(--accent-success)' }}>100% Client-Side Real-Time Decoding</span>
+            <span>{isPt ? `Caracteres Decodificados: ${decodedText.replace(/ /g, '').length}` : `Decoded Characters: ${decodedText.replace(/ /g, '').length}`}</span>
+            <span style={{ color: 'var(--accent-success)' }}>{isPt ? 'Decodificação 100% no navegador em tempo real' : '100% Client-Side Real-Time Decoding'}</span>
           </div>
         </div>
 
@@ -818,7 +859,7 @@ export function MorseKeyerModule({
         {/* SESSION STATS */}
         <div style={{ background: 'var(--surface-card)', padding: '1.25rem', borderRadius: '1rem', border: '1px solid var(--border-color)' }}>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 1rem', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Award size={16} style={{ color: 'var(--accent-primary)' }} /> SESSION STATISTICS
+            <Award size={16} style={{ color: 'var(--accent-primary)' }} /> {isPt ? 'ESTATÍSTICAS DA SESSÃO' : 'SESSION STATISTICS'}
           </h4>
 
           <div style={{ gridTemplateColumns: 'repeat(3, 1fr)', display: 'grid', gap: '0.75rem', textAlign: 'center' }}>
@@ -826,35 +867,35 @@ export function MorseKeyerModule({
               <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent-primary)' }}>
                 {decodedText.replace(/ /g, '').length}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Characters</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{isPt ? 'Caracteres' : 'Characters'}</div>
             </div>
 
             <div style={{ background: 'var(--surface-hover)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem' }}>
               <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {totalDots} / {totalDashes}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Dots / Dashes</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{isPt ? 'Pontos / Traços' : 'Dots / Dashes'}</div>
             </div>
 
             <div style={{ background: 'var(--surface-hover)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem' }}>
               <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent-warning)' }}>
                 {estimatedWpmNum ? `${estimatedWpmNum} WPM` : '—'}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Estimated WPM</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{isPt ? 'WPM Estimado' : 'Estimated WPM'}</div>
             </div>
 
             <div style={{ background: 'var(--surface-hover)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem' }}>
               <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent-success)' }}>
                 {practiceMetrics ? `${practiceMetrics.accuracy}%` : '100%'}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Accuracy</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{isPt ? 'Precisão' : 'Accuracy'}</div>
             </div>
 
             <div style={{ background: 'var(--surface-hover)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem' }}>
               <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--text-primary)' }}>
                 {formatTime(sessionDurationSec)}
               </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Session Time</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{isPt ? 'Tempo de Sessão' : 'Session Time'}</div>
             </div>
 
             <div style={{ background: 'var(--surface-hover)', padding: '0.75rem 0.5rem', borderRadius: '0.5rem' }}>
@@ -1079,10 +1120,20 @@ export function MorseKeyerModule({
           </div>
 
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
-            Once these individual characters feel comfortable, combine them into short words like <strong>SOS</strong> (<code>... --- ...</code>) and <strong>HELLO</strong> (<code>.... . .-.. .-.. ---</code>).
+            {isPt
+              ? <>Depois de dominar esses caracteres individuais, combine-os em palavras curtas como <strong>SOS</strong> (<code>... --- ...</code>) e <strong>OLA</strong> (<code>--- .-.. .-</code>).</>
+              : <>Once these individual characters feel comfortable, combine them into short words like <strong>SOS</strong> (<code>... --- ...</code>) and <strong>HELLO</strong> (<code>.... . .-.. .-.. ---</code>).</>}
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
-            To expand your practice, explore our detailed guide on <a href="/learn-morse-code/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('learn'); if (window.location.pathname !== '/learn-morse-code/') window.history.pushState({}, '', '/learn-morse-code/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>how to learn Morse code</a> or view the complete <a href="/morse-code-alphabet/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('alphabet'); if (window.location.pathname !== '/morse-code-alphabet/') window.history.pushState({}, '', '/morse-code-alphabet/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>Morse Code Alphabet</a> reference.
+            {isPt ? (
+              <>
+                Para aprofundar seu aprendizado, consulte nosso guia de <a href="/learn-morse-code/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('learn'); if (window.location.pathname !== '/learn-morse-code/') window.history.pushState({}, '', '/learn-morse-code/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>como aprender código Morse (Inglês)</a> ou veja a referência completa do <a href="/pt/alfabeto-morse/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('pt-alphabet'); if (window.location.pathname !== '/pt/alfabeto-morse/') window.history.pushState({}, '', '/pt/alfabeto-morse/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>Alfabeto Morse</a>.
+              </>
+            ) : (
+              <>
+                To expand your practice, explore our detailed guide on <a href="/learn-morse-code/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('learn'); if (window.location.pathname !== '/learn-morse-code/') window.history.pushState({}, '', '/learn-morse-code/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>how to learn Morse code</a> or view the complete <a href="/morse-code-alphabet/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('alphabet'); if (window.location.pathname !== '/morse-code-alphabet/') window.history.pushState({}, '', '/morse-code-alphabet/'); }} style={{ color: 'var(--accent-primary)', textDecoration: 'underline', fontWeight: 600 }}>Morse Code Alphabet</a> reference.
+              </>
+            )}
           </p>
         </section>
 
@@ -1190,23 +1241,45 @@ export function MorseKeyerModule({
               </thead>
               <tbody>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>Morse Code Keyer</td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Practice sending Morse code manually</td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Tap/hold key lever to produce signals</td>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--accent-primary)' }}>
+                    {isPt ? 'Manipulador Morse' : 'Morse Code Keyer'}
+                  </td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Praticar o envio manual de código Morse' : 'Practice sending Morse code manually'}
+                  </td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Pressione a chave para emitir sinais' : 'Tap/hold key lever to produce signals'}
+                  </td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                    <a href="/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('translator'); if (window.location.pathname !== '/') window.history.pushState({}, '', '/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Translator</a>
+                    {isPt ? (
+                      <a href="/pt/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('portuguese'); if (window.location.pathname !== '/pt/') window.history.pushState({}, '', '/pt/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Tradutor de Código Morse</a>
+                    ) : (
+                      <a href="/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('translator'); if (window.location.pathname !== '/') window.history.pushState({}, '', '/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Translator</a>
+                    )}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Convert text to Morse or Morse to text</td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Type text or paste Morse strings</td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Converter texto para Morse ou Morse para texto' : 'Convert text to Morse or Morse to text'}
+                  </td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Digite texto ou cole sequências Morse' : 'Type text or paste Morse strings'}
+                  </td>
                 </tr>
                 <tr>
                   <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>
-                    <a href="/morse-code-decoder/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('morsedecoder'); if (window.location.pathname !== '/morse-code-decoder/') window.history.pushState({}, '', '/morse-code-decoder/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Decoder</a>
+                    {isPt ? (
+                      <a href="/pt/decodificador-codigo-morse/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('pt-morsedecoder'); if (window.location.pathname !== '/pt/decodificador-codigo-morse/') window.history.pushState({}, '', '/pt/decodificador-codigo-morse/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Decodificador de Código Morse</a>
+                    ) : (
+                      <a href="/morse-code-decoder/" onClick={(e) => { e.preventDefault(); if (setActiveTab) setActiveTab('morsedecoder'); if (window.location.pathname !== '/morse-code-decoder/') window.history.pushState({}, '', '/morse-code-decoder/'); }} style={{ color: 'inherit', textDecoration: 'underline' }}>Morse Code Decoder</a>
+                    )}
                   </td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Decode Morse patterns & inspect symbols</td>
-                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Paste dots/dashes to troubleshoot code</td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Decodificar padrões Morse e inspecionar símbolos' : 'Decode Morse patterns & inspect symbols'}
+                  </td>
+                  <td style={{ padding: '0.85rem 1rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                    {isPt ? 'Cole pontos e traços para decodificar' : 'Paste dots/dashes to troubleshoot code'}
+                  </td>
                 </tr>
               </tbody>
             </table>

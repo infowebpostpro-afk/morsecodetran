@@ -3,14 +3,14 @@
  * Single source of truth for routes, metadata, canonicals, sitemap, and structured data.
  */
 
-import { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, getEquivalentRoute } from './i18n/navigation.js';
+import { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, isPortugueseRoute, getEquivalentRoute } from './i18n/navigation.js';
 
 export const SITE_URL = 'https://morsecodetranslatr.io';
 export const SITE_NAME = 'MorseCodeTranslatr';
 export const LOGO_URL = `${SITE_URL}/images/logo.png`;
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/morse-code-translator-interface.png`;
 
-export { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, getEquivalentRoute };
+export { ROUTE_PAIRS, isTurkishRoute, isSpanishRoute, isPortugueseRoute, getEquivalentRoute };
 
 export const ROUTES = [
   // 1. Home / Translator
@@ -56,6 +56,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'es-ES',
   },
+  {
+    path: '/pt/',
+    tab: 'portuguese',
+    title: 'Tradutor de Código Morse: Texto e Áudio | MorsePro',
+    description: 'Converta texto em código Morse e Morse em texto. Ouça os sinais, copie o resultado e confira exemplos, letras e números.',
+    h1: 'Tradutor de código Morse',
+    canonical: `${SITE_URL}/pt/`,
+    isArticle: false,
+    priority: '1.0',
+    changefreq: 'daily',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
+  },
 
   // 2. Alphabet
   {
@@ -99,6 +113,20 @@ export const ROUTES = [
     lastmod: '2026-10-08',
     isIndexable: true,
     inLanguage: 'es-ES',
+  },
+  {
+    path: '/pt/alfabeto-morse/',
+    tab: 'pt-alphabet',
+    title: 'Alfabeto Morse: Tabela A–Z com Áudio | MorsePro',
+    description: 'Consulte o alfabeto Morse de A a Z, ouça cada letra e copie os sinais. Veja exemplos, regras de espaçamento e como a ferramenta trata acentos.',
+    h1: 'Alfabeto Morse: tabela de letras de A a Z',
+    canonical: `${SITE_URL}/pt/alfabeto-morse/`,
+    isArticle: true,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
   },
 
   // 3. Numbers
@@ -144,6 +172,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'es-ES',
   },
+  {
+    path: '/pt/numeros-em-codigo-morse/',
+    tab: 'pt-numbers',
+    title: 'Números em Código Morse: Tabela 0–9 | MorsePro',
+    description: 'Converta números em código Morse e consulte a tabela de 0 a 9. Ouça os dígitos, copie o resultado e entenda espaços e zeros à esquerda.',
+    h1: 'Números em código Morse: tabela de 0 a 9',
+    canonical: `${SITE_URL}/pt/numeros-em-codigo-morse/`,
+    isArticle: true,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
+  },
 
   // 4. Morse to English (Preserves English-decoding intent in Turkish)
   {
@@ -187,6 +229,20 @@ export const ROUTES = [
     lastmod: '2026-10-08',
     isIndexable: true,
     inLanguage: 'es-ES',
+  },
+  {
+    path: '/pt/codigo-morse-para-texto/',
+    tab: 'pt-morse2english',
+    title: 'Código Morse para Texto: Converter Online | MorsePro',
+    description: 'Converta código Morse para texto. Cole pontos e traços, separe letras e palavras e confira exemplos de leitura e caracteres reconhecidos.',
+    h1: 'Código Morse para texto',
+    canonical: `${SITE_URL}/pt/codigo-morse-para-texto/`,
+    isArticle: false,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
   },
 
   // 5. English to Morse (Preserves English-text encoding intent in Turkish)
@@ -232,6 +288,20 @@ export const ROUTES = [
     isIndexable: true,
     inLanguage: 'es-ES',
   },
+  {
+    path: '/pt/texto-para-codigo-morse/',
+    tab: 'pt-english2morse',
+    title: 'Texto para Código Morse: Converter e Ouvir | MorsePro',
+    description: 'Converta texto para código Morse, ouça a mensagem e copie os sinais. Confira a normalização de acentos, espaços e caracteres não compatíveis.',
+    h1: 'Texto para código Morse',
+    canonical: `${SITE_URL}/pt/texto-para-codigo-morse/`,
+    isArticle: false,
+    priority: '0.9',
+    changefreq: 'weekly',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
+  },
 
   // 6. Morse Decoder
   {
@@ -275,6 +345,20 @@ export const ROUTES = [
     lastmod: '2026-10-08',
     isIndexable: true,
     inLanguage: 'es-ES',
+  },
+  {
+    path: '/pt/decodificador-codigo-morse/',
+    tab: 'pt-morsedecoder',
+    title: 'Decodificador de Código Morse: Conferir Sinais | MorsePro',
+    description: 'Decodifique pontos e traços e revise grupos não reconhecidos. Confira espaços, separadores e sinais alterados antes de usar a mensagem.',
+    h1: 'Decodificador de código Morse',
+    canonical: `${SITE_URL}/pt/decodificador-codigo-morse/`,
+    isArticle: false,
+    priority: '0.8',
+    changefreq: 'weekly',
+    lastmod: '2026-10-16',
+    isIndexable: true,
+    inLanguage: 'pt-BR',
   },
 
   // 7. Audio Translator
@@ -938,12 +1022,13 @@ export function getRouteByTab(tab) {
 }
 
 export function generateStructuredData(route) {
-  const isHome = route.path === '/' || route.path === '/tr/' || route.path === '/es/';
+  const isHome = route.path === '/' || route.path === '/tr/' || route.path === '/es/' || route.path === '/pt/';
   const isTurkish = isTurkishRoute(route);
   const isSpanish = isSpanishRoute(route);
+  const isPortuguese = isPortugueseRoute(route);
   const pageName = route.title.split('–')[0].split('-')[0].split(':')[0].trim();
   const mainEntityId = route.isArticle ? `${route.canonical}#article` : `${route.canonical}#application`;
-  const language = isTurkish ? 'tr-TR' : (isSpanish ? 'es-ES' : 'en-US');
+  const language = isTurkish ? 'tr-TR' : (isSpanish ? 'es-ES' : (isPortuguese ? 'pt-BR' : 'en-US'));
 
   const graph = [
     {
@@ -951,12 +1036,14 @@ export function generateStructuredData(route) {
       "@id": `${SITE_URL}/#website`,
       "url": `${SITE_URL}/`,
       "name": SITE_NAME,
-      "alternateName": isTurkish ? "Mors Alfabesi Çeviri" : (isSpanish ? "Traductor de Código Morse" : "Morse Code Translator"),
-      "description": isTurkish
-        ? "Metin ve Mors kodunu anında dönüştüren, sesli dinleme ve Türkçe karakter desteği sunan ücretsiz çevrimiçi Mors alfabesi çeviri aracı."
-        : (isSpanish
-          ? "Traductor de código Morse gratuito para convertir texto a Morse y Morse a texto al instante. Reproduce audio, copia resultados y aprende el alfabeto Morse internacional."
-          : "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code."),
+      "alternateName": isTurkish ? "Mors Alfabesi Çeviri" : (isSpanish ? "Traductor de Código Morse" : (isPortuguese ? "Tradutor de código Morse" : "Morse Code Translator")),
+      "description": isPortuguese
+        ? "Converta texto em código Morse e Morse em texto. Ouça os sinais, copie o resultado e confira exemplos, letras e números."
+        : (isTurkish
+          ? "Metin ve Mors kodunu anında dönüştüren, sesli dinleme ve Türkçe karakter desteği sunan ücretsiz çevrimiçi Mors alfabesi çeviri aracı."
+          : (isSpanish
+            ? "Traductor de código Morse gratuito para convertir texto a Morse y Morse a texto al instante. Reproduce audio, copia resultados y aprende el alfabeto Morse internacional."
+            : "Free online Morse Code Translator for converting text to Morse Code, decoding Morse Code to text, playing Morse audio, and learning International Morse Code.")),
       "publisher": {
         "@id": `${SITE_URL}/#organization`
       },
@@ -1018,7 +1105,17 @@ export function generateStructuredData(route) {
       }
     });
   } else if (route.isIndexable) {
-    const featureList = isTurkish ? [
+    const featureList = isPortuguese ? [
+      "Conversão instantânea de texto em código Morse",
+      "Decodificação de código Morse em texto",
+      "Normalização explícita de caracteres e acentos em português",
+      "Reprodução de áudio e controle de velocidade WPM",
+      "Espaçamento Farnsworth",
+      "Visualização caractere por caractere com áudio interativo",
+      "Download de áudio WAV",
+      "Cópia rápida de resultado ou entrada e resultado",
+      "Tabelas completas do alfabeto Morse e números"
+    ] : isTurkish ? [
       "Metinden Mors koduna anlık çeviri",
       "Mors kodundan metne anlık çözümleme",
       "Türkçe karakter desteği ve sadeleştirme (Ç, Ğ, İ, Ö, Ş, Ü)",
@@ -1055,14 +1152,14 @@ export function generateStructuredData(route) {
     graph.push({
       "@type": "WebApplication",
       "@id": `${route.canonical}#application`,
-      "name": isTurkish ? (route.h1 || "Mors Alfabesi Çeviri & Mors Kodu Çevirici") : (isSpanish ? (route.h1 || "Traductor de Código Morse") : pageName),
-      "alternateName": isTurkish ? "Mors Çevirici" : (isSpanish ? "Traductor Morse" : SITE_NAME),
+      "name": isPortuguese ? (route.h1 || "Tradutor de código Morse") : (isTurkish ? (route.h1 || "Mors Alfabesi Çeviri & Mors Kodu Çevirici") : (isSpanish ? (route.h1 || "Traductor de Código Morse") : pageName)),
+      "alternateName": isPortuguese ? "Tradutor Morse" : (isTurkish ? "Mors Çevirici" : (isSpanish ? "Traductor Morse" : SITE_NAME)),
       "url": route.canonical,
       "description": route.description,
       "applicationCategory": "EducationalApplication",
-      "applicationSubCategory": isTurkish ? "Mors Alfabesi Çevirici" : (isSpanish ? "Traductor de Código Morse" : "Morse Code Translator"),
+      "applicationSubCategory": isPortuguese ? "Tradutor de código Morse" : (isTurkish ? "Mors Alfabesi Çevirici" : (isSpanish ? "Traductor de Código Morse" : "Morse Code Translator")),
       "operatingSystem": "Any",
-      "browserRequirements": isTurkish ? "JavaScript etkin modern bir web tarayıcısı gerektirir." : (isSpanish ? "Requiere un navegador web moderno con JavaScript habilitado." : "Requires a modern web browser with JavaScript enabled."),
+      "browserRequirements": isPortuguese ? "Requer um navegador web moderno com JavaScript ativado." : (isTurkish ? "JavaScript etkin modern bir web tarayıcısı gerektirir." : (isSpanish ? "Requiere un navegador web moderno con JavaScript habilitado." : "Requires a modern web browser with JavaScript enabled.")),
       "availableOnDevice": ["Desktop", "Mobile", "Tablet"],
       "countriesSupported": "Worldwide",
       "inLanguage": language,
@@ -1070,7 +1167,7 @@ export function generateStructuredData(route) {
       "featureList": featureList,
       "softwareHelp": {
         "@type": "WebPage",
-        "url": isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/learn-morse-code/`)
+        "url": isPortuguese ? `${SITE_URL}/pt/` : (isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/learn-morse-code/`))
       },
       "publisher": {
         "@id": `${SITE_URL}/#organization`
@@ -1200,8 +1297,8 @@ export function generateStructuredData(route) {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": isTurkish ? "Ana Sayfa" : (isSpanish ? "Inicio" : "Home"),
-        "item": isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/`)
+        "name": isPortuguese ? "Início" : (isTurkish ? "Ana Sayfa" : (isSpanish ? "Inicio" : "Home")),
+        "item": isPortuguese ? `${SITE_URL}/pt/` : (isTurkish ? `${SITE_URL}/tr/` : (isSpanish ? `${SITE_URL}/es/` : `${SITE_URL}/`))
       }
     ];
 

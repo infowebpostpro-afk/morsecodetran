@@ -2,8 +2,10 @@ import React, { useState, useRef } from 'react';
 import { Image as ImageIcon, Upload, RefreshCw, CheckCircle, AlertTriangle, Edit3, ArrowRight } from 'lucide-react';
 import { processImageForMorse } from '../engine/imageDecoderEngine.js';
 import { translateMorseToText } from '../engine/morseEngine.js';
+import { translateMorseToPortuguese } from '../engine/portugueseMorse.js';
 
-export function ImageDecoderModule({ showToast }) {
+export function ImageDecoderModule({ showToast, lang = 'en' }) {
+  const isPt = lang === 'pt';
   const [imageSrc, setImageSrc] = useState(null);
   const [threshold, setThreshold] = useState(128);
   const [contrast, setContrast] = useState(1.0);
@@ -21,7 +23,7 @@ export function ImageDecoderModule({ showToast }) {
     const file = e.target.files && e.target.files[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        showToast('Please upload a valid image file (PNG/JPG/WEBP)');
+        showToast(isPt ? 'Envie um arquivo de imagem válido (PNG/JPG/WEBP)' : 'Please upload a valid image file (PNG/JPG/WEBP)');
         return;
       }
       const reader = new FileReader();
@@ -47,17 +49,19 @@ export function ImageDecoderModule({ showToast }) {
     };
   };
 
-  const decodedText = translateMorseToText(detectedMorse);
+  const decodedText = isPt ? translateMorseToPortuguese(detectedMorse).text : translateMorseToText(detectedMorse);
 
   return (
     <section className="breakdown-section" id="image-decoder">
       <div className="glass-panel" style={{ padding: '1.5rem' }}>
         <div className="section-title">
           <ImageIcon className="text-accent-primary" size={22} style={{ color: 'var(--accent-primary)' }} />
-          <span>Image Morse Decoder (Level 3 Specialist Tool)</span>
+          <span>{isPt ? 'Decodificador de Código Morse por Imagem (Ferramenta Especializada)' : 'Image Morse Decoder (Level 3 Specialist Tool)'}</span>
         </div>
         <p className="section-desc">
-          Upload an image, screenshot, or graphic containing Morse code dots & dashes. The client-side optical OCR engine thresholds pixels and extracts editable Morse code.
+          {isPt
+            ? 'Envie uma imagem, captura de tela ou foto com pontos e traços de código Morse. O mecanismo de reconhecimento óptico processa os pixels e extrai o código Morse editável.'
+            : 'Upload an image, screenshot, or graphic containing Morse code dots & dashes. The client-side optical OCR engine thresholds pixels and extracts editable Morse code.'}
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '1rem' }}>
@@ -76,8 +80,8 @@ export function ImageDecoderModule({ showToast }) {
               }}
             >
               <Upload size={32} style={{ margin: '0 auto 0.5rem', color: 'var(--accent-primary)' }} />
-              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>Click or Drop Image Here</div>
-              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>PNG, JPG, WEBP or Screenshot</div>
+              <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{isPt ? 'Clique ou arraste a imagem aqui' : 'Click or Drop Image Here'}</div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{isPt ? 'PNG, JPG, WEBP ou captura de tela' : 'PNG, JPG, WEBP or Screenshot'}</div>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -89,18 +93,18 @@ export function ImageDecoderModule({ showToast }) {
 
             {imageSrc && (
               <div style={{ marginTop: '1rem' }}>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>Optical Binarized Output:</div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem' }}>{isPt ? 'Resultado binário óptico:' : 'Optical Binarized Output:'}</div>
                 <img
                   ref={imgRef}
                   src={processedCanvasUrl || imageSrc}
-                  alt="Optical Processing Preview"
+                  alt={isPt ? 'Pré-visualização do processamento óptico' : 'Optical Processing Preview'}
                   style={{ width: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-color)' }}
                 />
 
                 {/* Preprocessing controls */}
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: 600 }}>
-                    Threshold: {threshold}
+                    {isPt ? 'Limiar' : 'Threshold'}: {threshold}
                     <input
                       type="range"
                       min="50"
@@ -124,7 +128,7 @@ export function ImageDecoderModule({ showToast }) {
                         if (imageSrc) runDetection(imageSrc, { threshold, contrast, invert: e.target.checked });
                       }}
                     />
-                    Invert Colors
+                    {isPt ? 'Inverter cores' : 'Invert Colors'}
                   </label>
                 </div>
               </div>
@@ -136,12 +140,12 @@ export function ImageDecoderModule({ showToast }) {
             <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                  Detected Morse Code
+                  {isPt ? 'Código Morse Detectado' : 'Detected Morse Code'}
                 </span>
                 {confidence > 0 && (
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, color: confidence > 70 ? 'var(--accent-success)' : 'var(--accent-warning)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                     {confidence > 70 ? <CheckCircle size={12} /> : <AlertTriangle size={12} />}
-                    Estimated Confidence: {confidence}%
+                    {isPt ? `Confiança estimada: ${confidence}%` : `Estimated Confidence: ${confidence}%`}
                   </span>
                 )}
               </div>
@@ -150,18 +154,26 @@ export function ImageDecoderModule({ showToast }) {
                 value={detectedMorse}
                 onChange={(e) => setDetectedMorse(e.target.value)}
                 className="panel-textarea morse-font"
-                placeholder="Detected Morse sequence will appear here. You can edit dots & dashes manually if optical detection requires fine-tuning."
+                placeholder={
+                  isPt
+                    ? 'A sequência Morse detectada aparecerá aqui. Você pode editar pontos e traços manualmente se o reconhecimento óptico necessitar de ajustes finos.'
+                    : 'Detected Morse sequence will appear here. You can edit dots & dashes manually if optical detection requires fine-tuning.'
+                }
                 style={{ minHeight: '80px', fontSize: '1.1rem' }}
               />
             </div>
 
             <div style={{ background: 'var(--bg-card-hover)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', flex: 1 }}>
               <span style={{ fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                Decoded Text Result
+                {isPt ? 'Texto Decodificado' : 'Decoded Text Result'}
               </span>
 
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--accent-primary)', marginTop: '0.5rem' }}>
-                {decodedText || <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.95rem' }}>Decoded message output...</span>}
+                {decodedText || (
+                  <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.95rem' }}>
+                    {isPt ? 'Resultado da mensagem decodificada...' : 'Decoded message output...'}
+                  </span>
+                )}
               </div>
             </div>
           </div>

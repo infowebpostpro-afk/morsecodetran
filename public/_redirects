@@ -1,4 +1,24 @@
 # Netlify / Cloudflare Pages Redirects
+# Spanish URL Migration 301 Redirects (One-hop permanent redirects)
+/es/alfabeto-codigo-morse/  /es/morse-code-alphabet/  301!
+/es/alfabeto-codigo-morse   /es/morse-code-alphabet/  301!
+/es/aprender-codigo-morse/  /es/learn-morse-code/     301!
+/es/aprender-codigo-morse   /es/learn-morse-code/     301!
+/es/sos-en-codigo-morse/    /es/sos-in-morse-code/    301!
+/es/sos-en-codigo-morse     /es/sos-in-morse-code/    301!
+/es/manipulador-codigo-morse/ /es/morse-code-keyer/   301!
+/es/manipulador-codigo-morse  /es/morse-code-keyer/   301!
+/es/numeros-codigo-morse/   /es/morse-code-numbers/   301!
+/es/numeros-codigo-morse    /es/morse-code-numbers/   301!
+/es/morse-code-i-love-you/  /es/i-love-you-in-morse-code/ 301!
+/es/morse-code-i-love-you   /es/i-love-you-in-morse-code/ 301!
+/es/radioaficionados-codigo-morse/ /es/morse-code-amateur-radio/ 301!
+/es/radioaficionados-codigo-morse  /es/morse-code-amateur-radio/ 301!
+/es/decodificador-codigo-morse/ /es/morse-code-decoder/ 301!
+/es/decodificador-codigo-morse  /es/morse-code-decoder/ 301!
+/es/historia-del-codigo-morse/ /es/history-of-morse-code/ 301!
+/es/historia-del-codigo-morse  /es/history-of-morse-code/ 301!
+
 # Static prerendered pages are served with 200 automatically from their directories
 # Missing paths return genuine HTTP 404 with /404.html (Do NOT rewrite to /index.html with 200)
 /*  /404.html  404

@@ -4,12 +4,12 @@ import {
 } from 'lucide-react';
 
 export const ROUTE_PAIRS = [
-  { en: '/', tr: '/tr/', es: '/es/', enTab: 'translator', trTab: 'turkish', esTab: 'spanish' },
-  { en: '/morse-code-alphabet/', tr: '/tr/morse-code-alphabet/', es: '/es/morse-code-alphabet/', enTab: 'alphabet', trTab: 'tr-alphabet', esTab: 'es-alphabet' },
-  { en: '/morse-code-numbers/', tr: '/tr/morse-code-numbers/', es: '/es/morse-code-numbers/', enTab: 'numbers', trTab: 'tr-numbers', esTab: 'es-numbers' },
-  { en: '/morse-code-to-english/', tr: '/tr/morse-code-to-english/', es: '/es/morse-code-to-english/', enTab: 'morse2english', trTab: 'tr-morse2english', esTab: 'es-morse2english' },
-  { en: '/english-to-morse-code/', tr: '/tr/english-to-morse-code/', es: '/es/english-to-morse-code/', enTab: 'english2morse', trTab: 'tr-english2morse', esTab: 'es-english2morse' },
-  { en: '/morse-code-decoder/', tr: '/tr/morse-code-decoder/', es: '/es/morse-code-decoder/', enTab: 'morsedecoder', trTab: 'tr-morsedecoder', esTab: 'es-morsedecoder' },
+  { en: '/', tr: '/tr/', es: '/es/', pt: '/pt/', enTab: 'translator', trTab: 'turkish', esTab: 'spanish', ptTab: 'portuguese' },
+  { en: '/morse-code-alphabet/', tr: '/tr/morse-code-alphabet/', es: '/es/morse-code-alphabet/', pt: '/pt/alfabeto-morse/', enTab: 'alphabet', trTab: 'tr-alphabet', esTab: 'es-alphabet', ptTab: 'pt-alphabet' },
+  { en: '/morse-code-numbers/', tr: '/tr/morse-code-numbers/', es: '/es/morse-code-numbers/', pt: '/pt/numeros-em-codigo-morse/', enTab: 'numbers', trTab: 'tr-numbers', esTab: 'es-numbers', ptTab: 'pt-numbers' },
+  { en: '/morse-code-to-english/', tr: '/tr/morse-code-to-english/', es: '/es/morse-code-to-english/', pt: '/pt/codigo-morse-para-texto/', enTab: 'morse2english', trTab: 'tr-morse2english', esTab: 'es-morse2english', ptTab: 'pt-morse2english' },
+  { en: '/english-to-morse-code/', tr: '/tr/english-to-morse-code/', es: '/es/english-to-morse-code/', pt: '/pt/texto-para-codigo-morse/', enTab: 'english2morse', trTab: 'tr-english2morse', esTab: 'es-english2morse', ptTab: 'pt-english2morse' },
+  { en: '/morse-code-decoder/', tr: '/tr/morse-code-decoder/', es: '/es/morse-code-decoder/', pt: '/pt/decodificador-codigo-morse/', enTab: 'morsedecoder', trTab: 'tr-morsedecoder', esTab: 'es-morsedecoder', ptTab: 'pt-morsedecoder' },
   { en: '/morse-code-audio-translator/', tr: '/tr/morse-code-audio-translator/', es: '/es/morse-code-audio-translator/', enTab: 'audiotranslator', trTab: 'tr-audiotranslator', esTab: 'es-audiotranslator' },
   { en: '/learn-morse-code/', tr: '/tr/learn-morse-code/', es: '/es/learn-morse-code/', enTab: 'learn', trTab: 'tr-learn', esTab: 'es-learn' },
   { en: '/how-to-read-morse-code/', tr: '/tr/how-to-read-morse-code/', es: '/es/how-to-read-morse-code/', enTab: 'howtoread', trTab: 'tr-howtoread', esTab: 'es-howtoread' },
@@ -48,10 +48,22 @@ export function isSpanishRoute(tabOrPath) {
   return false;
 }
 
+export function isPortugueseRoute(tabOrPath) {
+  if (!tabOrPath) return false;
+  if (typeof tabOrPath === 'string') {
+    return tabOrPath === '/pt/' || tabOrPath.startsWith('/pt/') || tabOrPath.startsWith('pt-') || tabOrPath === 'portuguese' || tabOrPath === 'pt';
+  }
+  if (typeof tabOrPath === 'object') {
+    return tabOrPath.inLanguage === 'pt-BR' || tabOrPath.path === '/pt/' || tabOrPath.path?.startsWith('/pt/') || tabOrPath.tab?.startsWith('pt-') || tabOrPath.tab === 'portuguese';
+  }
+  return false;
+}
+
 export function getEquivalentRoute(tabOrPath, targetLang = 'en') {
   if (!tabOrPath) {
     if (targetLang === 'tr') return { path: '/tr/', tab: 'turkish' };
     if (targetLang === 'es') return { path: '/es/', tab: 'spanish' };
+    if (targetLang === 'pt') return { path: '/pt/', tab: 'portuguese' };
     return { path: '/', tab: 'translator' };
   }
 
@@ -59,19 +71,23 @@ export function getEquivalentRoute(tabOrPath, targetLang = 'en') {
     p.en === tabOrPath ||
     p.tr === tabOrPath ||
     p.es === tabOrPath ||
+    p.pt === tabOrPath ||
     p.enTab === tabOrPath ||
     p.trTab === tabOrPath ||
-    p.esTab === tabOrPath
+    p.esTab === tabOrPath ||
+    p.ptTab === tabOrPath
   );
 
   if (pair) {
     if (targetLang === 'tr') return { path: pair.tr, tab: pair.trTab };
     if (targetLang === 'es') return { path: pair.es, tab: pair.esTab };
+    if (targetLang === 'pt') return pair.pt ? { path: pair.pt, tab: pair.ptTab } : { path: '/pt/', tab: 'portuguese' };
     return { path: pair.en, tab: pair.enTab };
   }
 
   if (targetLang === 'tr') return { path: '/tr/', tab: 'turkish' };
   if (targetLang === 'es') return { path: '/es/', tab: 'spanish' };
+  if (targetLang === 'pt') return { path: '/pt/', tab: 'portuguese' };
   return { path: '/', tab: 'translator' };
 }
 
@@ -203,6 +219,50 @@ export const navigationEs = [
   }
 ];
 
+export const navigationPt = [
+  {
+    label: 'Tradutor',
+    items: [
+      { label: 'Tradutor de código Morse', desc: 'Converta texto em código Morse e Morse em texto.', tab: 'portuguese', href: '/pt/', icon: Languages },
+      { label: 'Texto para Código Morse', desc: 'Converta texto em código Morse com áudio e normalização.', tab: 'pt-english2morse', href: '/pt/texto-para-codigo-morse/', icon: Type },
+      { label: 'Código Morse para Texto', desc: 'Converta código Morse em texto legível.', tab: 'pt-morse2english', href: '/pt/codigo-morse-para-texto/', icon: FileText },
+      { label: 'Morse Code Translator (Inglês)', desc: 'Versão em inglês do tradutor Morse.', tab: 'translator', href: '/', icon: Languages },
+      { label: 'Mors Alfabesi Çeviri (Turco)', desc: 'Versão em turco do tradutor Morse.', tab: 'turkish', href: '/tr/', icon: Languages },
+      { label: 'Traductor de Código Morse (Espanhol)', desc: 'Versão em espanhol do tradutor Morse.', tab: 'spanish', href: '/es/', icon: Languages }
+    ]
+  },
+  {
+    label: 'Decodificar',
+    items: [
+      { label: 'Decodificador de Código Morse', desc: 'Decodifique pontos e traços e revise grupos.', tab: 'pt-morsedecoder', href: '/pt/decodificador-codigo-morse/', icon: Activity },
+      { label: 'Decodificador de Imagem (Inglês)', desc: 'Decodifique código Morse de fotos e imagens (em inglês).', tab: 'imagedecoder', href: '/morse-code-image-decoder/', icon: Image },
+      { label: 'Manipulador Morse (Inglês)', desc: 'Pratique o envio de sinais Morse com chave telegráfica virtual.', tab: 'keyer', href: '/morse-code-keyer/', icon: Radio }
+    ]
+  },
+  {
+    label: 'Aprender',
+    items: [
+      { label: 'Aprender Código Morse (Inglês)', desc: 'Guia passo a passo com métodos práticos de estudo (em inglês).', tab: 'learn', href: '/learn-morse-code/', icon: GraduationCap },
+      { label: 'Prática de Código Morse (Inglês)', desc: 'Treinador auditivo interativo para reconhecimento de som.', tab: 'practice', href: '/morse-code-practice/', icon: GraduationCap },
+      { label: 'Como Ler Código Morse (Inglês)', desc: 'Como decodificar sinais Morse por visão e audição (em inglês).', tab: 'howtoread', href: '/how-to-read-morse-code/', icon: BookOpen },
+      { label: 'O Que É Código Morse (Inglês)', desc: 'História, definições e padrões internacionais (em inglês).', tab: 'whatismorse', href: '/what-is-morse-code/', icon: BookOpen },
+      { label: 'História do Código Morse (Inglês)', desc: 'Do telégrafo de Samuel Morse às telecomunicações modernas.', tab: 'history', href: '/history-of-morse-code/', icon: BookOpen }
+    ]
+  },
+  {
+    label: 'Referência',
+    items: [
+      { label: 'Alfabeto Morse', desc: 'Tabela de letras de A a Z com áudio e cópia.', tab: 'pt-alphabet', href: '/pt/alfabeto-morse/', icon: Type },
+      { label: 'Números em Código Morse', desc: 'Tabela e conversor de 0 a 9 em código Morse.', tab: 'pt-numbers', href: '/pt/numeros-em-codigo-morse/', icon: Hash },
+      { label: 'Símbolos e Pontuação (Inglês)', desc: 'Pontuação, sinais de serviço e caracteres especiais ITU.', tab: 'symbols', href: '/morse-code-symbols/', icon: Bookmark },
+      { label: 'Frases em Código Morse (Inglês)', desc: 'Expressões comuns, saudações e códigos de rádio.', tab: 'phrases', href: '/morse-code-phrases/', icon: FileText },
+      { label: 'SOS em Código Morse (Inglês)', desc: 'Padrão de sinal de socorro (... --- ...), transmissão e história.', tab: 'sos', href: '/sos-in-morse-code/', icon: Bookmark },
+      { label: 'Eu Te Amo em Morse (Inglês)', desc: 'Desdobramento, áudio e representação de carinho.', tab: 'iloveyou', href: '/i-love-you-in-morse-code/', icon: Bookmark },
+      { label: 'Radioamadorismo CW (Inglês)', desc: 'Guia de rádio CW, códigos Q e contatos QSO.', tab: 'amateurradio', href: '/morse-code-amateur-radio/', icon: Radio }
+    ]
+  }
+];
+
 export const footerLinksEn = [
   { label: 'Translator', tab: 'translator', href: '/' },
   { label: 'Morse to English', tab: 'morse2english', href: '/morse-code-to-english/' },
@@ -225,7 +285,8 @@ export const footerLinksEn = [
   { label: 'Amateur Radio CW', tab: 'amateurradio', href: '/morse-code-amateur-radio/' },
   { label: 'Privacy Policy', tab: 'privacy', href: '/privacy-policy/' },
   { label: 'Mors Alfabesi Çeviri (Türkçe)', tab: 'turkish', href: '/tr/' },
-  { label: 'Traductor Español', tab: 'spanish', href: '/es/' }
+  { label: 'Traductor Español', tab: 'spanish', href: '/es/' },
+  { label: 'Tradutor de código Morse (Português)', tab: 'portuguese', href: '/pt/' }
 ];
 
 export const footerLinksTr = [
@@ -250,7 +311,8 @@ export const footerLinksTr = [
   { label: 'Amatör Telsiz CW Rehberi', tab: 'tr-amateurradio', href: '/tr/morse-code-amateur-radio/' },
   { label: 'Gizlilik Politikası', tab: 'tr-privacy', href: '/tr/privacy-policy/' },
   { label: 'Morse Code Translator (English)', tab: 'translator', href: '/' },
-  { label: 'Traductor Español', tab: 'spanish', href: '/es/' }
+  { label: 'Traductor Español', tab: 'spanish', href: '/es/' },
+  { label: 'Tradutor Português (Brasil)', tab: 'portuguese', href: '/pt/' }
 ];
 
 export const footerLinksEs = [
@@ -275,5 +337,28 @@ export const footerLinksEs = [
   { label: 'Radioaficionado CW', tab: 'es-amateurradio', href: '/es/morse-code-amateur-radio/' },
   { label: 'Política de Privacidad', tab: 'es-privacy', href: '/es/privacy-policy/' },
   { label: 'Morse Code Translator (English)', tab: 'translator', href: '/' },
-  { label: 'Mors Alfabesi Çeviri (Türkçe)', tab: 'turkish', href: '/tr/' }
+  { label: 'Mors Alfabesi Çeviri (Türkçe)', tab: 'turkish', href: '/tr/' },
+  { label: 'Tradutor Português (Brasil)', tab: 'portuguese', href: '/pt/' }
 ];
+
+export const footerLinksPt = [
+  { label: 'Tradutor de código Morse', tab: 'portuguese', href: '/pt/' },
+  { label: 'Alfabeto Morse', tab: 'pt-alphabet', href: '/pt/alfabeto-morse/' },
+  { label: 'Números em Código Morse', tab: 'pt-numbers', href: '/pt/numeros-em-codigo-morse/' },
+  { label: 'Texto para Código Morse', tab: 'pt-english2morse', href: '/pt/texto-para-codigo-morse/' },
+  { label: 'Código Morse para Texto', tab: 'pt-morse2english', href: '/pt/codigo-morse-para-texto/' },
+  { label: 'Decodificador de Código Morse', tab: 'pt-morsedecoder', href: '/pt/decodificador-codigo-morse/' },
+  { label: 'Morse Code Translator (Inglês)', tab: 'translator', href: '/' },
+  { label: 'Mors Alfabesi Çeviri (Turco)', tab: 'turkish', href: '/tr/' },
+  { label: 'Traductor Español', tab: 'spanish', href: '/es/' },
+  { label: 'Símbolos em Morse (Inglês)', tab: 'symbols', href: '/morse-code-symbols/' },
+  { label: 'Aprender Morse (Inglês)', tab: 'learn', href: '/learn-morse-code/' },
+  { label: 'Prática Morse (Inglês)', tab: 'practice', href: '/morse-code-practice/' },
+  { label: 'Como Ler Morse (Inglês)', tab: 'howtoread', href: '/how-to-read-morse-code/' },
+  { label: 'SOS em Morse (Inglês)', tab: 'sos', href: '/sos-in-morse-code/' },
+  { label: 'Eu Te Amo em Morse (Inglês)', tab: 'iloveyou', href: '/i-love-you-in-morse-code/' },
+  { label: 'O Que É Código Morse (Inglês)', tab: 'whatismorse', href: '/what-is-morse-code/' },
+  { label: 'História do Código Morse (Inglês)', tab: 'history', href: '/history-of-morse-code/' },
+  { label: 'Política de Privacidade (Inglês)', tab: 'privacy', href: '/privacy-policy/' }
+];
+

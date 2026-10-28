@@ -1018,7 +1018,7 @@ export function SpanishArticleContent({ setActiveTab }) {
 
           <h3>TE AMO</h3>
           <p>
-            <code className="morse-font">- . / .- -- ---</code> (El mensaje romántico más elegido para pulseras y anillos; consulta <a href="/es/morse-code-i-love-you/" onClick={(e) => handleNav(e, 'es-iloveyou', '/es/morse-code-i-love-you/')}>Te Amo en Código Morse</a>).
+            <code className="morse-font">- . / .- -- ---</code> (El mensaje romántico más elegido para pulseras y anillos; consulta <a href="/es/i-love-you-in-morse-code/" onClick={(e) => handleNav(e, 'es-iloveyou', '/es/i-love-you-in-morse-code/')}>Te Amo en Código Morse</a>).
           </p>
 
           <h3>BUENOS DÍAS</h3>

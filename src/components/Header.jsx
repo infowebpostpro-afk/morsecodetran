@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MorseLogo } from './MorseLogo';
 import { Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
-import { navigationEn, navigationTr, navigationEs, isTurkishRoute, isSpanishRoute, getEquivalentRoute } from '../i18n/navigation.js';
+import { navigationEn, navigationTr, navigationEs, navigationPt, isTurkishRoute, isSpanishRoute, isPortugueseRoute, getEquivalentRoute } from '../i18n/navigation.js';
 import { ChromeIcon } from './ChromeIcon.jsx';
 import { CHROME_EXTENSION_URL } from './ChromeExtensionBanner.jsx';
 
@@ -13,13 +13,15 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
 
   const isTr = isTurkishRoute(activeTab);
   const isEs = isSpanishRoute(activeTab);
-  const currentNav = isTr ? navigationTr : (isEs ? navigationEs : navigationEn);
-  const homeHref = isTr ? '/tr/' : (isEs ? '/es/' : '/');
-  const homeTab = isTr ? 'turkish' : (isEs ? 'spanish' : 'translator');
+  const isPt = isPortugueseRoute(activeTab);
+  const currentNav = isTr ? navigationTr : (isEs ? navigationEs : (isPt ? navigationPt : navigationEn));
+  const homeHref = isTr ? '/tr/' : (isEs ? '/es/' : (isPt ? '/pt/' : '/'));
+  const homeTab = isTr ? 'turkish' : (isEs ? 'spanish' : (isPt ? 'portuguese' : 'translator'));
 
   const enTarget = getEquivalentRoute(activeTab, 'en');
   const trTarget = getEquivalentRoute(activeTab, 'tr');
   const esTarget = getEquivalentRoute(activeTab, 'es');
+  const ptTarget = getEquivalentRoute(activeTab, 'pt');
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -69,13 +71,13 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
           href={homeHref}
           className="brand-logo"
           onClick={(e) => handleTabClick(e, homeTab, homeHref)}
-          aria-label={isTr ? "Mors Alfabesi Çeviri Ana Sayfa" : (isEs ? "Traductor de Código Morse Inicio" : "MorseCodeTranslatr Homepage")}
+          aria-label={isPt ? "Tradutor de código Morse Página Inicial" : (isTr ? "Mors Alfabesi Çeviri Ana Sayfa" : (isEs ? "Traductor de Código Morse Inicio" : "MorseCodeTranslatr Homepage"))}
         >
           <MorseLogo size={36} showText={true} />
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="desktop-nav" aria-label={isTr ? "Ana Menü" : (isEs ? "Navegación principal" : "Main Navigation")}>
+        <nav className="desktop-nav" aria-label={isPt ? "Navegação principal" : (isTr ? "Ana Menü" : (isEs ? "Navegación principal" : "Main Navigation"))}>
           <ul className="desktop-nav-list">
             {currentNav.map((category) => {
               const isActive = isCategoryActive(category);
@@ -135,36 +137,38 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             rel="noopener noreferrer"
             className="nav-extension-badge"
             title={
-              isTr
-                ? "Google Chrome Mors Alfabesi Eklentisi — Ücretsiz İndir"
-                : (isEs
-                  ? "Extensión de Código Morse para Google Chrome — Gratis"
-                  : "Google Chrome Morse Code Translator Extension — Free Download")
+              isPt
+                ? "Extensão de Código Morse para Google Chrome — Grátis"
+                : (isTr
+                  ? "Google Chrome Mors Alfabesi Eklentisi — Ücretsiz İndir"
+                  : (isEs
+                    ? "Extensión de Código Morse para Google Chrome — Gratis"
+                    : "Google Chrome Morse Code Translator Extension — Free Download"))
             }
             aria-label="Google Chrome Extension"
           >
             <ChromeIcon size={16} />
             <span className="nav-extension-text">
-              {isTr ? "Eklenti" : (isEs ? "Extensión" : "Extension")}
+              {isPt ? "Extensão" : (isTr ? "Eklenti" : (isEs ? "Extensión" : "Extension"))}
             </span>
           </a>
 
           {/* Context-Preserving Crawlable Language Switcher */}
-          <div className="language-switcher" aria-label={isTr ? "Dil Seçici" : (isEs ? "Selector de idioma" : "Language Selector")} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-sunken)', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', fontSize: '0.8rem', fontWeight: 600 }}>
+          <div className="language-switcher" aria-label={isPt ? "Seletor de idioma" : (isTr ? "Dil Seçici" : (isEs ? "Selector de idioma" : "Language Selector"))} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-sunken)', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', fontSize: '0.8rem', fontWeight: 600 }}>
             <a
               href={enTarget.path}
               style={{
-                color: !isTr && !isEs ? 'var(--primary)' : 'var(--text-muted)',
+                color: !isTr && !isEs && !isPt ? 'var(--primary)' : 'var(--text-muted)',
                 textDecoration: 'none',
-                fontWeight: !isTr && !isEs ? 700 : 500
+                fontWeight: !isTr && !isEs && !isPt ? 700 : 500
               }}
               onClick={(e) => handleTabClick(e, enTarget.tab, enTarget.path)}
               title="English"
-              aria-current={!isTr && !isEs ? 'page' : undefined}
+              aria-current={!isTr && !isEs && !isPt ? 'page' : undefined}
             >
               English
             </a>
-            <span style={{ color: 'var(--border)' }}>|</span>
+            <span style={{ color: 'var(--border)' }}>·</span>
             <a
               href={trTarget.path}
               style={{
@@ -178,7 +182,7 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               Türkçe
             </a>
-            <span style={{ color: 'var(--border)' }}>|</span>
+            <span style={{ color: 'var(--border)' }}>·</span>
             <a
               href={esTarget.path}
               style={{
@@ -192,13 +196,27 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               Español
             </a>
+            <span style={{ color: 'var(--border)' }}>·</span>
+            <a
+              href={ptTarget.path}
+              style={{
+                color: isPt ? 'var(--primary)' : 'var(--text-muted)',
+                textDecoration: 'none',
+                fontWeight: isPt ? 700 : 500
+              }}
+              onClick={(e) => handleTabClick(e, ptTarget.tab, ptTarget.path)}
+              title="Português (Brasil)"
+              aria-current={isPt ? 'page' : undefined}
+            >
+              Português (Brasil)
+            </a>
           </div>
 
           <button
             className="btn-icon"
             onClick={toggleTheme}
-            aria-label={isTr ? "Temayı Değiştir" : (isEs ? "Cambiar tema" : "Toggle theme")}
-            title={isTr ? "Koyu/Açık Tema" : (isEs ? "Modo claro/oscuro" : "Toggle light/dark mode")}
+            aria-label={isPt ? "Alternar tema" : (isTr ? "Temayı Değiştir" : (isEs ? "Cambiar tema" : "Toggle theme"))}
+            title={isPt ? "Modo claro/escuro" : (isTr ? "Koyu/Açık Tema" : (isEs ? "Modo claro/oscuro" : "Toggle light/dark mode"))}
           >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
@@ -206,7 +224,7 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
           <button
             className="btn-icon mobile-menu-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={isTr ? "Mobil Menüyü Aç/Kapat" : (isEs ? "Abrir o cerrar menú móvil" : "Toggle Mobile Menu")}
+            aria-label={isPt ? "Abrir ou fechar menu móvel" : (isTr ? "Mobil Menüyü Aç/Kapat" : (isEs ? "Abrir o cerrar menú móvil" : "Toggle Mobile Menu"))}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -244,13 +262,13 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             </a>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.75rem', padding: '1rem', borderBottom: '1px solid var(--border)' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '0.6rem', padding: '1rem', borderBottom: '1px solid var(--border)' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Language / Dil / Idioma:</span>
             <a
               href={enTarget.path}
               style={{
-                color: !isTr && !isEs ? 'var(--primary)' : 'var(--text)',
-                fontWeight: !isTr && !isEs ? 700 : 500,
+                color: !isTr && !isEs && !isPt ? 'var(--primary)' : 'var(--text)',
+                fontWeight: !isTr && !isEs && !isPt ? 700 : 500,
                 fontSize: '0.9rem',
                 textDecoration: 'none'
               }}
@@ -258,7 +276,7 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               English
             </a>
-            <span style={{ color: 'var(--border)' }}>|</span>
+            <span style={{ color: 'var(--border)' }}>·</span>
             <a
               href={trTarget.path}
               style={{
@@ -271,7 +289,7 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               Türkçe
             </a>
-            <span style={{ color: 'var(--border)' }}>|</span>
+            <span style={{ color: 'var(--border)' }}>·</span>
             <a
               href={esTarget.path}
               style={{
@@ -284,8 +302,21 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               Español
             </a>
+            <span style={{ color: 'var(--border)' }}>·</span>
+            <a
+              href={ptTarget.path}
+              style={{
+                color: isPt ? 'var(--primary)' : 'var(--text)',
+                fontWeight: isPt ? 700 : 500,
+                fontSize: '0.9rem',
+                textDecoration: 'none'
+              }}
+              onClick={(e) => handleTabClick(e, ptTarget.tab, ptTarget.path)}
+            >
+              Português (Brasil)
+            </a>
           </div>
-          <nav className="mobile-nav" aria-label={isTr ? "Mobil Menü" : "Mobile Navigation"}>
+          <nav className="mobile-nav" aria-label={isPt ? "Menu Móvel" : (isTr ? "Mobil Menü" : "Mobile Navigation")}>
             <ul className="mobile-nav-list">
               {currentNav.map((category) => {
                 const isActive = isCategoryActive(category);

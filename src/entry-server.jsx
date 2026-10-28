@@ -56,6 +56,12 @@ import { PrivacyPolicyPage } from './components/PrivacyPolicyPage.jsx';
 import { TurkishPrivacyPolicyPage } from './components/TurkishPrivacyPolicyPage.jsx';
 
 import { SpanishMorsePage } from './components/SpanishMorsePage.jsx';
+import { PortugueseMorsePage } from './components/PortugueseMorsePage.jsx';
+import { PortugueseAlphabetPage } from './components/PortugueseAlphabetPage.jsx';
+import { PortugueseNumbersPage } from './components/PortugueseNumbersPage.jsx';
+import { PortugueseMorseToEnglishPage } from './components/PortugueseMorseToEnglishPage.jsx';
+import { PortugueseEnglishToMorsePage } from './components/PortugueseEnglishToMorsePage.jsx';
+import { PortugueseDecoderPage } from './components/PortugueseDecoderPage.jsx';
 import { SpanishAlphabetPage } from './components/SpanishAlphabetPage.jsx';
 import { SpanishNumbersPage } from './components/SpanishNumbersPage.jsx';
 import { SpanishMorseToEnglishPage } from './components/SpanishMorseToEnglishPage.jsx';
@@ -555,6 +561,67 @@ export function render(url) {
 
         {activeTab === 'spanish' && (
           <SpanishMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'portuguese' && (
+          <PortugueseMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'pt-alphabet' && (
+          <PortugueseAlphabetPage
+            wpm={20}
+            setWpm={() => {}}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'pt-numbers' && (
+          <PortugueseNumbersPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'pt-english2morse' && (
+          <PortugueseEnglishToMorsePage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'pt-morse2english' && (
+          <PortugueseMorseToEnglishPage
+            wpm={20}
+            frequency={600}
+            volume={0.5}
+            showToast={() => {}}
+            setActiveTab={() => {}}
+          />
+        )}
+
+        {activeTab === 'pt-morsedecoder' && (
+          <PortugueseDecoderPage
             wpm={20}
             frequency={600}
             volume={0.5}

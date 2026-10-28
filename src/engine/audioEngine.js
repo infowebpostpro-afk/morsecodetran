@@ -44,12 +44,12 @@ class MorseAudioEngine {
   /**
    * Play single tone (dit or dah)
    */
-  playSingleTone(durationSec, frequency = 600, volume = 0.5) {
+  playSingleTone(durationSec, frequency = 600, volume = 0.5, waveform = 'sine') {
     const ctx = this.getAudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
-    osc.type = 'sine';
+    osc.type = waveform || 'sine';
     osc.frequency.setValueAtTime(frequency, ctx.currentTime);
 
     // Smooth envelope attack & decay (5ms ramps) to avoid clicks
@@ -75,6 +75,7 @@ class MorseAudioEngine {
     wpm = 20,
     farnsworthWpm = 20,
     frequency = 600,
+    waveform = 'sine',
     volume = 0.5,
     loop = false,
     onProgress = null
@@ -124,7 +125,7 @@ class MorseAudioEngine {
 
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
-            osc.type = 'sine';
+            osc.type = waveform || 'sine';
             osc.frequency.setValueAtTime(frequency, symStartTime);
 
             // Envelope ramp (5ms)
