@@ -497,8 +497,8 @@ export const ROUTES = [
   {
     path: '/morse-code-symbols/',
     tab: 'symbols',
-    title: 'Morse Code Symbols: Complete Chart & Meanings',
-    description: 'Explore Morse code symbols with a complete chart of punctuation, special signs, meanings, and official International Morse references.',
+    title: 'Morse Code Symbols: Punctuation Chart & Sounds',
+    description: 'Find Morse code symbols and punctuation in a searchable chart. Copy or listen to patterns and learn how spaces and prosigns work.',
     h1: 'Morse Code Symbols: Complete Chart, Punctuation & Special Signs',
     canonical: `${SITE_URL}/morse-code-symbols/`,
     isArticle: true,

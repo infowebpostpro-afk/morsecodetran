@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Search, Volume2, Copy, Play, Square, ExternalLink,
   ArrowRight, ShieldCheck, ChevronDown, ChevronUp, CheckCircle, AlertTriangle, Info, BookOpen, Hash, Type, HelpCircle, FileText
@@ -14,13 +14,14 @@ const MORSE_SYMBOLS_DATA = [
   { symbol: '?', name: 'Question mark', morse: '..--..', ditDah: 'di-di-dah-dah-di-dit', category: 'punctuation', status: 'Official ITU', usage: 'Question / repetition request' },
   { symbol: "'", name: 'Apostrophe', morse: '.----.', ditDah: 'di-dah-dah-dah-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Contractions and possessives' },
   { symbol: '-', name: 'Hyphen / Dash', morse: '-....-', ditDah: 'dah-di-di-di-di-dah', category: 'punctuation', status: 'Official ITU', usage: 'Compound words & breaks' },
-  { symbol: '/', name: 'Fraction bar / Slash', morse: '-..-.', ditDah: 'dah-di-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Slash punctuation (also word divider in text)' },
+  { symbol: '/', name: 'Fraction bar / Slash', morse: '-..-.', ditDah: 'dah-di-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Literal slash character. In written Morse output, the / symbol may also be used separately as a word separator.' },
   { symbol: '(', name: 'Left parenthesis', morse: '-.--.', ditDah: 'dah-di-dah-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Opening parenthesis' },
   { symbol: ')', name: 'Right parenthesis', morse: '-.--.-', ditDah: 'dah-di-dah-dah-di-dah', category: 'punctuation', status: 'Official ITU', usage: 'Closing parenthesis' },
   { symbol: '"', name: 'Quotation marks', morse: '.-..-.', ditDah: 'di-dah-di-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Direct speech & quotes' },
-  { symbol: '=', name: 'Equals / Double hyphen', morse: '-...-', ditDah: 'dah-di-di-di-dah', category: 'punctuation', status: 'Official ITU', usage: 'Transmission separator (<BT>)' },
-  { symbol: '+', name: 'Cross / Addition sign', morse: '.-.-.', ditDah: 'di-dah-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Addition sign / End of Work (<AR>)' },
+  { symbol: '=', name: 'Equals / Double hyphen', morse: '-...-', ditDah: 'dah-di-di-di-dah', category: 'punctuation', status: 'Official ITU', usage: 'Equality symbol in equations and transmission break (<BT>)' },
+  { symbol: '+', name: 'Plus sign / Cross', morse: '.-.-.', ditDah: 'di-dah-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Addition sign in mathematical and written text' },
   { symbol: '@', name: 'Commercial at', morse: '.--.-.', ditDah: 'di-dah-dah-di-dah-dit', category: 'punctuation', status: 'Official ITU', usage: 'Email addresses & AC symbol' },
+  { symbol: '—', name: 'End of transmission / message (<AR>)', morse: '.-.-.', ditDah: 'di-dah-di-dah-dit', category: 'operational', status: 'Official ITU', usage: 'Procedural signal concluding a transmission or message block' },
   { symbol: '—', name: 'Understood', morse: '...-.', ditDah: 'di-di-di-dah-dit', category: 'operational', status: 'Official ITU', usage: 'Signal for understood message' },
   { symbol: '—', name: 'Error', morse: '........', ditDah: 'di-di-di-di-di-di-di-dit', category: 'operational', status: 'Official ITU', usage: '8 dots error signal (backspace)' },
   { symbol: '—', name: 'Invitation to transmit', morse: '-.-', ditDah: 'dah-di-dah', category: 'operational', status: 'Official ITU', usage: 'Go ahead signal (K)' },
@@ -39,7 +40,16 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all'); // all, punctuation, operational, official, conventional
   const [playingSymbol, setPlayingSymbol] = useState(null);
+  const [copiedSymbol, setCopiedSymbol] = useState(null);
+  const [copyStatus, setCopyStatus] = useState('');
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
+
+  // Stop any audio preview if component unmounts
+  useEffect(() => {
+    return () => {
+      audioEngine.stop();
+    };
+  }, []);
 
   // Filter symbols based on category & search
   const filteredSymbols = MORSE_SYMBOLS_DATA.filter(item => {
@@ -51,18 +61,37 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
 
     // Search query
     if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase().trim();
+    const rawQ = searchQuery.trim();
+    const qLower = rawQ.toLowerCase();
+    const normalizedMorseQ = rawQ.replace(/[•·]/g, '.').replace(/[—–−]/g, '-');
+    const isMorseOnly = /^[.\-]+$/.test(normalizedMorseQ);
+
+    // Exact pattern matching for dots-and-dashes
+    if (isMorseOnly) {
+      return item.morse === normalizedMorseQ || item.symbol === rawQ;
+    }
+
+    // Literal character exact match (e.g. '?', '@', etc.)
+    if (item.symbol.toLowerCase() === qLower) return true;
+
+    // Text search by name, usage, dit-dah, or prosign code
     return (
-      item.name.toLowerCase().includes(q) ||
-      item.symbol.toLowerCase().includes(q) ||
-      item.morse.includes(q) ||
-      item.ditDah.toLowerCase().includes(q) ||
-      item.usage.toLowerCase().includes(q)
+      item.name.toLowerCase().includes(qLower) ||
+      item.usage.toLowerCase().includes(qLower) ||
+      item.ditDah.toLowerCase().includes(qLower)
     );
   });
 
   // Play audio for a single symbol
   const handlePlaySymbol = (item) => {
+    if (playingSymbol === item.name) {
+      audioEngine.stop();
+      setPlayingSymbol(null);
+      return;
+    }
+
+    // Stop any previous preview before starting a new one
+    audioEngine.stop();
     setPlayingSymbol(item.name);
     audioEngine.playSequence({
       breakdown: [{ char: item.symbol, morse: item.morse, isSpace: false }],
@@ -79,9 +108,15 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
   const handleCopyMorse = async (morse, name) => {
     try {
       await navigator.clipboard.writeText(morse);
-      if (showToast) showToast(`Copied ${name} (${morse}) to clipboard! ✓`);
+      setCopiedSymbol(name);
+      setCopyStatus('Copied!');
+      if (showToast) showToast('Copied!');
+      setTimeout(() => {
+        setCopiedSymbol(null);
+      }, 2000);
     } catch (e) {
-      if (showToast) showToast('Copy failed. Please copy manually.');
+      setCopyStatus('Could not copy. Select and copy the pattern manually.');
+      if (showToast) showToast('Could not copy. Select and copy the pattern manually.');
     }
   };
 
@@ -175,16 +210,20 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
           </div>
 
           {/* Search Input */}
-          <div style={{ position: 'relative', width: '100%', maxWidth: '320px' }}>
-            <Search size={18} style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+          <div style={{ position: 'relative', width: '100%', maxWidth: '360px', display: 'flex', alignItems: 'center' }}>
+            <label htmlFor="symbol-search" style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }}>
+              Search by symbol, name, or Morse pattern
+            </label>
+            <Search size={18} style={{ position: 'absolute', left: '0.85rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
             <input
+              id="symbol-search"
               type="text"
-              placeholder="Search symbol (e.g. ?, period, .-.-.-)..."
+              placeholder="Search by symbol, name, or Morse pattern"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.6rem 0.85rem 0.6rem 2.4rem',
+                padding: searchQuery ? '0.6rem 6.5rem 0.6rem 2.4rem' : '0.6rem 0.85rem 0.6rem 2.4rem',
                 borderRadius: '0.5rem',
                 border: '1px solid var(--border-color)',
                 background: 'var(--surface-card)',
@@ -192,6 +231,30 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
                 fontSize: '0.9rem'
               }}
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{
+                  position: 'absolute',
+                  right: '0.5rem',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--accent-primary)',
+                  fontSize: '0.78rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  padding: '0.25rem 0.45rem',
+                  borderRadius: '0.25rem',
+                  textDecoration: 'underline'
+                }}
+                aria-label="Clear search"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         </div>
 
@@ -225,24 +288,53 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
           ))}
         </div>
 
+        {/* Live region for accessibility announcements */}
+        <div style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0, 0, 0, 0)', whiteSpace: 'nowrap', border: 0 }} aria-live="polite" aria-atomic="true">
+          {copyStatus}
+        </div>
+
         {/* Symbols Table Grid */}
         <div style={{ overflowX: 'auto', borderRadius: '0.75rem', border: '1px solid var(--border-color)', background: 'var(--surface-card)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '650px' }}>
+          <table className="symbols-chart-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '650px' }}>
             <thead>
               <tr style={{ background: 'rgba(255, 255, 255, 0.03)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                <th style={{ padding: '0.85rem 1rem' }}>Symbol</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Name & Usage</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Morse Code</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Dit-Dah Pattern</th>
-                <th style={{ padding: '0.85rem 1rem' }}>Status</th>
-                <th style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Actions</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem' }}>Symbol</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem' }}>Name & Usage</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem' }}>Morse Code</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem' }}>Dit-Dah Pattern</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem' }}>Status</th>
+                <th scope="col" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredSymbols.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    No symbols match your search "{searchQuery}".
+                  <td colSpan={6} style={{ padding: '2.5rem 1rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+                    <p style={{ margin: '0 0 1rem', fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
+                      No matching symbols found. Check the name, character, or dot-and-dash pattern.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery('');
+                        setFilterCategory('all');
+                      }}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        padding: '0.45rem 1rem',
+                        borderRadius: '0.5rem',
+                        border: '1px solid var(--border-color)',
+                        background: 'var(--surface-hover)',
+                        color: 'var(--text-primary)',
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Clear search
+                    </button>
                   </td>
                 </tr>
               ) : (
@@ -278,8 +370,10 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
                     <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', gap: '0.4rem' }}>
                         <button
+                          type="button"
                           onClick={() => handlePlaySymbol(item)}
-                          title="Listen to Morse signal"
+                          aria-label={playingSymbol === item.name ? `Stop ${item.name} Morse code audio` : `Play ${item.name} in Morse code`}
+                          title={playingSymbol === item.name ? `Stop ${item.name} Morse code audio` : `Play ${item.name} in Morse code`}
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -294,11 +388,13 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
                             cursor: 'pointer'
                           }}
                         >
-                          <Volume2 size={14} /> Play
+                          {playingSymbol === item.name ? <Square size={14} /> : <Volume2 size={14} />} {playingSymbol === item.name ? 'Stop' : 'Play'}
                         </button>
                         <button
+                          type="button"
                           onClick={() => handleCopyMorse(item.morse, item.name)}
-                          title="Copy Morse code"
+                          aria-label={`Copy ${item.name} Morse code`}
+                          title={`Copy ${item.name} Morse code`}
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -306,14 +402,15 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
                             padding: '0.35rem 0.65rem',
                             borderRadius: '0.4rem',
                             border: '1px solid var(--border-color)',
-                            background: 'var(--surface-hover)',
-                            color: 'var(--text-primary)',
+                            background: copiedSymbol === item.name ? 'rgba(16, 185, 129, 0.2)' : 'var(--surface-hover)',
+                            borderColor: copiedSymbol === item.name ? 'var(--accent-success)' : 'var(--border-color)',
+                            color: copiedSymbol === item.name ? 'var(--accent-success)' : 'var(--text-primary)',
                             fontSize: '0.8rem',
                             fontWeight: 600,
                             cursor: 'pointer'
                           }}
                         >
-                          <Copy size={14} /> Copy
+                          <Copy size={14} /> {copiedSymbol === item.name ? 'Copied!' : 'Copy'}
                         </button>
                       </div>
                     </td>
@@ -322,6 +419,113 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
               )}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* HOW TO FIND A MORSE CODE SYMBOL (PRACTICAL REVERSE LOOKUP) */}
+      <section style={{ marginBottom: '3rem', background: 'var(--surface-card)', padding: '2rem', borderRadius: '1rem', border: '1px solid var(--border-color)' }}>
+        <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem' }}>
+          How to find a Morse code symbol
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
+          You can look up punctuation by its name, by the printed symbol, or by a complete dot-and-dash pattern.
+        </p>
+        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
+          For example, search for “question mark,” <code>?</code>, or <code>..--..</code> to find the same punctuation entry. Keep all dots and dashes in one group: adding or removing a signal changes the pattern.
+        </p>
+        <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.75rem' }}>
+          A pattern can sometimes have more than one meaning. For instance, <code>.-.-.</code> can represent the plus sign in written text or the procedural signal AR, depending on context. Compare the label and usage before copying the result.
+        </p>
+
+        {/* Visual Showcase: Mobile Symbol Chart & Reverse Lookup */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1.5rem',
+          justifyItems: 'center',
+          paddingTop: '0.5rem'
+        }}>
+          <figure style={{ margin: 0, width: '100%', maxWidth: '320px', textAlign: 'center' }}>
+            <div style={{
+              background: 'radial-gradient(ellipse at top, rgba(56, 189, 248, 0.12) 0%, rgba(15, 23, 42, 0.4) 100%)',
+              padding: '1.25rem 1rem',
+              borderRadius: '1.25rem',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <picture>
+                <source srcSet="/images/morse-code-symbols-mobile-chart.webp?v=1" type="image/webp" />
+                <img
+                  src="/images/morse-code-symbols-mobile-chart.png?v=1"
+                  alt="Mobile view of Morse Code Symbols interactive chart showing punctuation symbols, dot-dash patterns, and category filters"
+                  width="502"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '480px',
+                    objectFit: 'contain',
+                    borderRadius: '1rem',
+                    filter: 'drop-shadow(0 10px 25px rgba(0, 0, 0, 0.4))'
+                  }}
+                />
+              </picture>
+            </div>
+            <figcaption style={{
+              marginTop: '0.85rem',
+              fontSize: '0.85rem',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.5
+            }}>
+              <strong style={{ color: 'var(--text-primary)' }}>Mobile Symbol Chart:</strong> Browse punctuation marks and procedural signs organized with category filters and dit-dah patterns.
+            </figcaption>
+          </figure>
+
+          <figure style={{ margin: 0, width: '100%', maxWidth: '320px', textAlign: 'center' }}>
+            <div style={{
+              background: 'radial-gradient(ellipse at top, rgba(168, 85, 247, 0.12) 0%, rgba(15, 23, 42, 0.4) 100%)',
+              padding: '1.25rem 1rem',
+              borderRadius: '1.25rem',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.5)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <picture>
+                <source srcSet="/images/morse-code-symbols-search-lookup.webp?v=1" type="image/webp" />
+                <img
+                  src="/images/morse-code-symbols-search-lookup.png?v=1"
+                  alt="Live search filtering in the Morse Code Symbols chart instantly finding Period / Full stop by typing 'full'"
+                  width="502"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '480px',
+                    objectFit: 'contain',
+                    borderRadius: '1rem',
+                    filter: 'drop-shadow(0 10px 25px rgba(0, 0, 0, 0.4))'
+                  }}
+                />
+              </picture>
+            </div>
+            <figcaption style={{
+              marginTop: '0.85rem',
+              fontSize: '0.85rem',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.5
+            }}>
+              <strong style={{ color: 'var(--text-primary)' }}>Instant Reverse Lookup:</strong> Type any symbol name, character, or dot-dash pattern to filter matching entries in real time.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -364,7 +568,7 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
             { char: '.', name: 'Period', morse: '.-.-.-', desc: 'Marks end of sentence. Sent as di-dah-di-dah-di-dah.' },
             { char: ',', name: 'Comma', morse: '--..--', desc: 'Separates sentence clauses. Sent as dah-dah-di-di-dah-dah.' },
             { char: '?', name: 'Question Mark', morse: '..--..', desc: 'Requests clarification or repetition. Sent as di-di-dah-dah-di-dit.' },
-            { char: '/', name: 'Slash / Fraction Bar', morse: '-..-.', desc: 'Slash punctuation character. Also represents word spaces in text.' },
+            { char: '/', name: 'Slash / Fraction Bar', morse: '-..-.', desc: 'Literal slash character. In written Morse output, / may also be used as a word separator.' },
             { char: '@', name: 'Commercial At', morse: '.--.-.', desc: 'Used for email & modern addresses. Added to ITU standard in 2004.' },
             { char: '=', name: 'Equals / Double Hyphen', morse: '-...-', desc: 'Separates sections or paragraphs in transmission.' }
           ].map((item, idx) => (
@@ -425,6 +629,24 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
             <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.95rem', lineHeight: 1.6 }}>
               In typed Morse text, a slash <code>/</code> is frequently used as a visual separator between words (e.g. <code>.... . .-.. .-.. --- / .-- --- .-. .-.. -..</code> = HELLO WORLD). However, the actual Morse code for the slash character (<code>-..-.</code>) is transmitted only when a literal fraction bar or slash symbol is part of the message.
             </p>
+            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid rgba(245, 158, 11, 0.2)' }}>
+              <h3 style={{ color: 'var(--text-primary)', margin: '0 0 0.5rem', fontSize: '1rem', fontWeight: 700 }}>
+                Literal slash versus a word separator
+              </h3>
+              <p style={{ color: 'var(--text-secondary)', margin: '0 0 0.75rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                In a typed Morse message, <code>/</code> can be used as a visual separator between words. The actual slash character in text has its own Morse pattern: <code>-..-.</code>.
+              </p>
+              <p style={{ color: 'var(--text-secondary)', margin: '0 0 0.5rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                For example:
+              </p>
+              <ul style={{ color: 'var(--text-secondary)', margin: '0 0 0.75rem', paddingLeft: '1.25rem', fontSize: '0.95rem', lineHeight: 1.6 }}>
+                <li>A B → <code>.- / -...</code></li>
+                <li>A/B → <code>.- -..-. -...</code></li>
+              </ul>
+              <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.95rem', lineHeight: 1.6 }}>
+                In the first example, <code>/</code> separates two words. In the second, <code>-..-.</code> represents the slash character itself.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -435,12 +657,12 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
           Worked Morse Code Examples
         </h2>
 
-        <div style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', display: 'grid', gap: '1.25rem' }}>
+        <div style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', display: 'grid', gap: '1.25rem', marginBottom: '1.25rem' }}>
           {[
-            { title: 'Question Mark Example', symbol: '?', text: 'LOVE?', morse: '.-.. --- ...- . / ..--..', note: 'The final group ..--.. represents the question mark.' },
-            { title: 'Period Example', symbol: '.', text: 'HELLO.', morse: '.... . .-.. .-.. --- / .-.-.-', note: 'The final group .-.-.- represents the full stop.' },
-            { title: 'Comma Example', symbol: ',', text: 'HELLO,', morse: '.... . .-.. .-.. --- / --..--', note: 'The final group --..-- represents the comma.' },
-            { title: 'Commercial At Example', symbol: '@', text: 'INFO@SITE', morse: '.. -. ..-. --- / .--.-. / ... .. - .', note: 'The pattern .--.-. encodes the @ sign.' }
+            { title: 'Question Mark Example', symbol: '?', text: 'LOVE?', morse: '.-.. --- ...- . ..--..', note: 'The final group ..--.. represents the question mark.' },
+            { title: 'Period Example', symbol: '.', text: 'HELLO.', morse: '.... . .-.. .-.. --- .-.-.-', note: 'The final group .-.-.- represents the full stop.' },
+            { title: 'Comma Example', symbol: ',', text: 'HELLO,', morse: '.... . .-.. .-.. --- --..--', note: 'The final group --..-- represents the comma.' },
+            { title: 'Commercial At Example', symbol: '@', text: 'INFO@SITE', morse: '.. -. ..-. --- .--.-. ... .. - .', note: 'The pattern .--.-. encodes the @ sign.' }
           ].map((ex, idx) => (
             <div key={idx} style={{ background: 'var(--surface-card)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--border-color)' }}>
               <div style={{ fontWeight: 700, color: 'var(--accent-primary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.35rem' }}>
@@ -458,6 +680,10 @@ export function MorseSymbolsPage({ wpm, frequency, volume, showToast, setActiveT
             </div>
           ))}
         </div>
+
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, margin: 0, background: 'var(--surface-card)', padding: '1rem 1.25rem', borderRadius: '0.5rem', border: '1px solid var(--border-color)' }}>
+          Punctuation attached to a word is encoded as its own Morse character. A space separates its Morse group from the preceding letter; a slash is only needed here when separating words in the displayed message.
+        </p>
       </section>
 
       {/* 5. Common Morse Symbol Mistakes */}
