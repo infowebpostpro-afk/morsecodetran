@@ -613,9 +613,9 @@ export const ROUTES = [
   {
     path: '/es/sos-in-morse-code/',
     tab: 'es-sos',
-    title: 'SOS en Código Morse: Patrón (... --- ...), Significado y Sonido',
-    description: 'Aprende la señal de auxilio SOS en código Morse (... --- ...), su historia desde 1906, el prosign continuo sin espacios, señales con linterna y mitos comunes.',
-    h1: 'SOS en Código Morse: Señal de Emergencia (... --- ...)',
+    title: 'SOS en código Morse: señal, sonido y significado | MorsePro',
+    description: 'Descubre cómo se transmite SOS en código Morse. Escucha la señal, consulta su significado y aprende la diferencia entre SOS continuo y letras separadas.',
+    h1: 'SOS en código Morse: señal, sonido y significado',
     canonical: `${SITE_URL}/es/sos-in-morse-code/`,
     isArticle: true,
     priority: '0.7',

@@ -4,7 +4,7 @@ import { MorseSignal } from './MorseSignal.jsx';
 export function Hero() {
   return (
     <section className="hero-section">
-      <MorseSignal sequence="...---... .-.-. ...-.-" speedMs={350} />
+      <MorseSignal sequence="...---..." speedMs={350} />
 
       <h1 className="hero-title">Morse Code Translator</h1>
       <p className="hero-subtitle">

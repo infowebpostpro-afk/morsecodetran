@@ -418,6 +418,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 }
 
@@ -451,6 +452,9 @@ body::before {
   border-radius: 999px;
   margin-bottom: 1rem;
   box-shadow: 0 0 15px var(--signal-glow);
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
 .signal-unit {
@@ -2455,18 +2459,25 @@ body::before {
   padding-top: 1rem;
 }
 
-/* Mobile Navigation */
-@media (max-width: 1024px) {
+/* Responsive Navigation */
+@media (max-width: 1140px) {
+  .nav-extension-badge {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1100px) {
   .navbar {
     height: 64px;
   }
 
   .nav-container {
     padding: 0 1.25rem;
+    flex-wrap: nowrap !important;
   }
 
   .desktop-nav {
-    display: none;
+    display: none !important;
   }
   
   .language-switcher-desktop {
@@ -2474,11 +2485,15 @@ body::before {
   }
 
   .language-switcher-mobile-wrapper {
-    display: block;
+    display: block !important;
   }
 
   .language-switcher-mobile-btn {
-    display: inline-flex;
+    display: inline-flex !important;
+  }
+
+  .header-actions {
+    flex-wrap: nowrap !important;
   }
 
   .nav-extension-badge {
@@ -2623,10 +2638,12 @@ body::before {
 
   .nav-container {
     padding: 0 0.85rem;
+    flex-wrap: nowrap !important;
   }
 
   .brand-logo {
     gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .brand-logo-text {
@@ -2639,6 +2656,7 @@ body::before {
 
   .header-actions {
     gap: 0.35rem;
+    flex-wrap: nowrap !important;
   }
 
   .language-switcher-mobile-btn {
@@ -2659,10 +2677,12 @@ body::before {
 @media (max-width: 360px) {
   .nav-container {
     padding: 0 0.5rem;
+    flex-wrap: nowrap !important;
   }
 
   .brand-logo {
     gap: 0.35rem;
+    flex-shrink: 0;
   }
 
   .brand-logo-mark svg {
@@ -2676,6 +2696,7 @@ body::before {
 
   .header-actions {
     gap: 0.25rem;
+    flex-wrap: nowrap !important;
   }
 
   .language-switcher-mobile-btn {
@@ -2693,7 +2714,7 @@ body::before {
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1101px) {
   .mobile-menu-toggle {
     display: none !important;
   }
