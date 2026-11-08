@@ -253,9 +253,11 @@ export function translateMorseToPortuguese(morse) {
   if (isAmbiguousUnspacedWhole) {
     error = 'Sem a separação entre letras, a sequência pode ter mais de uma interpretação. Confira a mensagem original antes de adicionar espaços.';
   } else if (unrecognizedSequences.length === 1) {
-    error = `Não foi possível reconhecer o grupo: ${unrecognizedSequences[0]}. Confira os pontos, os traços e a separação entre letras.`;
+    error = `Não foi possível reconhecer o grupo “${unrecognizedSequences[0]}”. Confira os pontos, os traços e a separação entre letras.`;
   } else if (unrecognizedSequences.length > 1) {
-    error = `Não foi possível reconhecer os grupos: ${unrecognizedSequences.join(', ')}. Confira os pontos, os traços e a separação entre letras.`;
+    const quoted = unrecognizedSequences.map(s => `“${s}”`);
+    const formatted = quoted.length === 2 ? `${quoted[0]} e ${quoted[1]}` : `${quoted.slice(0, -1).join(', ')} e ${quoted[quoted.length - 1]}`;
+    error = `Não foi possível reconhecer os grupos ${formatted}. Confira os pontos, os traços e a separação entre letras.`;
   } else if (hasAmbiguousToken) {
     error = 'Sem a separação entre letras, a sequência pode ter mais de uma interpretação. Confira a mensagem original antes de adicionar espaços.';
   }
