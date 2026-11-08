@@ -18,7 +18,7 @@ export function PortugueseCharacterBreakdown({ breakdown, activeIndex, wpm, freq
   if (!breakdown || breakdown.length === 0) return null;
 
   const handlePlayChar = (item) => {
-    if (item.isSpace || !item.morse || item.morse === '?') return;
+    if (item.isSpace || !item.morse || item.morse === '?' || item.isInvalid) return;
 
     audioEngine.playSequence({
       breakdown: [item],
@@ -43,11 +43,18 @@ export function PortugueseCharacterBreakdown({ breakdown, activeIndex, wpm, freq
         {breakdown.map((item, idx) => (
           <div
             key={idx}
-            className={`char-flow-card ${activeIndex === idx ? 'active-playing' : ''}`}
+            className={`char-flow-card ${activeIndex === idx ? 'active-playing' : ''} ${item.isInvalid ? 'char-card-invalid' : ''}`}
             onClick={() => handlePlayChar(item)}
-            title={item.isSpace ? 'Espaço entre palavras (7 unidades)' : `Ouvir sinal Morse de ${item.char}`}
+            title={
+              item.isSpace
+                ? 'Espaço entre palavras (7 unidades)'
+                : item.isInvalid
+                ? `Grupo não reconhecido: ${item.morse}`
+                : `Ouvir sinal Morse de ${item.char}`
+            }
             role="button"
-            tabIndex={0}
+            tabIndex={item.isSpace || item.isInvalid ? -1 : 0}
+            style={item.isInvalid ? { borderColor: 'rgba(239, 68, 68, 0.4)', background: 'rgba(239, 68, 68, 0.05)' } : {}}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -55,18 +62,23 @@ export function PortugueseCharacterBreakdown({ breakdown, activeIndex, wpm, freq
               }
             }}
           >
-            <div className="flow-char">
+            <div className="flow-char" style={item.isInvalid ? { color: '#ef4444' } : {}}>
               {item.isSpace ? '␣' : item.char}
             </div>
-            <div className="flow-morse">
+            <div className="flow-morse" style={item.isInvalid ? { color: '#ef4444' } : {}}>
               {item.morse}
             </div>
-            <div className="flow-ditdah" title={item.phonetic}>
+            <div className="flow-ditdah" title={item.phonetic} style={item.isInvalid ? { color: 'var(--text-muted)' } : {}}>
               {item.ditDah || item.phonetic}
             </div>
-            {!item.isSpace && (
+            {!item.isSpace && !item.isInvalid && (
               <div style={{ marginTop: '0.2rem', color: 'var(--text-muted)' }}>
                 <Volume2 size={12} />
+              </div>
+            )}
+            {item.isInvalid && (
+              <div style={{ marginTop: '0.2rem', color: '#ef4444', fontSize: '0.7rem', fontWeight: 600 }}>
+                Não reconhecido
               </div>
             )}
           </div>

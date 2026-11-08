@@ -115,7 +115,7 @@ class MorseAudioEngine {
         if (item.isSpace) {
           // Word space: 7 units of spacing speed
           accumTimeSec += 7 * spacingDotDuration;
-        } else if (item.morse && item.morse !== '?') {
+        } else if (item.morse && item.morse !== '?' && !item.isInvalid) {
           // Play each dot/dash in morse symbol
           const morseChars = item.morse.split('');
           morseChars.forEach((symbol, symIdx) => {

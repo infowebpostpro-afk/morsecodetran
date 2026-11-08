@@ -11,7 +11,7 @@ import { MORSE_CODE_MAP, REVERSE_MORSE_MAP } from './morseMap.js';
 export const PORTUGUESE_EXAMPLES = [
   { label: 'OI', text: 'OI', morse: '--- ..', desc: 'Saudação curta em português' },
   { label: 'OLA MUNDO', text: 'OLA MUNDO', morse: '--- .-.. .- / -- ..- -. -.. ---', desc: 'Clássico "Olá Mundo" de programação' },
-  { label: 'SOS', text: 'SOS', morse: '... --- ...', desc: 'Sinal internacional de socorro (... --- ...)' },
+  { label: 'SOS', text: 'SOS', morse: '... --- ...', desc: 'Versão letra por letra com espaços (... --- ...)' },
   { label: 'AJUDA', text: 'AJUDA', morse: '.- .--- ..- -.. .-', desc: 'Pedido de auxílio' },
   { label: 'OBRIGADO', text: 'OBRIGADO', morse: '--- -... .-. .. --. .- -.. ---', desc: 'Agradecimento cordial' },
   { label: 'EU TE AMO', text: 'EU TE AMO', morse: '. ..- / - . / .- -- ---', desc: 'Declaração de afeto em três palavras' }
@@ -201,9 +201,18 @@ export function translateMorseToPortuguese(morse) {
     .replace(/[•·⋅・●]/g, '.')
     .replace(/[—–−―]/g, '-');
 
+  const trimmedWhole = cleaned.trim();
+  // Check if entire input is an ambiguous unspaced sequence of mixed dots and dashes without spaces
+  const isAmbiguousUnspacedWhole = trimmedWhole.indexOf(' ') === -1 &&
+    trimmedWhole.indexOf('/') === -1 &&
+    /^[.-]{4,}$/.test(trimmedWhole) &&
+    trimmedWhole.includes('.') &&
+    trimmedWhole.includes('-') &&
+    (!REVERSE_MORSE_MAP[trimmedWhole] || trimmedWhole === '...---...');
+
   const lines = cleaned.split(/\r?\n/);
   const unrecognizedSet = new Set();
-  let lacksBoundaries = false;
+  let hasAmbiguousToken = false;
 
   const decodedLines = lines.map(line => {
     const trimmed = line.trim();
@@ -219,16 +228,14 @@ export function translateMorseToPortuguese(morse) {
       return morseChars.map(code => {
         if (!code) return '';
 
-        // If an uninterrupted code of dots and dashes is > 6 symbols, it lacks character spacing boundaries
-        if (code.length > 6 && /^[.-]+$/.test(code)) {
-          lacksBoundaries = true;
-          unrecognizedSet.add(code);
-          return '?';
-        }
-
         // Check if token matches standard reverse morse map or prosign
         if (REVERSE_MORSE_MAP[code]) {
           return REVERSE_MORSE_MAP[code].char;
+        }
+
+        // Check for ambiguous unspaced token (mixed dots and dashes without spaces)
+        if (code.length > 5 && /^[.-]+$/.test(code) && code.includes('.') && code.includes('-')) {
+          hasAmbiguousToken = true;
         }
 
         unrecognizedSet.add(code);
@@ -240,20 +247,25 @@ export function translateMorseToPortuguese(morse) {
   });
 
   const unrecognizedSequences = Array.from(unrecognizedSet);
+  const hasAmbiguous = isAmbiguousUnspacedWhole || hasAmbiguousToken;
   let error = null;
 
-  if (lacksBoundaries) {
-    error = 'Não foi possível identificar todas as letras. Separe cada caractere Morse com um espaço e cada palavra com /.';
-  } else if (unrecognizedSequences.length > 0) {
-    error = `Sequência Morse não reconhecida: ${unrecognizedSequences.join(', ')}. Confira os pontos, traços e espaços.`;
+  if (isAmbiguousUnspacedWhole) {
+    error = 'Sem a separação entre letras, a sequência pode ter mais de uma interpretação. Confira a mensagem original antes de adicionar espaços.';
+  } else if (unrecognizedSequences.length === 1) {
+    error = `Não foi possível reconhecer o grupo: ${unrecognizedSequences[0]}. Confira os pontos, os traços e a separação entre letras.`;
+  } else if (unrecognizedSequences.length > 1) {
+    error = `Não foi possível reconhecer os grupos: ${unrecognizedSequences.join(', ')}. Confira os pontos, os traços e a separação entre letras.`;
+  } else if (hasAmbiguousToken) {
+    error = 'Sem a separação entre letras, a sequência pode ter mais de uma interpretação. Confira a mensagem original antes de adicionar espaços.';
   }
 
   return {
     text: decodedLines.join('\n'),
     unrecognizedSequences,
     hasUnrecognizedMorse: unrecognizedSequences.length > 0,
-    lacksBoundaries,
-    hasAmbiguousLetters: lacksBoundaries,
+    lacksBoundaries: hasAmbiguous,
+    hasAmbiguousLetters: hasAmbiguous,
     error
   };
 }
@@ -261,11 +273,93 @@ export function translateMorseToPortuguese(morse) {
 /**
  * Character breakdown generator for Brazilian Portuguese interactive flow and auditory playback
  */
-export function getPortugueseCharacterBreakdown(text) {
-  if (!text) return [];
+export function getPortugueseCharacterBreakdown(input, direction = 'auto') {
+  if (!input || !input.trim()) return [];
 
+  let effectiveDir = direction;
+  if (effectiveDir === 'auto') {
+    const isMorse = /^[.\-—–−―•·⋅・●\s/]+$/.test(input.trim());
+    effectiveDir = isMorse ? 'morse2text' : 'text2morse';
+  }
+
+  // Direction: Morse to Text breakdown
+  if (effectiveDir === 'morse2text') {
+    const cleaned = input
+      .replace(/[•·⋅・●]/g, '.')
+      .replace(/[—–−―]/g, '-');
+
+    const lines = cleaned.split(/\r?\n/);
+    const items = [];
+
+    lines.forEach((line) => {
+      const trimmed = line.trim();
+      if (!trimmed) return;
+
+      const morseWords = trimmed.split(/\s*\/\s*|\s{3,}/).filter(Boolean);
+
+      morseWords.forEach((word, wIdx) => {
+        const morseChars = word.trim().split(/\s+/).filter(Boolean);
+
+        morseChars.forEach((code) => {
+          if (!code) return;
+
+          // Real question mark pattern
+          if (code === '..--..') {
+            const mapping = REVERSE_MORSE_MAP[code];
+            items.push({
+              char: '?',
+              morse: '..--..',
+              phonetic: mapping ? (mapping.phonetic || mapping.name) : 'Ponto de interrogação',
+              ditDah: mapping ? mapping.ditDah : 'di-di-dah-dah-di-dit',
+              isSpace: false,
+              isInvalid: false
+            });
+            return;
+          }
+
+          if (REVERSE_MORSE_MAP[code]) {
+            const mapping = REVERSE_MORSE_MAP[code];
+            items.push({
+              char: mapping.char,
+              morse: code,
+              phonetic: mapping.phonetic || mapping.name,
+              ditDah: mapping.ditDah,
+              isSpace: false,
+              isInvalid: false
+            });
+          } else {
+            // Unrecognized group (e.g. ..............)
+            items.push({
+              char: '?',
+              morse: code,
+              phonetic: 'Grupo não reconhecido',
+              ditDah: '—',
+              isSpace: false,
+              isInvalid: true
+            });
+          }
+        });
+
+        // Add word separator space between words
+        if (wIdx < morseWords.length - 1) {
+          items.push({
+            char: '[Espaço]',
+            morse: '/',
+            phonetic: 'Pausa entre palavras (7 unidades)',
+            ditDah: '—',
+            isSpace: true,
+            isInvalid: false
+          });
+        }
+      });
+    });
+
+    return items;
+  }
+
+  // Direction: Text to Morse breakdown
   const items = [];
-  const tokens = text.match(/<[A-Za-z0-9]+>|[\s\S]/gu) || [];
+  const tokens = input.match(/<[A-Za-z0-9]+>|[\s\S]/gu) || [];
 
   tokens.forEach((token, i) => {
     if (token === ' ' || token === '\n' || token === '\t') {
@@ -275,6 +369,7 @@ export function getPortugueseCharacterBreakdown(text) {
         phonetic: 'Pausa entre palavras (7 unidades)',
         ditDah: '—',
         isSpace: true,
+        isInvalid: false,
         originalIndex: i
       });
       return;
@@ -290,6 +385,7 @@ export function getPortugueseCharacterBreakdown(text) {
           phonetic: mapping.name,
           ditDah: mapping.ditDah,
           isSpace: false,
+          isInvalid: false,
           originalIndex: i
         });
         return;
@@ -307,6 +403,7 @@ export function getPortugueseCharacterBreakdown(text) {
         ditDah: mapping ? mapping.ditDah : '?',
         isSpace: false,
         isNormalized: true,
+        isInvalid: false,
         originalIndex: i
       });
       return;
@@ -324,6 +421,7 @@ export function getPortugueseCharacterBreakdown(text) {
         ditDah: mapping ? mapping.ditDah : '?',
         isSpace: false,
         isNormalized: true,
+        isInvalid: false,
         originalIndex: i
       });
       return;
@@ -338,6 +436,7 @@ export function getPortugueseCharacterBreakdown(text) {
         phonetic: mapping.phonetic || mapping.name,
         ditDah: mapping.ditDah,
         isSpace: false,
+        isInvalid: false,
         originalIndex: i
       });
     } else {
@@ -345,9 +444,10 @@ export function getPortugueseCharacterBreakdown(text) {
         char: token,
         morse: '?',
         phonetic: 'Caractere não compatível',
-        ditDah: '?',
+        ditDah: '—',
         isSpace: false,
         isUnsupported: true,
+        isInvalid: true,
         originalIndex: i
       });
     }

@@ -87,16 +87,16 @@ export function TurkishTranslator({
               className={`dir-btn ${charMode === 'standard' ? 'active' : ''}`}
               onClick={() => setCharMode('standard')}
               style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
-              title="Uluslararası ITU-R M.1677-1 standardı: Türkçe harfler Latin alfabesine sadeleştirilir"
+              title="Sadeleştirme modu: Türkçe harfler temel Latin harflerine dönüştürülür"
             >
-              ITU Standart (Sadeleştirme)
+              Standart (Sadeleştirme)
             </button>
             <button
               type="button"
               className={`dir-btn ${charMode === 'extended' ? 'active' : ''}`}
               onClick={() => setCharMode('extended')}
               style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
-              title="Türkçe Telsiz/Telgraf Genişletilmiş Kodları: Ç, Ğ, Ö, Ş, Ü özel kodlarla çevrilir"
+              title="Türkçe genişletilmiş mod: Ç, Ğ, Ö, Ş, Ü özel kodlarla çevrilir"
             >
               Türkçe Genişletilmiş
             </button>
@@ -109,7 +109,7 @@ export function TurkishTranslator({
         </div>
 
         {/* Turkish Diacritics Informative Alert Banner */}
-        {detectedTrChars.length > 0 && mode !== 'morse2text' && (
+        {detectedTrChars.length > 0 && (mode === 'text2morse' || (mode === 'auto' && detectedType === 'text')) && (
           <div style={{
             margin: '0.75rem 1rem 0',
             padding: '0.65rem 0.9rem',
@@ -127,7 +127,7 @@ export function TurkishTranslator({
               <>
                 <AlertCircle size={16} color="var(--primary)" style={{ flexShrink: 0, marginTop: '2px' }} />
                 <div>
-                  <strong style={{ color: 'var(--text)' }}>Türkçe Karakter Bildirimi:</strong> Metninizde yer alan <strong>{detectedTrChars.join(', ')}</strong> harfleri, uluslararası ITU-R M.1677-1 standardı gereğince Latin alfabesine (Ç→C, Ğ→G, İ/ı→I, Ö→O, Ş→S, Ü→U) sadeleştirilmiştir. Tersine çeviride (Mors → Metin) standart Latin harfleri üretilir. Özelleştirilmiş kodlar için yukarıdan <em>Türkçe Genişletilmiş</em> modunu seçebilirsiniz.
+                  <strong style={{ color: 'var(--text)' }}>Türkçe karakter bildirimi:</strong> Seçili sadeleştirme modunda metninizdeki bazı Türkçe karakterler ({detectedTrChars.join(', ')}) temel Latin harflerine dönüştürülür: Ç→C, Ğ→G, İ/ı→I, Ö→O, Ş→S ve Ü→U. Mors kodu metne geri çevrildiğinde özgün Türkçe karakterler her zaman otomatik olarak geri kazanılamaz. Farklı karakter karşılıklarını görmek için Türkçe Genişletilmiş modunu seçebilirsiniz.
                 </div>
               </>
             ) : (

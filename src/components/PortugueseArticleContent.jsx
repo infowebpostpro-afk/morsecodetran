@@ -95,7 +95,7 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
           Você já se deparou com uma mensagem composta por pontos e traços misteriosos e não teve ideia do que ela significava? O código Morse parece simples à primeira vista, mas um único ponto esquecido, um traço a mais ou um espaçamento ausente pode alterar drasticamente todo o sentido da transmissão. Conferir cada caractere manualmente consultando tabelas impressas exige tempo precioso e multiplica as chances de erros, especialmente quando você precisa de uma tradução rápida, precisa e confiável.
         </p>
         <p className="intro-paragraph" style={{ fontSize: '1.15rem', lineHeight: 1.8, color: 'var(--text-secondary)', margin: 0 }}>
-          É exatamente aí que o nosso <strong>Tradutor de Código Morse</strong> faz toda a diferença. Digite qualquer texto em português para gerar instantaneamente a sequência em código Morse correspondente, ou cole uma sequência de pontos e traços para decodificá-la em texto claro imediatamente. Inspecione cada caractere de forma individual, escute a cadência sonora em tempo real com áudio de alta fidelidade, exporte o áudio, copie o resultado com um clique e valide sua mensagem com total segurança antes de utilizá-la em comunicações, projetos escolares, tatuagens, joias, enigmas ou transmissões de rádio.
+          Digite ou cole um texto para gerar código Morse, ou insira pontos e traços para voltar ao texto. Confira cada caractere, ouça o sinal e copie o resultado. Se houver caracteres normalizados ou não compatíveis, revise o aviso antes de usar a mensagem.
         </p>
       </div>
 
@@ -201,6 +201,51 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
               <strong>Figura 1:</strong> Interface interativa do Tradutor de Código Morse convertendo texto em tempo real conforme a norma ITU-R, com síntese de áudio, exportação WAV e ferramentas de cópia.
             </figcaption>
           </figure>
+        </section>
+
+        {/* SEÇÃO: Como o tradutor trata acentos e cedilha? */}
+        <section className="content-section">
+          <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>
+            Como o tradutor trata acentos e cedilha?
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+            Nesta versão, o texto é normalizado antes da conversão: letras acentuadas são apresentadas pela letra base, e <code>Ç</code> é convertido em <code>C</code>. A ferramenta mantém o texto original visível e mostra a forma usada para gerar o código Morse.
+          </p>
+
+          <div className="table-responsive" style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+            <table className="seo-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '320px', maxWidth: '600px', background: 'var(--surface-card)', borderRadius: '0.75rem', border: '1px solid var(--border-color)' }}>
+              <thead>
+                <tr style={{ background: 'rgba(255,255,255,0.04)', borderBottom: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase' }}>
+                  <th style={{ padding: '0.9rem 1rem' }}>Texto digitado</th>
+                  <th style={{ padding: '0.9rem 1rem' }}>Texto usado na conversão</th>
+                </tr>
+              </thead>
+              <tbody style={{ color: 'var(--text-secondary)', fontSize: '0.925rem' }}>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>OLÁ</td>
+                  <td style={{ padding: '0.85rem 1rem' }}><code>OLA</code></td>
+                </tr>
+                <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>AÇÃO</td>
+                  <td style={{ padding: '0.85rem 1rem' }}><code>ACAO</code></td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--text-primary)' }}>VOCÊ</td>
+                  <td style={{ padding: '0.85rem 1rem' }}><code>VOCE</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+            Por exemplo, <code>OLÁ</code> é convertido como <code>OLA</code> e gera <code>--- .-.. .-</code>.
+          </p>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1.25rem' }}>
+            Ao converter essa sequência de volta, o resultado é <code>OLA</code>. O código produzido pela forma normalizada não informa onde havia um acento ou cedilha no texto original.
+          </p>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+            Essa normalização é uma escolha de funcionamento desta ferramenta. Outros tradutores ou tabelas podem tratar caracteres adicionais de outra maneira. Confira o texto usado na conversão antes de copiar ou gravar uma mensagem.
+          </p>
         </section>
 
         {/* SEÇÃO 3: Tradutor vs. Decodificador vs. Gerador */}
@@ -523,11 +568,14 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
             Na comunicação telegráfica prática de radioamadores (CW), certos sinais são concatenados sem intervalo interno entre as letras para indicar comandos operacionais, conhecidos como <em>prosigns</em> (sinais de procedimento):
           </p>
           <ul className="content-list" style={{ color: 'var(--text-secondary)', lineHeight: 1.8, paddingLeft: '1.5rem', marginBottom: '1.25rem' }}>
-            <li><strong>SOS (<code className="morse-font">... --- ...</code>):</strong> Sinal mundial de perigo iminente e socorro marítimo;</li>
+            <li><strong>SOS como sinal de socorro:</strong> <code className="morse-font">...---...</code> é transmitido como um grupo contínuo, sem as pausas normais entre as letras. Para mostrar as letras separadamente em uma tabela ou em um tradutor de texto, você também pode ver <code className="morse-font">... --- ...</code>.</li>
             <li><strong>AR (<code className="morse-font">.-.-.</code>):</strong> Fim de transmissão ou mensagem;</li>
             <li><strong>SK (<code className="morse-font">...-.-</code>):</strong> Fim definitivo de contato ('silent key');</li>
             <li><strong>BT (<code className="morse-font">-...-</code>):</strong> Separador de parágrafos ou pausa de raciocínio.</li>
           </ul>
+          <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '0.75rem' }}>
+            A representação visual sem espaços e a temporização de áudio precisam ser interpretadas juntas: as pausas fazem parte da transmissão.
+          </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
             Esses sinais especiais não devem ser lidos como letras separadas, mas como símbolos unificados com significado operacional específico no radioamadorismo.
           </p>
@@ -589,10 +637,10 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
             Qual É o Grau de Precisão de um Tradutor de Código Morse?
           </h2>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
-            A tradução de texto digital para código Morse é <strong>100% exata e determinística</strong>: cada letra do padrão oficial possui uma representação matemática invariável.
+            A conversão de texto funciona por correspondência entre caracteres e padrões Morse. Para obter um resultado útil, confira se os caracteres são compatíveis, se a normalização exibida corresponde ao que você pretende enviar e se as letras e palavras estão separadas corretamente.
           </p>
           <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: '1rem' }}>
-            Por outro lado, o grande desafio técnico surge quando a entrada provém de fontes analógicas externas:
+            Uma sequência copiada incorretamente pode produzir outra mensagem. Já a leitura de áudio ou imagem acrescenta dificuldades, como ruído, baixa resolução e sinais pouco nítidos.
           </p>
           <ul className="content-list" style={{ color: 'var(--text-secondary)', lineHeight: 1.8, paddingLeft: '1.5rem', marginBottom: '1rem' }}>
             <li>Em arquivos de áudio, ruído estático, chiados de radiofrequência ou velocidade humana irregular podem mascarar os pontos;</li>
@@ -644,7 +692,7 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
             </div>
             <div className="process-step" style={{ background: 'var(--surface-card)', padding: '1.25rem', borderRadius: '0.75rem', border: '1px solid var(--border-color)' }}>
               <span className="step-num" style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-primary)', textTransform: 'uppercase', display: 'block', marginBottom: '0.5rem' }}>Passo 4</span>
-              <div><strong>Compare os Resultados:</strong> Se o texto decodificado coincidir com o original, a mensagem está 100% perfeita.</div>
+              <div><strong>Compare os Resultados:</strong> Se o texto decodificado corresponder ao texto usado na conversão, o teste indica que a ida e a volta foram consistentes. Compare também com o original, especialmente quando houver acentos, cedilha ou pontuação.</div>
             </div>
           </div>
         </section>
@@ -669,24 +717,24 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
               </thead>
               <tbody style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Texto convencional</td>
+                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Texto → Morse</td>
                   <td style={{ padding: '0.75rem 1rem' }}>Tradutor (Texto → Morse)</td>
-                  <td style={{ padding: '0.75rem 1rem' }}>Conversão instantânea e precisa</td>
+                  <td style={{ padding: '0.75rem 1rem' }}>Gera sinais a partir de texto.</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Pontos e traços digitados</td>
+                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Morse → Texto</td>
                   <td style={{ padding: '0.75rem 1rem' }}>Decodificador de Texto (Morse → Texto)</td>
-                  <td style={{ padding: '0.75rem 1rem' }}>Decodificação imediata letra a letra</td>
+                  <td style={{ padding: '0.75rem 1rem' }}>Interpreta pontos e traços digitados.</td>
                 </tr>
                 <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Gravação de áudio telegráfico</td>
+                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Áudio → Texto</td>
                   <td style={{ padding: '0.75rem 1rem' }}><a href="/morse-code-audio-translator/" onClick={(e) => handleNav(e, 'audiotranslator', '/morse-code-audio-translator/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Tradutor de Áudio Morse (Inglês)</a></td>
-                  <td style={{ padding: '0.75rem 1rem' }}>Análise espectral e detecção de frequência</td>
+                  <td style={{ padding: '0.75rem 1rem' }}>Tenta identificar sinais em uma gravação ou entrada de áudio compatível.</td>
                 </tr>
                 <tr>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Fotos ou capturas de tela</td>
+                  <td style={{ padding: '0.75rem 1rem', fontWeight: 700 }}>Imagem → Texto</td>
                   <td style={{ padding: '0.75rem 1rem' }}><a href="/morse-code-image-decoder/" onClick={(e) => handleNav(e, 'imagedecoder', '/morse-code-image-decoder/')} style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>Decodificador de Imagem (Inglês)</a></td>
-                  <td style={{ padding: '0.75rem 1rem' }}>Binarização de pixels e leitura de padrões</td>
+                  <td style={{ padding: '0.75rem 1rem' }}>Tenta identificar sinais visíveis em uma imagem compatível.</td>
                 </tr>
               </tbody>
             </table>
@@ -825,7 +873,7 @@ export function PortugueseArticleContent({ setActiveTab, wpm = 20, frequency = 6
             <li>Ajuste de velocidade em WPM baseado no padrão internacional PARIS;</li>
             <li>Modo de espaçamento pedagógico Farnsworth para treinamento auditivo acelerado;</li>
             <li>Exportação direta do áudio decodificado em arquivo WAV para uso offline;</li>
-            <li>Processamento 100% no cliente, garantindo privacidade absoluta dos seus dados.</li>
+            <li>A conversão de texto e a geração de áudio são realizadas no navegador. Consulte a <a href="/privacy-policy/" style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}>política de privacidade (em inglês)</a> para informações sobre o site e serviços relacionados.</li>
           </ul>
         </section>
 

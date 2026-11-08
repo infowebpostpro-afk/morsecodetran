@@ -223,8 +223,24 @@ export function PortugueseTranslator({
 
           {/* OUTPUT PANEL */}
           <div className="output-panel">
-            <div className="panel-title">
-              <span>Resultado ({outputLabel})</span>
+            <div className="panel-title" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <span>Resultado ({outputLabel})</span>
+                {error && (
+                  <span
+                    style={{
+                      fontSize: '0.725rem',
+                      background: 'rgba(239, 68, 68, 0.15)',
+                      color: '#ef4444',
+                      padding: '0.1rem 0.45rem',
+                      borderRadius: '4px',
+                      fontWeight: 600
+                    }}
+                  >
+                    Resultado parcial
+                  </span>
+                )}
+              </div>
               <button
                 className="btn-icon"
                 onClick={() => setIsLooping(!isLooping)}
@@ -270,8 +286,8 @@ export function PortugueseTranslator({
             )}
 
             {/* Action Buttons */}
-            <button className="btn-secondary-action" onClick={() => onCopy(outputText, 'Resultado')} disabled={!outputText} aria-label="Copiar resultado">
-              <Copy size={14} /> Copiar resultado
+            <button className="btn-secondary-action" onClick={() => onCopy(outputText, error ? 'Resultado parcial' : 'Resultado')} disabled={!outputText} aria-label={error ? 'Copiar resultado parcial' : 'Copiar resultado'}>
+              <Copy size={14} /> {error ? 'Copiar resultado parcial' : 'Copiar resultado'}
             </button>
 
             <button className="btn-secondary-action" onClick={() => onCopy(`${inputText}\n---\n${outputText}`, 'Entrada e resultado')} disabled={!outputText} aria-label="Copiar entrada e resultado">

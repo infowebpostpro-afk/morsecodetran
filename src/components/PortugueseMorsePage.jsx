@@ -117,9 +117,8 @@ export function PortugueseMorsePage({
       effectiveDir = detectedType === 'morse' ? 'morse2text' : 'text2morse';
     }
 
-    const textToAnalyze = effectiveDir === 'text2morse' ? inputText : outputText;
-    return getPortugueseCharacterBreakdown(textToAnalyze);
-  }, [inputText, outputText, mode, detectedType]);
+    return getPortugueseCharacterBreakdown(inputText, effectiveDir);
+  }, [inputText, mode, detectedType]);
 
   // Calculate timing statistics
   const stats = useMemo(() => {

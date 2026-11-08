@@ -146,22 +146,41 @@ export function TurkishArticleContent({ wpm = 20, frequency = 600, volume = 0.5,
         <h2 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '1rem', color: 'var(--text)' }}>
           Mors Alfabesinde Türkçe Karakterler (Ç, Ğ, İ, Ö, Ş, Ü) Nasıl İşlenir?
         </h2>
-        <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-          Mors alfabesini öğrenenlerin ve kullananların en sık karşılaştığı soru, Türkçe'ye özgü harflerin uluslararası sistemde nasıl iletileceğidir. Uluslararası Telekomünikasyon Birliği’nin <strong>ITU-R M.1677-1</strong> tavsiye kararında temel Mors alfabesi 26 İngiliz Latin harfi üzerinden tanımlanmıştır.
+
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginTop: '1.25rem', marginBottom: '0.75rem', color: 'var(--text)' }}>
+          Türkçe karakterler Mors koduna nasıl çevrilir?
+        </h3>
+        <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+          Türkçe metinlerde Ç, Ğ, İ, ı, Ö, Ş ve Ü gibi karakterler bulunabilir. Bu karakterlerin nasıl gösterileceği, kullanılan Mors tablosuna ve araçta seçilen karakter moduna bağlıdır.
+        </p>
+        <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+          Bir mesajı başkasıyla paylaşmadan önce kullanılan karakter tablosunu kontrol edin. Aynı nokta ve çizgi dizisi, farklı tablolarda farklı biçimde yorumlanabilir.
         </p>
 
-        <div style={{ background: 'var(--surface-sunken)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: '1.5rem', marginBottom: '1.75rem' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Radio size={18} color="var(--primary)" /> İki Farklı Yaklaşım: Sadeleştirme vs. Genişletilmiş Kodlar
-          </h3>
-          <ul style={{ paddingLeft: '1.25rem', fontSize: '0.925rem', lineHeight: 1.7, color: 'var(--text-secondary)' }}>
-            <li>
-              <strong>1. Uluslararası Standart (Sadeleştirme):</strong> Küresel amatör telsizcilikte (CW) ve uluslararası mesajlaşmada Türkçe karakterler en yakın temel Latin harfine dönüştürülür: <code>Ç → C</code>, <code>Ğ → G</code>, <code>İ/ı → I</code>, <code>Ö → O</code>, <code>Ş → S</code>, <code>Ü → U</code>. Bu yöntem mesajın tüm dünyadaki alıcılar tarafından hatasız okunmasını garanti eder. Ancak Mors'tan metne geri çevrildiğinde orijinal Türkçe aksanların (şapka/nokta) otomatik geri gelmeyeceği bilinmelidir.
-            </li>
-            <li style={{ marginTop: '0.5rem' }}>
-              <strong>2. Türkçe Genişletilmiş Kodlar (Telsiz ve Telgraf Geleneği):</strong> Yerel haberleşmede ve özel Türkçe Mors tablolarında bu harflere özgü özel kombinasyonlar kabul görmüştür. Çeviricimizin üst panelindeki <em>"Karakter Kuralı"</em> menüsünden bu iki mod arasında dilediğiniz gibi geçiş yapabilirsiniz.
-            </li>
-          </ul>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
+          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--primary)' }}>
+              Sadeleştirme modu
+            </h3>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+              Sadeleştirme modunda araç, desteklenen Türkçe karakterleri temel Latin harflerine dönüştürerek işler. Örneğin Ç, C olarak; Ş ise S olarak ele alınır.
+            </p>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              Bu yöntem mesajı farklı araçlarla karşılaştırmayı kolaylaştırabilir. Ancak özgün Türkçe karakterler kaybolabileceği için ters çeviride ilk yazdığınız metin her zaman aynen geri elde edilmez.
+            </p>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+            <h3 style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--signal)' }}>
+              Türkçe genişletilmiş modu
+            </h3>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+              Türkçe genişletilmiş modunda araç, kendi desteklediği karakter tablosundaki karşılıkları kullanır. Sonuçları başka bir çeviricide kontrol ederken karşı tarafın aynı tabloyu kullanıp kullanmadığına dikkat edin.
+            </p>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              Tüm genişletilmiş karşılıkları otomatik olarak ITU standardının parçası gibi göstermeyin.
+            </p>
+          </div>
         </div>
 
         {/* Turkish Letters Comparative Table */}
@@ -171,7 +190,7 @@ export function TurkishArticleContent({ wpm = 20, frequency = 600, volume = 0.5,
               <tr style={{ background: 'var(--surface-elevated)', borderBottom: '2px solid var(--border)' }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Türkçe Harf</th>
                 <th style={{ padding: '0.75rem 1rem' }}>Genişletilmiş Mors Kodu</th>
-                <th style={{ padding: '0.75rem 1rem' }}>Uluslararası ITU Sadeleştirmesi</th>
+                <th style={{ padding: '0.75rem 1rem' }}>Bu araçta sadeleştirilmiş karşılık</th>
                 <th style={{ padding: '0.75rem 1rem' }}>Dits & Dahs Okunuşu</th>
                 <th style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>Ses</th>
               </tr>
@@ -206,6 +225,9 @@ export function TurkishArticleContent({ wpm = 20, frequency = 600, volume = 0.5,
             </tbody>
           </table>
         </div>
+        <p style={{ fontSize: '0.85rem', lineHeight: 1.6, color: 'var(--text-muted)', marginTop: '0.75rem' }}>
+          Bu tablo, aracın iki farklı karakter modunda gösterdiği karşılıkları karşılaştırır. Genişletilmiş kodlar ile standart harflere sadeleştirme aynı yöntem değildir. Başka bir araç farklı bir karakter tablosu kullanabilir.
+        </p>
       </section>
 
       {/* SECTION 3: Spacing & Ambiguity */}
@@ -214,7 +236,7 @@ export function TurkishArticleContent({ wpm = 20, frequency = 600, volume = 0.5,
           Mors Kodunda Boşluk Kuralları ve Boşluksuz Mors Karmaşası
         </h2>
         <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
-          Mors alfabesi sadece noktalardan ve tirelerden ibaret değildir; zamanlama ve aralıklardaki sessizlikler de alfabenin ayrılmaz birer harfidir. Uluslararası standart zamanlama oranları şu şekildedir:
+          Mors kodunda yalnızca nokta ve çizgiler değil, sinyaller arasındaki sessizlikler de önemlidir. Bu aralıklar, aynı karakterin öğelerini, harfleri ve kelimeleri birbirinden ayırmaya yardımcı olur. Uluslararası standart zamanlama oranları şu şekildedir:
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
@@ -238,11 +260,92 @@ export function TurkishArticleContent({ wpm = 20, frequency = 600, volume = 0.5,
         </div>
 
         <div style={{ background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.25)', borderRadius: 'var(--radius-md)', padding: '1.25rem', color: 'var(--text)' }}>
-          <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#ef4444', marginBottom: '0.4rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <ShieldAlert size={18} /> Boşluksuz Mors Neden Çözülemez?
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ef4444', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <ShieldAlert size={18} /> Boşluksuz Mors neden birden fazla anlama gelebilir?
           </h3>
-          <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
-            Mors alfabesi sabit bit uzunluğuna sahip bir kodlama değildir (Örn: E tek bir noktadır <code>.</code>, O üç tiredir <code>---</code>). Eğer harfler arasına boşluk bırakmadan örneğin <code>...</code> yazarsanız, bu dizi tek bir <strong>S</strong> harfi anlamına gelebileceği gibi, üç tane <strong>E</strong> harfi (<code>. . .</code>), bir <strong>E</strong> ve bir <strong>I</strong> (<code>. ..</code>) ya da bir <strong>I</strong> ve bir <strong>E</strong> (<code>.. .</code>) anlamına da gelebilir. Bu nedenle doğru bir çözümleme için harfler arasına mutlaka boşluk eklenmelidir.
+          <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+            Harfler arasındaki sınırlar belirtilmediğinde bir nokta ve çizgi dizisi farklı biçimlerde bölünebilir. Örneğin <code>...</code>, tek bir S harfi olarak okunabileceği gibi <code>. . .</code> biçiminde üç E harfi olarak da yorumlanabilir.
+          </p>
+          <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+            Bu nedenle yalnızca boşluksuz diziyi görmek her zaman tek bir doğru sonuç bulmak için yeterli değildir. Mümkünse mesajın kaynağındaki harf ve kelime aralıklarını koruyun.
+          </p>
+        </div>
+      </section>
+
+      {/* SECTION 4: Practical Troubleshooting & Worked Example */}
+      <section className="article-section" style={{ marginTop: '3.5rem' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '1rem', color: 'var(--text)' }}>
+          Mors kodu çevirisi neden beklediğiniz gibi çıkmayabilir?
+        </h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              <strong style={{ color: 'var(--text)' }}>Harf aralıkları eksik olabilir.</strong> Her Mors karakteri ayrı bir grup olarak yazılır. Bir boşluğun eklenmesi veya silinmesi sonucu değiştirebilir.
+            </p>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              <strong style={{ color: 'var(--text)' }}>Kelime ayırıcıları farklı olabilir.</strong> Bir araç <code>/</code> işaretini kelimeler arasında görsel ayırıcı olarak kullanırken başka bir araç farklı bir gösterim kullanabilir. Kodu paylaşmadan önce ayırıcıları kontrol edin.
+            </p>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              <strong style={{ color: 'var(--text)' }}>Türkçe karakter modu farklı olabilir.</strong> Sadeleştirme ve genişletilmiş karakter tabloları aynı sonucu üretmeyebilir. Gönderenin ve alıcının kullandığı modu karşılaştırın.
+            </p>
+          </div>
+
+          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)' }}>
+            <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+              <strong style={{ color: 'var(--text)' }}>Bir karakter desteklenmiyor olabilir.</strong> Araç uyarı gösteriyorsa ilgili karakteri kontrol edin. Önemli mesajları kullanmadan önce sonucu tekrar metne çevirerek karşılaştırın.
+            </p>
+          </div>
+        </div>
+
+        {/* WORKED EXAMPLE: MERHABA */}
+        <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--primary)' }}>
+            MERHABA nasıl yazılır?
+          </h3>
+          <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text-secondary)', marginBottom: '0.75rem' }}>
+            MERHABA sözcüğündeki her harf ayrı bir Mors grubuna dönüştürülür:
+          </p>
+          <p style={{ fontSize: '1rem', lineHeight: 1.7, color: 'var(--text)', marginBottom: '1rem', fontWeight: 600 }}>
+            M <code>--</code> · E <code>.</code> · R <code>.-.</code> · H <code>....</code> · A <code>.-</code> · B <code>-...</code> · A <code>.-</code>
+          </p>
+          <div style={{
+            background: 'var(--surface-sunken)',
+            padding: '1rem 1.25rem',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid var(--border)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            marginBottom: '1rem'
+          }}>
+            <div>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>Sonuç:</div>
+              <div style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--signal)', letterSpacing: '0.05em' }}>
+                -- . .-. .... .- -... .-
+              </div>
+            </div>
+            {onSelectExample && (
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{ fontSize: '0.85rem', padding: '0.4rem 0.8rem' }}
+                onClick={() => onSelectExample('MERHABA')}
+              >
+                Çeviricide Dene
+              </button>
+            )}
+          </div>
+          <p style={{ fontSize: '0.925rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>
+            Birden fazla kelime yazarken, aracın gösterdiği kelime ayırıcısını koruyun.
           </p>
         </div>
       </section>

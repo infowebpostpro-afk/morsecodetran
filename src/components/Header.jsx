@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { MorseLogo } from './MorseLogo';
-import { Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
+import { Sun, Moon, Menu, X, ChevronDown, Globe } from 'lucide-react';
 import { navigationEn, navigationTr, navigationEs, navigationPt, isTurkishRoute, isSpanishRoute, isPortugueseRoute, getEquivalentRoute } from '../i18n/navigation.js';
 import { ChromeIcon } from './ChromeIcon.jsx';
 import { CHROME_EXTENSION_URL } from './ChromeExtensionBanner.jsx';
 
 export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileLangOpen, setMobileLangOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileOpenSections, setMobileOpenSections] = useState({});
   const headerRef = useRef(null);
@@ -23,15 +24,21 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
   const esTarget = getEquivalentRoute(activeTab, 'es');
   const ptTarget = getEquivalentRoute(activeTab, 'pt');
 
+  const currentLangCode = isTr ? 'TR' : (isEs ? 'ES' : (isPt ? 'PT' : 'EN'));
+  const currentLangLabel = isTr ? 'Türkçe' : (isEs ? 'Español' : (isPt ? 'Português' : 'English'));
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
         setOpenDropdown(null);
+        setMobileLangOpen(false);
       }
     };
     const handleEsc = (event) => {
       if (event.key === 'Escape') {
         setOpenDropdown(null);
+        setMobileLangOpen(false);
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -49,6 +56,7 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
       window.history.pushState({ tab }, '', href);
     }
     setMobileMenuOpen(false);
+    setMobileLangOpen(false);
     setOpenDropdown(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -153,13 +161,12 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             </span>
           </a>
 
-          {/* Context-Preserving Crawlable Language Switcher */}
-          <div className="language-switcher" aria-label={isPt ? "Seletor de idioma" : (isTr ? "Dil Seçici" : (isEs ? "Selector de idioma" : "Language Selector"))} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: 'var(--surface-sunken)', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border)', fontSize: '0.8rem', fontWeight: 600 }}>
+          {/* Desktop Language Switcher (Full Horizontal Bar) */}
+          <nav className="language-switcher-desktop" aria-label={isPt ? "Seletor de idioma" : (isTr ? "Dil Seçici" : (isEs ? "Selector de idioma" : "Language Selector"))}>
             <a
               href={enTarget.path}
               style={{
                 color: !isTr && !isEs && !isPt ? 'var(--primary)' : 'var(--text-muted)',
-                textDecoration: 'none',
                 fontWeight: !isTr && !isEs && !isPt ? 700 : 500
               }}
               onClick={(e) => handleTabClick(e, enTarget.tab, enTarget.path)}
@@ -173,7 +180,6 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
               href={trTarget.path}
               style={{
                 color: isTr ? 'var(--primary)' : 'var(--text-muted)',
-                textDecoration: 'none',
                 fontWeight: isTr ? 700 : 500
               }}
               onClick={(e) => handleTabClick(e, trTarget.tab, trTarget.path)}
@@ -187,7 +193,6 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
               href={esTarget.path}
               style={{
                 color: isEs ? 'var(--primary)' : 'var(--text-muted)',
-                textDecoration: 'none',
                 fontWeight: isEs ? 700 : 500
               }}
               onClick={(e) => handleTabClick(e, esTarget.tab, esTarget.path)}
@@ -201,7 +206,6 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
               href={ptTarget.path}
               style={{
                 color: isPt ? 'var(--primary)' : 'var(--text-muted)',
-                textDecoration: 'none',
                 fontWeight: isPt ? 700 : 500
               }}
               onClick={(e) => handleTabClick(e, ptTarget.tab, ptTarget.path)}
@@ -210,6 +214,67 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
             >
               Português (Brasil)
             </a>
+          </nav>
+
+          {/* Mobile/Tablet Compact Language Pill with Dropdown */}
+          <div className="language-switcher-mobile-wrapper" style={{ position: 'relative' }}>
+            <button
+              type="button"
+              className="language-switcher-mobile-btn"
+              onClick={() => {
+                setMobileLangOpen(!mobileLangOpen);
+                setOpenDropdown(null);
+              }}
+              aria-expanded={mobileLangOpen}
+              aria-haspopup="true"
+              aria-label={isPt ? `Idioma atual: ${currentLangLabel}` : (isTr ? `Geçerli dil: ${currentLangLabel}` : (isEs ? `Idioma actual: ${currentLangLabel}` : `Current language: ${currentLangLabel}`))}
+              title={currentLangLabel}
+            >
+              <Globe size={14} />
+              <span>{currentLangCode}</span>
+              <ChevronDown size={12} style={{ transform: mobileLangOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} />
+            </button>
+
+            {mobileLangOpen && (
+              <div className="language-mobile-dropdown">
+                <a
+                  href={enTarget.path}
+                  className={!isTr && !isEs && !isPt ? 'active' : ''}
+                  onClick={(e) => { handleTabClick(e, enTarget.tab, enTarget.path); setMobileLangOpen(false); }}
+                  aria-current={!isTr && !isEs && !isPt ? 'page' : undefined}
+                >
+                  <span>English</span>
+                  {!isTr && !isEs && !isPt && <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>✓</span>}
+                </a>
+                <a
+                  href={trTarget.path}
+                  className={isTr ? 'active' : ''}
+                  onClick={(e) => { handleTabClick(e, trTarget.tab, trTarget.path); setMobileLangOpen(false); }}
+                  aria-current={isTr ? 'page' : undefined}
+                >
+                  <span>Türkçe</span>
+                  {isTr && <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>✓</span>}
+                </a>
+                <a
+                  href={esTarget.path}
+                  className={isEs ? 'active' : ''}
+                  onClick={(e) => { handleTabClick(e, esTarget.tab, esTarget.path); setMobileLangOpen(false); }}
+                  aria-current={isEs ? 'page' : undefined}
+                >
+                  <span>Español</span>
+                  {isEs && <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>✓</span>}
+                </a>
+                <a
+                  href={ptTarget.path}
+                  className={isPt ? 'active' : ''}
+                  onClick={(e) => { handleTabClick(e, ptTarget.tab, ptTarget.path); setMobileLangOpen(false); }}
+                  aria-current={isPt ? 'page' : undefined}
+                >
+                  <span>Português (Brasil)</span>
+                  {isPt && <span style={{ color: 'var(--primary)', fontSize: '0.75rem' }}>✓</span>}
+                </a>
+              </div>
+            )}
           </div>
 
           <button
@@ -223,7 +288,10 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
 
           <button
             className="btn-icon mobile-menu-toggle"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => {
+              setMobileMenuOpen(!mobileMenuOpen);
+              setMobileLangOpen(false);
+            }}
             aria-label={isPt ? "Abrir ou fechar menu móvel" : (isTr ? "Mobil Menüyü Aç/Kapat" : (isEs ? "Abrir o cerrar menú móvil" : "Toggle Mobile Menu"))}
             aria-expanded={mobileMenuOpen}
           >
@@ -246,75 +314,63 @@ export function Header({ theme, toggleTheme, activeTab, setActiveTab }) {
               <ChromeIcon size={24} />
               <div className="mobile-extension-info">
                 <span className="mobile-extension-title">
-                  {isTr ? "Chrome Eklentisi" : (isEs ? "Extensión Chrome" : "Chrome Extension")}
+                  {isTr ? "Chrome Eklentisi" : (isEs ? "Extensión Chrome" : (isPt ? "Extensão Chrome" : "Chrome Extension"))}
                 </span>
                 <span className="mobile-extension-sub">
                   {isTr
                     ? "Sağ tıkla her web sitesinde anında Mors çevirisi yapın"
                     : (isEs
                       ? "Traduce Morse en cualquier web con clic derecho"
-                      : "Translate Morse on any page with a right-click")}
+                      : (isPt
+                        ? "Traduza código Morse em qualquer site com clique direito"
+                        : "Translate Morse on any page with a right-click"))}
                 </span>
               </div>
               <span className="mobile-extension-btn">
-                {isTr ? "Ücretsiz Ekle" : (isEs ? "Gratis" : "Get Free")}
+                {isTr ? "Ücretsiz Ekle" : (isEs ? "Gratis" : (isPt ? "Grátis" : "Get Free"))}
               </span>
             </a>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '0.6rem', padding: '1rem', borderBottom: '1px solid var(--border)' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Language / Dil / Idioma:</span>
-            <a
-              href={enTarget.path}
-              style={{
-                color: !isTr && !isEs && !isPt ? 'var(--primary)' : 'var(--text)',
-                fontWeight: !isTr && !isEs && !isPt ? 700 : 500,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-              onClick={(e) => handleTabClick(e, enTarget.tab, enTarget.path)}
-            >
-              English
-            </a>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <a
-              href={trTarget.path}
-              style={{
-                color: isTr ? 'var(--primary)' : 'var(--text)',
-                fontWeight: isTr ? 700 : 500,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-              onClick={(e) => handleTabClick(e, trTarget.tab, trTarget.path)}
-            >
-              Türkçe
-            </a>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <a
-              href={esTarget.path}
-              style={{
-                color: isEs ? 'var(--primary)' : 'var(--text)',
-                fontWeight: isEs ? 700 : 500,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-              onClick={(e) => handleTabClick(e, esTarget.tab, esTarget.path)}
-            >
-              Español
-            </a>
-            <span style={{ color: 'var(--border)' }}>·</span>
-            <a
-              href={ptTarget.path}
-              style={{
-                color: isPt ? 'var(--primary)' : 'var(--text)',
-                fontWeight: isPt ? 700 : 500,
-                fontSize: '0.9rem',
-                textDecoration: 'none'
-              }}
-              onClick={(e) => handleTabClick(e, ptTarget.tab, ptTarget.path)}
-            >
-              Português (Brasil)
-            </a>
+          {/* Clean Mobile Language Switcher Pills */}
+          <div className="mobile-menu-languages">
+            <span className="mobile-lang-label">
+              <Globe size={14} /> {isPt ? "Idioma" : (isTr ? "Dil Seçimi" : (isEs ? "Idioma" : "Language"))}:
+            </span>
+            <div className="mobile-lang-pills">
+              <a
+                href={enTarget.path}
+                className={`mobile-lang-pill ${!isTr && !isEs && !isPt ? 'active' : ''}`}
+                onClick={(e) => handleTabClick(e, enTarget.tab, enTarget.path)}
+                aria-current={!isTr && !isEs && !isPt ? 'page' : undefined}
+              >
+                English
+              </a>
+              <a
+                href={trTarget.path}
+                className={`mobile-lang-pill ${isTr ? 'active' : ''}`}
+                onClick={(e) => handleTabClick(e, trTarget.tab, trTarget.path)}
+                aria-current={isTr ? 'page' : undefined}
+              >
+                Türkçe
+              </a>
+              <a
+                href={esTarget.path}
+                className={`mobile-lang-pill ${isEs ? 'active' : ''}`}
+                onClick={(e) => handleTabClick(e, esTarget.tab, esTarget.path)}
+                aria-current={isEs ? 'page' : undefined}
+              >
+                Español
+              </a>
+              <a
+                href={ptTarget.path}
+                className={`mobile-lang-pill ${isPt ? 'active' : ''}`}
+                onClick={(e) => handleTabClick(e, ptTarget.tab, ptTarget.path)}
+                aria-current={isPt ? 'page' : undefined}
+              >
+                Português
+              </a>
+            </div>
           </div>
           <nav className="mobile-nav" aria-label={isPt ? "Menu Móvel" : (isTr ? "Mobil Menü" : "Mobile Navigation")}>
             <ul className="mobile-nav-list">

@@ -114,7 +114,7 @@ export function MorseLogo({ size = 38, showText = true, className = '' }) {
               marginLeft: '2px'
             }} />
           </span>
-          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary, #94a3b8)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '2px' }}>
+          <span className="brand-logo-subtitle" style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--text-secondary, #94a3b8)', letterSpacing: '0.05em', textTransform: 'uppercase', marginTop: '2px' }}>
             Morse Code Translator
           </span>
         </div>
