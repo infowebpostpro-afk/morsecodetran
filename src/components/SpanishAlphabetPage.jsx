@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Search, Volume2, Copy, Play, Square, ExternalLink,
-  ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Sparkles, BookOpen, HelpCircle
+  ArrowRight, ShieldCheck, ChevronDown, ChevronUp, X, Sparkles, BookOpen, HelpCircle, Printer
 } from 'lucide-react';
 import { MORSE_CODE_MAP } from '../engine/morseMap.js';
 import { SPANISH_EXTENDED_MAP, SPANISH_NORMALIZATION_MAP } from '../engine/spanishMorse.js';
@@ -112,11 +112,11 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
   const faqs = [
     {
       q: '¿Cómo se representa la letra Ñ en código Morse?',
-      a: 'La Unión Internacional de Telecomunicaciones (ITU-R M.1677-1) estandariza oficialmente el alfabeto latino básico (A–Z). En radiotelegrafía histórica de países hispanohablantes se adoptó la extensión oficial para la letra Ñ con el código --.-- (dos rayas, un punto, dos rayas). En transmisiones internacionales estándar donde el receptor no dispone de extensiones regionales, la Ñ se normaliza convencionalmente como N (-.). Nuestro traductor admite ambos modos.'
+      a: 'En algunas convenciones utilizadas para el español, la letra Ñ se representa mediante la extensión --.--. Esa señal no figura en la tabla básica de la recomendación UIT-R M.1677-1. En herramientas y transmisiones internacionales simplificadas, la Ñ se normaliza frecuentemente como N (-.). Comprueba siempre el modo de caracteres seleccionado en el traductor.'
     },
     {
       q: '¿Cómo se transmiten las vocales con tilde (Á, É, Í, Ó, Ú) y la diéresis (Ü)?',
-      a: 'En las comunicaciones telegráficas internacionales no existen signos oficiales independientes para las vocales acentuadas en español. Se aplica la norma de normalización fonética: Á→A (.-), É→E (.), Í→I (..), Ó→O (---), Ú→U (..-) y Ü→U (..-). Esto evita confusiones entre operadores de diferentes países y garantiza un 100% de inteligibilidad.'
+      a: 'La recomendación UIT-R M.1677-1 incluye la É con acento con su propia señal (..-..). En la mayoría de transmisiones y herramientas en modo simplificado, las vocales con tilde o diéresis se normalizan a su letra latina base (Á→A, É→E, Í→I, Ó→O, Ú/Ü→U) para evitar discrepancias entre operadores de distintos países.'
     },
     {
       q: '¿Cuál es la proporción de tiempo exacta entre puntos y rayas en Morse?',
@@ -124,7 +124,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
     },
     {
       q: '¿Por qué no se recomienda memorizar el alfabeto Morse contando puntos y rayas visualmente?',
-      a: 'Aprender visualmente contando "un punto y una raya para la A" crea un cuello de botella mental que impide superar los 5 WPM. El método moderno recomendado por expertos en radioafición (método Koch) consiste en aprender el Morse como un ritmo melódico ("di-dah"), reconociendo el sonido global instantáneamente como si fuera una nota musical.'
+      a: 'Asociar cada letra directamente con su ritmo sonoro (di y dah) acelera la comprensión auditiva y la transmisión, evitando la sobrecarga de traducir visualmente contando puntos y rayas en la mente.'
     },
     {
       q: '¿Cómo se representan los signos de interrogación y exclamación del español (¿, ¡)?',
@@ -144,14 +144,14 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
       {/* Hero Header */}
       <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
         <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.75rem', lineHeight: 1.25 }}>
-          Alfabeto Código Morse: Tabla Completa de Letras A–Z, Ñ y Sonidos
+          Alfabeto Morse: tabla de letras A–Z y Ñ
         </h1>
         <p style={{ fontSize: '1.05rem', color: 'var(--text-secondary)', maxWidth: '800px', margin: '0 auto', lineHeight: 1.6 }}>
-          Consulta el alfabeto Morse internacional completo, escucha la pronunciación sonora de cada letra en tiempo real y aprende cómo se representan la letra Ñ y los caracteres en español.
+          Consulta el alfabeto Morse con letras A–Z, Ñ y números. Busca cada símbolo, escucha su sonido y aprende a leer puntos y rayas.
         </p>
 
         {/* Global Action Toolbar */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginTop: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
           {!isPlayingSeq ? (
             <button
               onClick={handlePlayAZSequence}
@@ -178,10 +178,24 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
             className="btn btn-secondary"
             style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', textDecoration: 'none' }}
           >
-            <span>Ir al Traductor de Texto a Morse</span>
+            <span>Ir al traductor de código Morse</span>
             <ArrowRight size={18} />
           </a>
+
+          <button
+            type="button"
+            onClick={() => typeof window !== 'undefined' && window.print()}
+            className="btn btn-secondary"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.25rem' }}
+            title="Imprimir tabla del alfabeto Morse"
+          >
+            <Printer size={16} />
+            <span>Imprimir tabla</span>
+          </button>
         </div>
+        <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginTop: '0.75rem', marginBottom: 0 }}>
+          También puedes guardar la tabla como PDF desde el diálogo de impresión de tu navegador.
+        </p>
       </div>
 
       {/* Filter and Search Bar */}
@@ -248,9 +262,15 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               Letra Ñ y Adaptación de Caracteres Españoles
             </h2>
           </div>
-          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}>
+          <div className="glass-panel" style={{ padding: '1.25rem', borderRadius: 'var(--radius-md)', marginBottom: '1.25rem' }}>
+            <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 0.75rem 0' }}>
+              La recomendación UIT-R M.1677-1 incluye las letras de la A a la Z y también la E con acento, representada como <code style={{ color: 'var(--accent-primary)' }}>..-..</code>.
+            </p>
+            <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 0.75rem 0' }}>
+              En algunas convenciones usadas para el español, la Ñ se representa como <code style={{ color: 'var(--accent-primary)' }}>--.--</code>. Esa señal no figura como letra Ñ en la tabla básica de la recomendación UIT.
+            </p>
             <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
-              En el estándar internacional ITU-R M.1677-1 solo se especifican las 26 letras latinas. En telegrafía en español se desarrolló la extensión histórica para la letra <strong>Ñ</strong> (<code style={{ color: 'var(--accent-primary)' }}>--.--</code>), mientras que las vocales acentuadas se transmiten con su letra base para compatibilidad internacional.
+              El comportamiento de las tildes y de la Ñ puede variar entre herramientas. En esta página, consulta la etiqueta de cada tarjeta y, en el traductor, comprueba el modo de caracteres seleccionado antes de convertir una palabra.
             </p>
           </div>
 
@@ -270,7 +290,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                   <span style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--accent-primary)' }}>Ñ</span>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Eñe (Extensión Española)</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Ñ — extensión utilizada en español: --.--</div>
                 </div>
                 <div style={{ display: 'flex', gap: '0.35rem' }}>
                   <button
@@ -292,18 +312,18 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               <div style={{ fontSize: '1.35rem', fontWeight: 700, fontFamily: 'monospace', letterSpacing: '2px', color: 'var(--text-primary)', marginTop: '0.75rem' }}>
                 --.--
               </div>
-              <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
-                dah-dah-di-dah-dah • ITU: N (-.)
+              <div style={{ fontSize: '0.775rem', color: 'var(--text-muted)', marginTop: '0.5rem', lineHeight: 1.4 }}>
+                dah-dah-di-dah-dah • Modo simplificado de la herramienta: se convierte a N (-.)
               </div>
             </div>
 
             {/* Accented vowels breakdown cards */}
             {[
-              { char: 'Á', latin: 'A', morse: '.-', name: 'A con tilde', sound: 'di-dah' },
-              { char: 'É', latin: 'E', morse: '.', name: 'E con tilde', sound: 'dit' },
-              { char: 'Í', latin: 'I', morse: '..', name: 'I con tilde', sound: 'di-dit' },
-              { char: 'Ó', latin: 'O', morse: '---', name: 'O con tilde', sound: 'dah-dah-dah' },
-              { char: 'Ú / Ü', latin: 'U', morse: '..-', name: 'U con tilde / diéresis', sound: 'di-di-dah' }
+              { char: 'Á', latin: 'A', morse: '.-', label: 'Normalización: Á → A', sound: 'di-dah', note: null },
+              { char: 'É', latin: 'E', morse: '.', label: 'Normalización de esta herramienta: É → E (.)', sound: 'dit', note: 'La señal UIT para É con acento es ..-..' },
+              { char: 'Í', latin: 'I', morse: '..', label: 'Normalización: Í → I', sound: 'di-dit', note: null },
+              { char: 'Ó', latin: 'O', morse: '---', label: 'Normalización: Ó → O', sound: 'dah-dah-dah', note: null },
+              { char: 'Ú / Ü', latin: 'U', morse: '..-', label: 'Normalización: Ú / Ü → U', sound: 'di-di-dah', note: null }
             ].map(item => (
               <div
                 key={item.char}
@@ -318,7 +338,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
                     <span style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--text-primary)' }}>{item.char}</span>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Normalizado como: {item.latin}</div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{item.label}</div>
                   </div>
                   <button
                     onClick={() => handlePlaySingle(item.latin, item.morse)}
@@ -334,6 +354,11 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.35rem' }}>
                   {item.sound}
                 </div>
+                {item.note && (
+                  <div style={{ fontSize: '0.72rem', color: 'var(--accent-primary)', marginTop: '0.35rem', fontStyle: 'italic' }}>
+                    {item.note}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -419,6 +444,58 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
         </section>
       )}
 
+      {/* Printable Reference Container (Visible only during printing / PDF export) */}
+      <div className="print-only-chart" style={{ display: 'none' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.25rem' }}>
+          <h2 style={{ fontSize: '1.4rem', fontWeight: 800, margin: '0 0 0.4rem 0', color: '#000000' }}>
+            Alfabeto Morse para imprimir
+          </h2>
+          <p style={{ fontSize: '0.85rem', color: '#333333', margin: 0, lineHeight: 1.4 }}>
+            La Ñ mostrada aquí utiliza una extensión empleada en español (<code style={{ fontFamily: 'monospace' }}>--.--</code>). En la recomendación UIT básica, la tabla incluye las letras A–Z y la É con acento (<code style={{ fontFamily: 'monospace' }}>..-..</code>).
+          </p>
+        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+          <thead>
+            <tr style={{ borderBottom: '2px solid #000' }}>
+              <th style={{ padding: '6px 8px' }}>Carácter</th>
+              <th style={{ padding: '6px 8px' }}>Código Morse</th>
+              <th style={{ padding: '6px 8px' }}>Ritmo fonético</th>
+              <th style={{ padding: '6px 8px' }}>Tipo / Nota</th>
+            </tr>
+          </thead>
+          <tbody>
+            {'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(letter => {
+              const data = MORSE_CODE_MAP[letter];
+              return (
+                <tr key={letter} style={{ borderBottom: '1px solid #e5e5e5' }}>
+                  <td style={{ padding: '4px 8px', fontWeight: 700 }}>{letter}</td>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontWeight: 700 }}>{data?.morse}</td>
+                  <td style={{ padding: '4px 8px' }}>{data?.ditDah}</td>
+                  <td style={{ padding: '4px 8px', color: '#444' }}>Letra UIT</td>
+                </tr>
+              );
+            })}
+            <tr style={{ borderBottom: '1px solid #e5e5e5', backgroundColor: '#f9f9f9' }}>
+              <td style={{ padding: '4px 8px', fontWeight: 700 }}>Ñ</td>
+              <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontWeight: 700 }}>--.--</td>
+              <td style={{ padding: '4px 8px' }}>dah-dah-di-dah-dah</td>
+              <td style={{ padding: '4px 8px', color: '#444' }}>extensión utilizada en español</td>
+            </tr>
+            {'0123456789'.split('').map(num => {
+              const data = MORSE_CODE_MAP[num];
+              return (
+                <tr key={num} style={{ borderBottom: '1px solid #e5e5e5' }}>
+                  <td style={{ padding: '4px 8px', fontWeight: 700 }}>{num}</td>
+                  <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontWeight: 700 }}>{data?.morse}</td>
+                  <td style={{ padding: '4px 8px' }}>{data?.ditDah}</td>
+                  <td style={{ padding: '4px 8px', color: '#444' }}>Número UIT</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
       {/* Comprehensive In-Depth Educational Article Section (Full Parity with English) */}
       <article className="article-body" style={{ marginTop: '3.5rem' }}>
         <div className="content-container">
@@ -460,7 +537,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
             </div>
 
             <p>
-              Estas asignaciones corresponden al Código Morse Internacional especificado por la Unión Internacional de Telecomunicaciones (<a href="https://www.itu.int/rec/R-REC-M.1677" target="_blank" rel="noopener noreferrer">Recomendación ITU-R M.1677-1 <ExternalLink size={12} /></a>), con la adición histórica oficial para el idioma español de la <strong>Ñ</strong> (<code className="morse-font">--.--</code>).
+              Estas asignaciones corresponden al Código Morse Internacional especificado en la <a href="https://www.itu.int/rec/R-REC-M.1677" target="_blank" rel="noopener noreferrer">Recomendación ITU-R M.1677-1 <ExternalLink size={12} /></a> (que incluye las letras de la A a la Z y la É con acento), junto con la extensión empleada en español para la letra <strong>Ñ</strong> (<code className="morse-font">--.--</code>).
             </p>
 
             <p>
@@ -569,12 +646,9 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               se emite 1 pulso de sonido (punto), 1 pulso de silencio (espacio intra-carácter), y 3 pulsos de sonido sostenido (raya). El silencio es tan importante como el sonido; sin las pausas adecuadas, los puntos y rayas se fusionarían de manera ininteligible.
             </p>
 
-            <h3>La Regla de Oro: Aprender por Ritmo Acústico, Jamás Contando Visualmente</h3>
+            <h3>Cómo aprender las letras por su ritmo</h3>
             <p>
-              El error más destructivo que cometen los principiantes es memorizar visualmente listas escritas contando: <em>"A es un punto y una raya; B es una raya y tres puntos"</em>. Este proceso visual obliga al cerebro a traducir dos veces (sonido → imagen mental de puntos y rayas → letra), creando una barrera insalvable alrededor de los 5 a 8 WPM (palabras por minuto).
-            </p>
-            <p>
-              Los operadores expertos reconocen la letra <strong>S (<code className="morse-font">...</code>)</strong> como un trino rítmico continuo (<em>di-di-dit</em>), no como una suma matemática de tres unidades. Escucha el ritmo en bloque, tal como reconoces las sílabas al hablar.
+              Para avanzar con mayor soltura, asocia cada letra directamente con su ritmo sonoro (di y dah) en lugar de contar mentalmente puntos y rayas. Reconocer la melodía de cada grupo acelera la comprensión tanto al escuchar como al transmitir.
             </p>
           </section>
 
@@ -613,7 +687,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               El punto de pivote es el <strong>5 (<code className="morse-font">.....</code>)</strong>. Hacia abajo (4, 3, 2, 1, 0) las rayas van reemplazando los puntos desde el final. Hacia arriba (6, 7, 8, 9, 0) las rayas van reemplazando los puntos desde el principio. Esta perfecta simetría hace que memorizar los números sea mucho más rápido que las letras.
             </p>
             <p>
-              Para una guía completa sobre números abreviados en concursos y radiotelegrafía marina, consulta nuestra guía dedicada de <a href="/es/morse-code-numbers/" onClick={(e) => handleNav(e, 'es-numbers', '/es/morse-code-numbers/')}>Números en Código Morse</a>.
+              Para una guía completa sobre números abreviados en concursos y radiotelegrafía marina, consulta nuestra guía dedicada de <a href="/es/morse-code-numbers/" onClick={(e) => handleNav(e, 'es-numbers', '/es/morse-code-numbers/')}>números en código Morse</a>.
             </p>
           </section>
 
@@ -654,7 +728,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
             </div>
 
             <p>
-              Para conocer todos los símbolos matemáticos, monedas y abreviaturas operativas, visita <a href="/es/morse-code-symbols/" onClick={(e) => handleNav(e, 'es-symbols', '/es/morse-code-symbols/')}>Símbolos en Código Morse</a>.
+              Para conocer todos los símbolos matemáticos, monedas y abreviaturas operativas, visita <a href="/es/morse-code-symbols/" onClick={(e) => handleNav(e, 'es-symbols', '/es/morse-code-symbols/')}>símbolos y puntuación en Morse</a>.
             </p>
           </section>
 
@@ -689,18 +763,18 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               </li>
             </ul>
 
-            <h3>Pares Espejo (Inversiones de Puntos y Rayas)</h3>
+            <h3>Pares de letras con el orden invertido</h3>
             <p>
-              Muchas letras forman parejas especulares exactas donde se intercambian los puntos por rayas:
+              Varias letras del código Morse tienen exactamente el mismo número de puntos y rayas, pero en orden inverso. Agruparlas de esta forma facilita recordar las secuencias complementarias:
             </p>
 
             <div className="table-responsive">
               <table className="seo-table">
                 <thead>
                   <tr>
-                    <th>Pareja Espejo</th>
-                    <th>Patrón Original</th>
-                    <th>Patrón Invertido</th>
+                    <th>Pareja</th>
+                    <th>Patrón 1</th>
+                    <th>Patrón 2</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -708,12 +782,14 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                   <tr><td>D y U</td><td>D = <code className="morse-font">-..</code></td><td>U = <code className="morse-font">..-</code></td></tr>
                   <tr><td>B y V</td><td>B = <code className="morse-font">-...</code></td><td>V = <code className="morse-font">...-</code></td></tr>
                   <tr><td>G y W</td><td>G = <code className="morse-font">--.</code></td><td>W = <code className="morse-font">.--</code></td></tr>
-                  <tr><td>K y R</td><td>K = <code className="morse-font">-.-</code></td><td>R = <code className="morse-font">.-.</code></td></tr>
                   <tr><td>F y L</td><td>F = <code className="morse-font">..-.</code></td><td>L = <code className="morse-font">.-..</code></td></tr>
                   <tr><td>Q y Y</td><td>Q = <code className="morse-font">--.-</code></td><td>Y = <code className="morse-font">-.--</code></td></tr>
                 </tbody>
               </table>
             </div>
+            <p style={{ marginTop: '0.75rem', fontSize: '0.925rem', color: 'var(--text-secondary)' }}>
+              K (<code className="morse-font">-.-</code>) y R (<code className="morse-font">.-.</code>) son otro tipo de pareja: se obtienen al intercambiar puntos por rayas y rayas por puntos. No son ejemplos de orden invertido.
+            </p>
           </section>
 
           {/* FIGURE 2: Character Breakdown View */}
@@ -806,6 +882,9 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
               <li><strong>RADIO</strong> → <code className="morse-font">.-. .- -.. .. ---</code></li>
               <li><strong>SOS</strong> → <code className="morse-font">... --- ...</code></li>
             </ul>
+            <p style={{ fontSize: '0.925rem', color: 'var(--text-secondary)', marginTop: '0.5rem', marginBottom: '1rem' }}>
+              En esta lista, <code className="morse-font">... --- ...</code> muestra las letras S, O y S por separado. Como señal de socorro, SOS se transmite como un solo grupo continuo: <code className="morse-font">...---...</code>, sin las pausas normales entre letras.
+            </p>
             <p>
               Para separar palabras completas en texto escrito se utiliza convencionalmente una barra inclinada <code>/</code> rodeada de espacios:
             </p>
@@ -815,7 +894,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
 
             <h3>Descifrado Inverso de Mensajes Desconocidos</h3>
             <p>
-              Si tienes una secuencia de puntos y rayas y necesitas conocer su significado, no intentes adivinar letra por letra. Puedes introducir la cadena directamente en nuestro <a href="/es/" onClick={(e) => handleNav(e, 'spanish', '/es/')}>Traductor de Código Morse</a> o utilizar nuestro módulo de <a href="/es/morse-code-decoder/" onClick={(e) => handleNav(e, 'es-decoder', '/es/morse-code-decoder/')}>Decodificador de Código Morse</a> para resolver automáticamente textos, audios o secuencias complejas.
+              Si tienes una secuencia de puntos y rayas y necesitas conocer su significado, no intentes adivinar letra por letra. Puedes introducir la cadena directamente en nuestro <a href="/es/" onClick={(e) => handleNav(e, 'spanish', '/es/')}>traductor de código Morse</a> o utilizar nuestro módulo de <a href="/es/morse-code-decoder/" onClick={(e) => handleNav(e, 'es-decoder', '/es/morse-code-decoder/')}>Decodificador de Código Morse</a> para resolver automáticamente textos, audios o secuencias complejas.
             </p>
           </section>
 
@@ -867,7 +946,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                 onClick={(e) => handleNav(e, 'es-learn', '/es/learn-morse-code/')}
                 style={{ color: 'var(--accent-primary)', fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
               >
-                <span>Leer guía de aprendizaje</span>
+                <span>aprender código Morse</span>
                 <ArrowRight size={14} />
               </a>
             </div>
@@ -907,7 +986,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                 },
                 {
                   q: '¿Cómo se representa la letra Ñ en código Morse?',
-                  a: 'En radiotelegrafía histórica de España y países hispanohablantes se adoptó la extensión oficial para la letra Ñ con el código --.-- (dos rayas, un punto, dos rayas). En transmisiones internacionales estándar donde el receptor no dispone de extensiones regionales, la Ñ se normaliza convencionalmente como N (-.). Nuestro traductor admite ambos modos.'
+                  a: 'En algunas convenciones utilizadas para el español, la letra Ñ se representa mediante la extensión --.--. Esa señal no figura en la tabla básica de la recomendación UIT-R M.1677-1. En herramientas y transmisiones internacionales simplificadas, la Ñ se normaliza frecuentemente como N (-.). Comprueba siempre el modo de caracteres seleccionado en el traductor.'
                 },
                 {
                   q: '¿Cuál es la letra más corta y fácil de aprender?',
@@ -935,7 +1014,7 @@ export function SpanishAlphabetPage({ wpm = 20, setWpm, frequency = 600, volume 
                 },
                 {
                   q: '¿Cómo se transmiten las vocales con tilde (Á, É, Í, Ó, Ú) y la diéresis (Ü)?',
-                  a: 'En telegrafía internacional se aplica la regla de normalización estándar: Á→A (.-), É→E (.), Í→I (..), Ó→O (---), Ú→U (..-) y Ü→U (..-). Esto evita confusiones entre estaciones de diferentes países.'
+                  a: 'La recomendación básica UIT-R M.1677-1 incluye la É con acento con su propia señal (..-..). En la mayoría de transmisiones y herramientas en modo simplificado, las vocales con tilde o diéresis se normalizan a su letra latina base (Á→A, É→E, Í→I, Ó→O, Ú/Ü→U) para evitar discrepancias entre operadores de distintos países.'
                 },
                 {
                   q: '¿Cómo se representan los signos de interrogación y admiración en español (¿, ¡)?',

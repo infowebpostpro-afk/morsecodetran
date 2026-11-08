@@ -103,9 +103,9 @@ export const ROUTES = [
   {
     path: '/es/morse-code-alphabet/',
     tab: 'es-alphabet',
-    title: 'Alfabeto Código Morse: Letras A–Z, Letra Ñ, Números y Símbolos',
-    description: 'Consulta el alfabeto código Morse completo: letras de la A a la Z, letra Ñ española, números y signos. Escucha las señales de audio y aprende las reglas ITU.',
-    h1: 'Alfabeto Código Morse: Tabla Completa de Letras A–Z, Ñ y Sonidos',
+    title: 'Alfabeto Morse: letras A–Z, Ñ y sonidos | MorsePro',
+    description: 'Consulta el alfabeto Morse con letras A–Z, Ñ y números. Busca cada símbolo, escucha su sonido y aprende a leer puntos y rayas.',
+    h1: 'Alfabeto Morse: tabla de letras A–Z y Ñ',
     canonical: `${SITE_URL}/es/morse-code-alphabet/`,
     isArticle: true,
     priority: '0.9',
